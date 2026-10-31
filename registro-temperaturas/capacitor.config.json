@@ -1,0 +1,8 @@
+{
+  "appId": "com.laran.registrotemperaturas",
+  "appName": "Registro de temperaturas",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#000000"
+  }
+}

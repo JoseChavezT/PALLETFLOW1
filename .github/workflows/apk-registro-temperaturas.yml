@@ -1,0 +1,52 @@
+name: APK Registro de temperaturas
+
+on:
+  push:
+    paths:
+      - 'registro-temperaturas/**'
+      - '.github/workflows/apk-registro-temperaturas.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: registro-temperaturas
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: registro-temperaturas/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Crear proyecto Android
+        run: |
+          npx cap add android
+          # Guardar en Documentos en Android 9 o menor
+          sed -i 's#<uses-permission android:name="android.permission.INTERNET" />#&\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />#' android/app/src/main/AndroidManifest.xml
+          npx cap sync android
+
+      - name: Compilar APK
+        working-directory: registro-temperaturas/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cp app/build/outputs/apk/debug/app-debug.apk ../registro-temperaturas.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: registro-temperaturas-apk
+          path: registro-temperaturas/registro-temperaturas.apk
