@@ -790,25 +790,19 @@ function phraseHTML(d){
   if(!d) return 'Ingresa una cantidad para calcular';
   if(d.mode === 'r') return PK + '<b>' + fmt(d.p) + '</b> ' + plural(d.p, 'pallet', 'pallets') + ' + <b>' + fmt(d.s) + '</b> ' + plural(d.s, 'jaba', 'jabas');
   const res = calc(d.n, d.cap), cap = d.cap, pk = packOf(cap);
-  if(pk > 0){
-    const pucho = d.n % cap, base = pucho === 0 ? cap : pucho, paq = Math.floor(base / pk), sue = base % pk;
-    let h = PK + '<b>' + paq + '</b> ' + plural(paq, 'paquete', 'paquetes');
-    if(sue > 0) h += ' + <b>' + sue + '</b> ' + plural(sue, 'jaba', 'jabas');
-    return h;
+  if(pk > 0){                    // con paquetes: solo el pucho que se ve (el + o el −) contado en paquetes
+    if(res.jabas === 0) return 'Pallets completos';
+    const q = res.jabas, paq = Math.floor(q / pk), sue = q % pk, parts = [];
+    if(paq) parts.push('<b>' + fmt(paq) + '</b> ' + plural(paq, 'paquete', 'paquetes'));
+    if(sue) parts.push('<b>' + sue + '</b> ' + plural(sue, 'jaba', 'jabas'));
+    return PK + parts.join(' + ');
   }
   if(res.onlyJabas){ const f = cap - res.jabas; return PK + 'Te faltan <b>' + fmt(f) + '</b> ' + plural(f, 'jaba', 'jabas') + ' para un pallet'; }
   if(res.operator === '-') return PK + 'Agrega <b>' + fmt(res.jabas) + '</b> ' + plural(res.jabas, 'jaba', 'jabas') + ' para completar otro pallet';
-  if(res.jabas === 0) return '¡<b>' + fmt(res.pallets) + '</b> ' + plural(res.pallets, 'pallet', 'pallets') + ' completos!';
-  return PK + '<b>' + fmt(res.pallets) + '</b> ' + plural(res.pallets, 'pallet', 'pallets') + ' con <b>' + fmt(res.jabas) + '</b> ' + plural(res.jabas, 'jaba', 'jabas') + ' extra';
+  if(res.jabas === 0) return 'Pallets completos';
+  return '';                     // «N pallets con N jabas extra» repetía lo que ya dicen los números
 }
-function metaHTML(d){
-  if(!d) return '';
-  let h = '';
-  if(d.mode === 'f' && packOf(d.cap) > 0 && d.n % d.cap > 0){
-    h += '<span class="chip">Faltan <b>' + fmt(d.cap - d.n % d.cap) + '</b> para ' + (d.n < d.cap ? 'un' : 'otro') + ' pallet</span>';
-  }
-  return h;
-}
+function metaHTML(d){ return ''; }   // «Faltan X para otro pallet» ya no se muestra: el − del resultado lo dice
 function qHTML(it){
   const t = it.t ? '<small class="tm">' + hm(it.t) + '</small>' : '';
   if(it.mode === 'r') return fmt(it.p) + '<small>p</small><span class="pls">+</span>' + fmt(it.s) + '<small>×' + it.cap + '</small>' + t;
@@ -1696,8 +1690,8 @@ const TAB_DEFS = {
   res:[
     H('Dónde va el resultado'), SG('stagePos', 'Posición', [['top','Arriba'],['center','Centro'],['bottom','Abajo']], 'stage'),
     H('Qué muestra'), TG('showLabels', 'Mostrar «PALLETS» y «JABAS» bajo los números', 'stage'),
-    TG('showPhrase', 'Mostrar la frase (paquetes, faltantes)', 'stage'), TG('showChips', 'Mostrar los datos (capacidad, faltan…)', 'stage'),
-    R('phraseScale', 'Tamaño de la frase y los datos', 70, 150, 5, 'stage', v => v + '%'),
+    TG('showPhrase', 'Mostrar la frase de abajo (paquetes)', 'stage'),
+    R('phraseScale', 'Tamaño de la frase', 70, 150, 5, 'stage', v => v + '%'),
     H('Animación de los números'), SG('numAnim', 'Cómo cambian al escribir', [['pop','Salto'],['count','Contar'],['roll','Deslizar'],['none','Ninguna']], 'stage')
   ],
   hist:[
