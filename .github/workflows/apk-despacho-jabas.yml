@@ -35,6 +35,8 @@ jobs:
           npx cap add android
           # Vibración al tocar (navigator.vibrate)
           sed -i 's#<uses-permission android:name="android.permission.INTERNET" />#&\n    <uses-permission android:name="android.permission.VIBRATE" />#' android/app/src/main/AndroidManifest.xml
+          # Icono propio de Cuadre (reemplaza el de Capacitor)
+          cp -r icono/res/. android/app/src/main/res/
           npx cap sync android
 
       - name: Compilar APK

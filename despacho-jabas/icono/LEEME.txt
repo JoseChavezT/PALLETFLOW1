@@ -1,0 +1,11 @@
+CUADRE - icono (opción 5: cuadrícula con hueco)
+Fondo AMOLED negro #000000 · blanco #FFFFFF · hueco rojo #F6465D
+
+assets/            -> para Capacitor: npx @capacitor/assets generate --android
+  icon-only.png        icono completo (1024)
+  icon-foreground.png  primer plano transparente (1024)
+  icon-background.png  fondo negro (1024)
+android-res/       -> ya en los tamaños de Android (copiar a android/app/src/main/res/)
+  mipmap-*/ic_launcher.png, ic_launcher_round.png, ic_launcher_foreground.png
+  Fondo del icono adaptable: color #000000
+play-store-512.png -> icono para Google Play
