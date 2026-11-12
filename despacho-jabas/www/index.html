@@ -658,7 +658,7 @@ function normalizeStyle(o){
 function sanitizeCfg(){
   const d = DEF, oneOf = (k, list) => { if(!list.includes(cfg[k])) cfg[k] = d[k]; };
   cfg.presets = (Array.isArray(cfg.presets) ? cfg.presets : [])
-    .filter(p => p && Number.isInteger(p.cap) && p.cap > 0 && p.cap < 10000).slice(0, 5)
+    .filter((p, i, a) => p && Number.isInteger(p.cap) && p.cap > 0 && p.cap < 10000 && a.findIndex(q => q && q.cap === p.cap) === i).slice(0, 5)
     .map(p => ({ cap:p.cap, c1:isHex(p.c1) ? p.c1 : '#FFFFFF', c2:isHex(p.c2) ? p.c2 : '#9CA3AF',
                  pack:Number.isInteger(p.pack) && p.pack > 0 ? p.pack : 0, round:Number.isInteger(p.round) && p.round > 0 ? p.round : 0 }));
   if(!cfg.presets.length) cfg.presets = clone(d.presets);
@@ -1500,15 +1500,19 @@ function lineText(it){
   if(it.mode === 'r') return (it.p ? pl(it.p) + (it.s ? ' + ' + jb(it.s) : '') : jb(it.s)) + ' (cap. ' + it.cap + ') = ' + jb(it.n);
   return jb(it.n) + ' (cap. ' + it.cap + ') = ' + resText(calc(it.n, it.cap));
 }
-async function toClipboard(t, okMsg){
-  let ok = false;
-  try{ await navigator.clipboard.writeText(t); ok = true; }
+async function writeClip(t){
+  const CB = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Clipboard;
+  try{ if(CB){ await CB.write({ string:t }); return true; } }catch(e){}
+  try{ await navigator.clipboard.writeText(t); return true; }
   catch(e){
     try{
       const ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;opacity:0';
-      document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
-    }catch(e2){}
+      document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok;
+    }catch(e2){ return false; }
   }
+}
+async function toClipboard(t, okMsg){
+  const ok = await writeClip(t);
   toast(ok ? okMsg : 'No se pudo copiar'); if(ok) snd('copy');
 }
 function copyCurrent(){
@@ -1813,9 +1817,9 @@ function setDefStyle(ref, style){ try{ if(ref === 'b') localStorage.removeItem(D
 const sameStyle = (a, b) => JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), a))) === JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), b)));
 
 function themePreview(st){
-  const o = Object.assign(pickStyle(DEF), st);
+  const o = Object.assign(pickStyle(DEF), normalizeStyle(st));
   const bgc = o.bgGrad ? 'linear-gradient(' + o.bgAngle + 'deg,' + o.bg + ',' + o.bg2 + ')' : o.bg;
-  const au = o.auroraOn ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
+  const au = o.fx !== 'none' ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
   return '<span class="tpv" style="background:' + au + bgc + ';color:' + o.fg + '"><b style="font-family:' + fontStack(o.numFont) + ';font-style:' + (o.numItalic ? 'italic' : 'normal') + ';font-weight:' + o.numWeight + ';color:' + o.numColor +
     '">7</b><i style="color:' + (o.followCapLoose ? '#fff' : o.looseColor) + '">− 4</i><s style="background:linear-gradient(90deg,' + o.accent + ',' + o.accent2 + ')"></s></span>';
 }
@@ -1835,8 +1839,8 @@ function tabTemas(){
   h += row('Tema inicial (PalletFlow)', builtin, true, -1) + themes.map((t, i) => row(t.name, t.style, false, i)).join('');
   if(!themes.length) h += '<div class="empty">Todavía no guardaste ningún tema propio.</div>';
   h += '<h4>Estilos listos</h4><div class="pgrid">' + STYLES.map((s, i) => {
-    const o = Object.assign(pickStyle(DEF), s[1]);
-    const au = o.auroraOn ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
+    const o = Object.assign(pickStyle(DEF), normalizeStyle(s[1]));
+    const au = o.fx !== 'none' ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
     return '<button class="pst" data-pst="' + i + '" style="background:' + au + o.bg + ';color:' + o.fg + '"><b style="font-family:' + fontStack(o.numFont) + ';font-style:' + (o.numItalic ? 'italic' : 'normal') + ';color:' + o.numColor + '">7<i style="color:' + (o.followCapLoose ? '#fff' : o.looseColor) + '">− 4</i></b><em>' + s[0] + '</em><s style="background:linear-gradient(90deg,' + o.accent + ',' + o.accent2 + ')"></s></button>';
   }).join('') + '</div>';
   h += '<h4>Compartir un tema</h4><p class="help">Copia el código de tu tema para pasarlo a otro celular, o pega aquí uno que te hayan pasado.</p>' +
@@ -1890,7 +1894,8 @@ function demoHTML(){
 }
 function demoScale(){
   const h = vpH();
-  const ds = h >= 780 ? .5 : h >= 640 ? .42 : h >= 500 ? .33 : .26;
+  const inH = $('demoIn').offsetHeight || 700;
+  const ds = Math.min(h >= 780 ? .5 : h >= 640 ? .42 : h >= 500 ? .33 : .26, h * .4 / inH);   // la vista previa nunca tapa los ajustes
   $('demo').style.setProperty('--ds', ds);
   const hh = Math.ceil($('demoIn').offsetHeight * ds) + 2;
   $('demoWrap').style.height = hh + 'px';
@@ -1958,7 +1963,7 @@ body.addEventListener('input', e => {
     if(f === 'c1' || f === 'c2'){ p[f] = el.value.toUpperCase(); }
     else{
       const v = el.value.replace(/\D/g, '').slice(0, 4); el.value = v;
-      if(f === 'cap'){ const n = parseInt(v, 10); if(!n) return; const old = p.cap; p.cap = n; if(S.cap === old) S.cap = n; if(cfg.startCap === old) cfg.startCap = n; }
+      if(f === 'cap'){ const n = parseInt(v, 10); if(!n) return; if(cfg.presets.some((q, j) => j !== i && q.cap === n)){ toast('Ya tienes la capacidad ' + n); return; } const old = p.cap; p.cap = n; if(S.cap === old) S.cap = n; if(cfg.startCap === old) cfg.startCap = n; }
       else p[f] = parseInt(v, 10) || 0;
     }
     buildCaps(); applyCfg(); render(); refreshDemo(); saveCfg(); flash(f === 'round' || f === 'pack' ? 'stage' : 'caps');
@@ -2021,7 +2026,7 @@ body.addEventListener('click', e => {
   if(t.closest('#codeCopy')){
     const code = 'DJ1:' + btoa(unescape(encodeURIComponent(JSON.stringify(pickStyle(cfg)))));
     $('codeBox').value = code;
-    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => toast('Código copiado'), () => toast('Copia el código del recuadro'));
+    writeClip(code).then(ok => toast(ok ? 'Código copiado' : 'Copia el código del recuadro'));
     return;
   }
   if(t.closest('#codeImport')){
@@ -2079,6 +2084,16 @@ loadCfg(); loadState();
 applyCfg();
 buildCaps(); syncInputs(); fit(); render();
 setTimeout(() => { booted = true; }, 600);
+/* Botón «atrás» de Android: primero cierra lo que esté abierto; si no hay nada, minimiza la app */
+try{
+  const CapApp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
+  if(CapApp) CapApp.addListener('backButton', () => {
+    if($('cust').classList.contains('open')) closeCust();
+    else if(kbOpen) hideKb();
+    else if(S.hs !== 'closed') setHS('closed');
+    else if(CapApp.minimizeApp) CapApp.minimizeApp(); else CapApp.exitApp();
+  });
+}catch(e){}
 if(cfg.autofocus) setTimeout(() => { if(cfg.kbOn) showKb(); focusMain(false); }, 60);
 })();
 </script>
