@@ -692,6 +692,7 @@ function loadCfg(){
   if(s && typeof s === 'object') cfg = Object.assign(clone(DEF), normalizeStyle(s));
   else cfg = Object.assign(clone(DEF), getDefStyle());      // primera vez: tema predeterminado
   sanitizeCfg();
+  cfg.showKeys = false;                                       // los atajos de teclado físico no aplican en el celular
   if(cfg.title === 'Despacho') cfg.title = 'Cuadre';
   if(cfg.title === 'Cuadre' && !cfg._cuadre){ cfg.titleUpper = true; cfg._cuadre = 1; }   // la pantalla principal dice CUADRE (se puede volver a cambiar en Personalizar)
 }
@@ -1650,29 +1651,32 @@ const SG = (k, label, opts, t) => ({ type:'seg', k, label, opts, t });
 const SL = (k, label, opts, t) => ({ type:'select', k, label, opts, t });
 const TX = (k, label, t) => ({ type:'text', k, label, t });
 const H = label => ({ type:'head', label });
+const W = (when, d) => Object.assign(d, { w:when });          // el control solo aparece cuando sirve
+const CANVAS_FX = () => cfg.fx !== 'none' && cfg.fx !== 'aurora';
+const DEP_KEYS = ['fx','bgGrad','followCapLoose','followCapGlow','dragSheet','showKicker','showChip','snd','haptics','kbOn','showOther','glowAnchor'];
 const NUM_SEG = ['numWeight', 'histMax'];
 const px = v => v === 0 ? 'Sin borde' : v + ' px';
 const TAB_DEFS = {
   colores:[
     H('Color de acento'), { type:'accgrid' }, C('accent', 'Acento', 'add'), C('accent2', 'Acento (segundo color del degradado)', 'add'),
     H('Números y textos'), C('fg', 'Color del texto', 'all'), C('numColor', 'Número de pallets', 'stage'),
-    TG('followCapLoose', 'Sueltas con el color de la capacidad', 'stage'), C('looseColor', 'Color de las sueltas (si no sigue la capacidad)', 'stage'),
+    TG('followCapLoose', 'Sueltas con el color de la capacidad', 'stage'), W(() => !cfg.followCapLoose, C('looseColor', 'Color de las sueltas', 'stage')),
     C('minus', 'Color del signo menos (7 − 4)', 'stage'),
     H('Bloques (botones y líneas del historial)'), R('surf', 'Intensidad de los bloques', 0, 100, 1, 'all', v => v === 0 ? 'Transparentes' : v + '%'), C('blockColor', 'Color de los bloques', 'all')
   ],
   fondo:[
     H('Color de fondo'), { type:'bggrid' }, C('bg', 'Fondo', 'all'),
-    TG('bgGrad', 'Fondo en degradado', 'all'), C('bg2', 'Segundo color del degradado', 'all'), R('bgAngle', 'Dirección del degradado', 0, 360, 15, 'all', v => v + '°'),
+    TG('bgGrad', 'Fondo en degradado', 'all'), W(() => cfg.bgGrad, C('bg2', 'Segundo color del degradado', 'all')), W(() => cfg.bgGrad, R('bgAngle', 'Dirección del degradado', 0, 360, 15, 'all', v => v + '°')),
     H('Fondo animado'), SL('fx', 'Elige el fondo', FX_LIST, 'aurora'),
     { type:'help', text:'Al elegir un fondo se ponen sus colores; luego puedes cambiarlos aquí. El agua y los anillos reaccionan cuando tocas la pantalla.' },
-    SG('fxQ', 'Calidad (más baja = gasta menos batería)', [['low','Baja'],['mid','Media'],['high','Alta']], 'aurora'),
-    C('auroraA', 'Color A', 'aurora'), C('auroraB', 'Color B', 'aurora'), C('auroraC', 'Color C (el fondo oscuro)', 'aurora'),
-    R('auroraI', 'Intensidad', 0, 100, 5, 'aurora', v => v + '%'), R('auroraS', 'Tamaño / cantidad', 50, 160, 10, 'aurora', v => v + '%'), R('auroraSp', 'Velocidad', 1, 10, 1, 'aurora', v => 'x' + v),
+    W(CANVAS_FX, SG('fxQ', 'Calidad (más baja = gasta menos batería)', [['low','Baja'],['mid','Media'],['high','Alta']], 'aurora')),
+    W(() => cfg.fx !== 'none', C('auroraA', 'Color A', 'aurora')), W(() => cfg.fx !== 'none', C('auroraB', 'Color B', 'aurora')), W(() => cfg.fx !== 'none', C('auroraC', 'Color C (el fondo oscuro)', 'aurora')),
+    W(() => cfg.fx !== 'none', R('auroraI', 'Intensidad', 0, 100, 5, 'aurora', v => v + '%')), W(() => cfg.fx !== 'none', R('auroraS', 'Tamaño / cantidad', 50, 160, 10, 'aurora', v => v + '%')), W(() => cfg.fx !== 'none', R('auroraSp', 'Velocidad', 1, 10, 1, 'aurora', v => 'x' + v)),
     H('Halo detrás del resultado'), R('glow', 'Intensidad', 0, 100, 5, 'halo', v => v + '%'), R('glowSize', 'Tamaño', 20, 200, 10, 'halo', v => v + '%'),
     R('glowBlur', 'Suavidad', 0, 40, 2, 'halo', v => v + ''), SG('glowShape', 'Forma', [['circle','Círculo'],['ellipse','Ovalado']], 'halo'),
     SG('glowAnchor', 'Dónde está', [['result','Sigue al resultado'],['center','Centro'],['top','Arriba'],['bottom','Abajo']], 'halo'),
     R('glowSpeed', 'Ritmo de la respiración', 2, 12, 1, 'halo', v => v + ' s'),
-    TG('followCapGlow', 'El halo toma el color de la capacidad', 'halo'), C('glowColor', 'Color del halo (si no sigue la capacidad)', 'halo'),
+    TG('followCapGlow', 'El halo toma el color de la capacidad', 'halo'), W(() => !cfg.followCapGlow, C('glowColor', 'Color del halo', 'halo')),
     H('Textura'), SG('texture', 'Textura', [['none','Ninguna'],['dots','Puntos'],['grid','Cuadros'],['lines','Líneas'],['diag','Diagonal']], 'all'),
     R('texa', 'Intensidad de la textura', 0, 25, 1, 'all', v => v + '%')
   ],
@@ -1680,12 +1684,11 @@ const TAB_DEFS = {
     H('Tarjeta de cristal'), C('cardColor', 'Color del cristal', 'card'), R('cardA', 'Transparencia del cristal', 0, 40, 1, 'card', v => v === 0 ? 'Sin cristal' : v + '%'),
     R('cardBlur', 'Desenfoque del fondo', 0, 30, 1, 'card', v => v + ' px'),
     { type:'help', text:'Los contornos de cada elemento (grosor, color, estilo y esquinas) se ajustan en la pestaña <b>Contornos</b>.' },
-    H('Encabezado'), TG('showDate', 'Mostrar la fecha', 'hdr'), TG('showChip', 'Mostrar la etiqueta del historial', 'chip'), C('chipColor', 'Color de la etiqueta', 'chip'),
-    H('Dentro de la tarjeta'), TG('showKicker', 'Mostrar el texto de arriba («TOTAL»)', 'stage'), TX('kickerText', 'Texto de arriba', 'stage'),
-    TG('showKeys', 'Mostrar atajos de teclado (Enter / Esc)', 'card')
+    H('Encabezado'), TG('showDate', 'Mostrar la fecha', 'hdr'), TG('showChip', 'Mostrar la etiqueta del historial', 'chip'), W(() => cfg.showChip, C('chipColor', 'Color de la etiqueta', 'chip')),
+    H('Dentro de la tarjeta'), TG('showKicker', 'Mostrar el texto de arriba («TOTAL»)', 'stage'), W(() => cfg.showKicker, TX('kickerText', 'Texto de arriba', 'stage'))
   ],
   texto:[
-    H('Letras'), SL('font', 'Letra de la app', FONTS.map(f => [f, f]), 'hdr'), SL('numFont', 'Letra de los números', FONTS.map(f => [f, f]), 'stage'),
+    H('Letras'), { type:'help', text:'Las letras se descargan la primera vez que las eliges (necesita internet). Sin conexión se ve la letra del sistema.' }, SL('font', 'Letra de la app', FONTS.map(f => [f, f]), 'hdr'), SL('numFont', 'Letra de los números', FONTS.map(f => [f, f]), 'stage'),
     TG('numItalic', 'Números en cursiva', 'stage'), SG('numWeight', 'Grosor de los números', [[600,'Medio'],[700,'Negrita'],[800,'Extra'],[900,'Black']], 'stage'),
     H('Tamaños'), R('numScale', 'Tamaño de los números', 40, 160, 5, 'stage', v => v + '%'),
     R('uiScale', 'Tamaño del texto general', 85, 125, 5, 'all', v => v + '%'), R('track', 'Espacio entre números', -8, 4, 1, 'stage', v => v)
@@ -1702,7 +1705,7 @@ const TAB_DEFS = {
     H('Cómo se abre el historial'), { type:'help', text:'El historial se abre y se cierra <b>solo con el botón «Historial»</b> de arriba.' },
     SG('histStart', 'Al abrir la app', [['last','La última'],['closed','Oculto'],['open','Abierto']], 'hist'),
     TG('dragSheet', 'También poder arrastrar la hoja hacia arriba (puede abrirse sin querer)', 'sheet'),
-    TG('showHint', 'Mostrar «desliza para ver todo» (solo con el arrastre)', 'hist'), R('peekRows', 'Filas que asoman (solo con el arrastre)', 1, 3, .5, 'hist', v => v + ' filas'), R('histH', 'Alto con la hoja abierta', 25, 70, 5, 'hist', v => v + '% de la pantalla'),
+    W(() => cfg.dragSheet, TG('showHint', 'Mostrar «desliza para ver todo»', 'hist')), W(() => cfg.dragSheet, R('peekRows', 'Filas que asoman', 1, 3, .5, 'hist', v => v + ' filas')), R('histH', 'Alto con la hoja abierta', 25, 70, 5, 'hist', v => v + '% de la pantalla'),
     H('Las líneas'), SG('histStyle', 'Estilo', [['lista','Lista'],['compacta','Compacta']], 'hist'),
     TG('histTime', 'Mostrar la hora de cada línea', 'hist'), SG('histMax', 'Cuántas líneas guarda', [[20,'20'],[50,'50'],[100,'100'],[200,'200']], 'hist')
   ],
@@ -1724,7 +1727,8 @@ const TAB_DEFS = {
     H('Luces'), TG('breathe', 'El halo respira', 'halo'), TG('glowReact', 'El halo reacciona al escribir y al guardar', 'halo'),
     H('Al tocar y al guardar'), SG('rowAnim', 'Entrada de una línea nueva', [['slide','Desliza'],['fade','Aparece'],['pop','Salta'],['none','Nada']], 'hist'),
     TG('ripple', 'Ondas al tocar un botón', 'add'),
-    H('Vibración'), TG('haptics', 'Vibrar al tocar y al guardar', 'add'), SG('hapticsLvl', 'Intensidad', [['low','Suave'],['mid','Media'],['high','Fuerte']], 'add')
+    H('Vibración'), TG('haptics', 'Vibrar al tocar y al guardar', 'add'), W(() => cfg.haptics, SG('hapticsLvl', 'Intensidad', [['low','Suave'],['mid','Media'],['high','Fuerte']], 'add')),
+    W(() => cfg.haptics, { type:'btn', id:'vibTest', label:'Probar la vibración' })
   ],
   kb:[
     H('Teclado'), TG('kbOn', 'Usar el teclado propio (si lo apagas se usa el del teléfono)', 'kb'),
@@ -1733,20 +1737,21 @@ const TAB_DEFS = {
     H('Tamaños'), R('kbRow', 'Alto de las teclas', 44, 84, 2, 'kb', v => v + ' px'), R('kbFs', 'Tamaño de los números', 18, 44, 1, 'kb', v => v + ' px'),
     H('Colores y transparencia'), C('kbBg', 'Fondo del teclado', 'kb'), R('kbA', 'Opacidad del fondo', 0, 100, 5, 'kb', v => v === 0 ? 'Invisible' : v + '%'),
     R('kbBlur', 'Desenfoque detrás del teclado', 0, 30, 1, 'kb', v => v + ' px'), C('kbFg', 'Color de los números', 'kb'),
-    C('kbKeyBg', 'Color del fondo de cada tecla', 'kb'), R('kbKeyA', 'Fondo de cada tecla', 0, 40, 1, 'kb', v => v === 0 ? 'Sin fondo' : v + '%'),
+    R('kbKeyA', 'Fondo de cada tecla', 0, 40, 1, 'kb', v => v === 0 ? 'Sin fondo' : v + '%'), C('kbKeyBg', 'Color del fondo de cada tecla (sube «Fondo de cada tecla» para verlo)', 'kb'),
     C('kbAct', 'Color de la tecla ✓', 'kb'), C('kbActIcon', 'Color del ✓', 'kb'),
     H('Esquinas'), R('kbR', 'Esquinas de las teclas', 0, 40, 1, 'kb', v => v + ' px'), R('kbActR', 'Esquinas de la tecla ✓', 0, 50, 1, 'kb', v => v + ' px'),
     H('Teclas extra: –  ␣  ,  .'), { type:'help', text:'Igual que en Gboard, pero no escriben nada en un campo de números. Puedes darles una acción.' },
     SL('kbk_dash', 'Tecla  –', KB_ACT, 'kb'), SL('kbk_space', 'Tecla  ␣', KB_ACT, 'kb'), SL('kbk_comma', 'Tecla  ,', KB_ACT, 'kb'), SL('kbk_dot', 'Tecla  .', KB_ACT, 'kb'),
-    H('Vibración'), TG('kbHapt', 'Vibrar al tocar una tecla', 'kb'), TG('haptics', 'Vibración general de la app', 'kb'), SG('hapticsLvl', 'Intensidad', [['low','Suave'],['mid','Media'],['high','Fuerte']], 'kb')
-  ],
+    H('Vibración'), TG('kbHapt', 'Vibrar al tocar una tecla', 'kb'),
+    { type:'help', text:'La vibración general y su intensidad están en la pestaña <b>Movimiento</b>.' }
+  ].map((d, i) => i < 2 ? d : W(() => cfg.kbOn, d)),
   snd:[
     H('Sonidos'), TG('snd', 'Sonidos activados', null), R('sndVol', 'Volumen', 0, 100, 5, null, v => v + '%'), SL('sndPack', 'Estilo de sonido', SND_PACKS, null),
     SG('sndPitch', 'Tono de los números', [['digit','Distinto por número'],['same','Igual']], null), { type:'btn', id:'sndTest', label:'Probar el sonido' },
     H('Cuándo suena'), TG('sndKey', 'Al tocar un número', null), TG('sndDel', 'Al borrar', null), TG('sndSave', 'Al guardar en el historial', null),
     TG('sndCap', 'Al cambiar de capacidad o de modo', null), TG('sndHist', 'Al abrir o cerrar el historial', null), TG('sndErr', 'Cuando falta la cantidad', null),
     TG('sndCopy', 'Al copiar', null), TG('sndHide', 'Al ocultar el teclado', null)
-  ],
+  ].map((d, i) => i < 2 ? d : W(() => cfg.snd, d)),
   gen:[
     H('La app'), TX('title', 'Nombre que se ve arriba', 'hdr'), TG('showTitle', 'Mostrar el nombre', 'hdr'), TG('titleUpper', 'Nombre en MAYÚSCULAS', 'hdr'),
     TG('autofocus', 'Abrir con el teclado visible', null),
@@ -1777,6 +1782,7 @@ function tabCont(){
 }
 
 function ctlHTML(d){
+  if(d.w && !d.w()) return '';
   const tt = d.t ? ' data-t="' + d.t + '"' : '';
   switch(d.type){
     case 'head': return '<h4>' + d.label + '</h4>';
@@ -1858,8 +1864,8 @@ function tabCaps(){
     '<label>Paquete de (jabas)<input class="nf" type="text" inputmode="numeric" placeholder="—" data-pi="' + i + '" data-pf="pack" value="' + (p.pack || '') + '"></label>' +
     '<label>Redondear si sobran más de<input class="nf" type="text" inputmode="numeric" placeholder="—" data-pi="' + i + '" data-pf="round" value="' + (p.round || '') + '"></label></div></div>').join('');
   if(cfg.presets.length < 5) h += '<button class="btn" id="presetAdd" style="width:100%;margin-bottom:6px">+ Añadir capacidad</button>';
-  h += '<h4>Botón «Otra»</h4>' + TG_HTML('showOther', 'Mostrar el botón «Otra»', 'caps') +
-    '<div class="ctl" data-t="caps"><span class="cl">Colores de «Otra»</span><input type="color" data-k="otherC1" value="' + cfg.otherC1.toLowerCase() + '"><input type="color" data-k="otherC2" value="' + cfg.otherC2.toLowerCase() + '"></div>';
+  h += '<h4>Botón «Otra»</h4>' + TG_HTML('showOther', 'Mostrar el botón «Otra»', 'caps') + (!cfg.showOther ? '' :
+    '<div class="ctl" data-t="caps"><span class="cl">Colores de «Otra»</span><input type="color" data-k="otherC1" value="' + cfg.otherC1.toLowerCase() + '"><input type="color" data-k="otherC2" value="' + cfg.otherC2.toLowerCase() + '"></div>');
   return h;
 }
 function renderTabs(){
@@ -1922,7 +1928,7 @@ function setKey(k, v, t){
   if(k === 'histMax') S.hist = S.hist.slice(0, v);
   if(k === 'showRev' && !v && S.mode === 'rev'){ S.mode = 'fwd'; clearBuf(); syncInputs(); }
   afterChange(t, k === 'showOther' || k === 'otherC1' || k === 'otherC2');
-  if(k === 'fx') renderBody(true);
+  if(DEP_KEYS.includes(k)) renderBody(true);        // aparecen u ocultan las opciones que dependen de este ajuste
   const out = $('o-' + k);
   if(out){ const d = ALL_DEFS.find(x => x.k === k); if(d && d.f) out.textContent = d.f(v); }
 }
@@ -2039,6 +2045,7 @@ body.addEventListener('click', e => {
     return;
   }
   if(t.closest('#capPin')){ cfg.startCap = S.cap; saveCfg(); toast('Capacidad por default: ' + S.cap); return renderBody(true); }
+  if(t.closest('#vibTest')){ try{ navigator.vibrate && navigator.vibrate([VIB[cfg.hapticsLvl] || 9, 90, VIB[cfg.hapticsLvl] || 9]); }catch(err){} return; }
   if(t.closest('#sndTest')){ snd('key', 3, true); setTimeout(() => snd('save', 0, true), 170); return; }
   if(t.closest('#presetAdd')){
     const pal = [['#FB7185','#EC4899'],['#10B981','#A3E635'],['#F97316','#EC4899'],['#06B6D4','#10B981'],['#D946EF','#8B5CF6']];
