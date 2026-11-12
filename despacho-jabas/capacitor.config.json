@@ -1,0 +1,8 @@
+{
+  "appId": "com.laran.despachojabas",
+  "appName": "Cuadre",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#07070D"
+  }
+}

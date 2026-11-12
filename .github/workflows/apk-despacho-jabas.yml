@@ -1,0 +1,52 @@
+name: APK Despacho de jabas
+
+on:
+  push:
+    paths:
+      - 'despacho-jabas/**'
+      - '.github/workflows/apk-despacho-jabas.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: despacho-jabas
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: despacho-jabas/package-lock.json
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Crear proyecto Android
+        run: |
+          npx cap add android
+          # Vibración al tocar (navigator.vibrate)
+          sed -i 's#<uses-permission android:name="android.permission.INTERNET" />#&\n    <uses-permission android:name="android.permission.VIBRATE" />#' android/app/src/main/AndroidManifest.xml
+          npx cap sync android
+
+      - name: Compilar APK
+        working-directory: despacho-jabas/android
+        run: |
+          # Firma fija para que cada versión nueva se instale encima de la anterior sin borrar datos
+          mkdir -p ~/.android && cp ../debug.keystore ~/.android/debug.keystore
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cp app/build/outputs/apk/debug/app-debug.apk ../despacho-jabas.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: despacho-jabas-apk
+          path: despacho-jabas/despacho-jabas.apk

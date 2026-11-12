@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#07070D">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Cuadre</title>
+<meta name="application-name" content="Cuadre">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAEoElEQVR42u3dP28jRRiA8fnn9ck+5zASQSKgFJCIK6GiQSko06ZEosjHiESXdHyElBS4os01KJ+ABilFFAkXm4vE6VxYhNiemZdiLxaczkYi9s7YeX66IndnaVfjJ7NeJ55RCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAdadzOyFjjDEm4QmISAjhnf9lrdU65YjFGGOMVAtmoOXMPTHGw8PDvb29yWRS/zwkItbasiyPjo5ERGstIkqp6gut9fHx8dbWVgih/nkoxthoNM7Pz09PT6uBot23OeeUUr1eT5Iqy7LqY1rJ9K9lWaY9t16vNx2oXJ613DIaDofee+99/cMUYzTGDAaDWQ8YDAabm5vVw2o+t2pAhsNhdt/2Gb6IrtJJFZC1dtYDrLXOuSQBVQOS9vbi3c8Xl04QEAgIBAQCAggIBAQCAgEBBAQCAgGBgAACAgGBgEBAAAGBgEBAICAQEEBAICAQEAgIICAQEAgIBAQQEAgIBAQCAggIBAQCwqrLbpVWEYn3aj50dcQ5x011YtNDVwufE9A8zWbTGFMURYLZ2BilVKvVmvWAVquVaiuPakCazSYBzZt7lFL9fv/y8nI8Hs9Zr3l5J2Ctvbq6mvWAi4uL8XicZKuDEEJRFP1+fzpQmchutx6t9XSTiiRHrzYVWLlzA1aSzvGcku7JNf9bPOdzAwAuYVzCsh0vLmBgBnrMt/GpnyrJbxLKKCBrbQjh5OTk4OAg7RuJ+/v7/9ozVSlRSiv185ff7LY37pK8kSjytFH8dH31/eWvVuuQze2Yy2ruUUptb2/v7OwkPI05P0XZbT/7fKMbvTe1BzQRaTSbnwxucrtqZPezsNFoFGNMuGfq7e3trAf8FX30/s+QICAv0vF2nN9mzdkFpLU29+o/+vzjGqWNfvOn7hNTyqS9O12VgFZLFIlLe11rtdHZjwABPeBFt5K2c8osawy9n4wlagJa17mnad2LP65/eX1TGBMXeluktQoi33706U57YxSC0ZqA1i4gJc42Xry6/uH335Z0iK/e++B5p3sXAjPQ2l7E2s45bZw2XhZ5f2S0jiKFXoHfWCegh17IqnQWHJDScUV+dYNPZYCAQEAgIBAQQEAgIBAQCAggIBAQCAgEBBAQCAgEBAICCAgEBAICAYGAAAICAYGA8IjwydQH0Uq9WTFooeuGVaspaAJae2OJUWQsC17/oFrrw6/Ch5sJ6H+y2oz85Lutz77ufui0kQUvM6Wjki86749SLKdHQDVdvILE3fbG8053WdNb8F6EBabWuaFRDHFp6/fkuSgiAS22IW31ox6B7AKq1vj13ic5tDEmzJ5RgogX8SL1v/nhRbzEyJ6p/6nT6Tjn6l8keqrbnfmaptsoXNF8Fqyq/9oiooonT12DgOZNAEqps7Ozu7u7yWRS/zrR1VYHZVm+/e/3X/x4ffXx65txjPX3E0U9ce781UulVHaLjQMPuZPIS6o16v85D816GWTT3RZVu73E+/cYAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAff4Gcj/JBfUxbgUAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAEoElEQVR42u3dP28jRRiA8fnn9ck+5zASQSKgFJCIK6GiQSko06ZEosjHiESXdHyElBS4os01KJ+ABilFFAkXm4vE6VxYhNiemZdiLxaczkYi9s7YeX66IndnaVfjJ7NeJ55RCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAdadzOyFjjDEm4QmISAjhnf9lrdU65YjFGGOMVAtmoOXMPTHGw8PDvb29yWRS/zwkItbasiyPjo5ERGstIkqp6gut9fHx8dbWVgih/nkoxthoNM7Pz09PT6uBot23OeeUUr1eT5Iqy7LqY1rJ9K9lWaY9t16vNx2oXJ613DIaDofee+99/cMUYzTGDAaDWQ8YDAabm5vVw2o+t2pAhsNhdt/2Gb6IrtJJFZC1dtYDrLXOuSQBVQOS9vbi3c8Xl04QEAgIBAQCAggIBAQCAgEBBAQCAgGBgAACAgGBgEBAAAGBgEBAICAQEEBAICAQEAgIICAQEAgIBAQQEAgIBAQCAggIBAQCwqrLbpVWEYn3aj50dcQ5x011YtNDVwufE9A8zWbTGFMURYLZ2BilVKvVmvWAVquVaiuPakCazSYBzZt7lFL9fv/y8nI8Hs9Zr3l5J2Ctvbq6mvWAi4uL8XicZKuDEEJRFP1+fzpQmchutx6t9XSTiiRHrzYVWLlzA1aSzvGcku7JNf9bPOdzAwAuYVzCsh0vLmBgBnrMt/GpnyrJbxLKKCBrbQjh5OTk4OAg7RuJ+/v7/9ozVSlRSiv185ff7LY37pK8kSjytFH8dH31/eWvVuuQze2Yy2ruUUptb2/v7OwkPI05P0XZbT/7fKMbvTe1BzQRaTSbnwxucrtqZPezsNFoFGNMuGfq7e3trAf8FX30/s+QICAv0vF2nN9mzdkFpLU29+o/+vzjGqWNfvOn7hNTyqS9O12VgFZLFIlLe11rtdHZjwABPeBFt5K2c8osawy9n4wlagJa17mnad2LP65/eX1TGBMXeluktQoi33706U57YxSC0ZqA1i4gJc42Xry6/uH335Z0iK/e++B5p3sXAjPQ2l7E2s45bZw2XhZ5f2S0jiKFXoHfWCegh17IqnQWHJDScUV+dYNPZYCAQEAgIBAQQEAgIBAQCAggIBAQCAgEBBAQCAgEBAICCAgEBAICAYGAAAICAYGA8IjwydQH0Uq9WTFooeuGVaspaAJae2OJUWQsC17/oFrrw6/Ch5sJ6H+y2oz85Lutz77ufui0kQUvM6Wjki86749SLKdHQDVdvILE3fbG8053WdNb8F6EBabWuaFRDHFp6/fkuSgiAS22IW31ox6B7AKq1vj13ic5tDEmzJ5RgogX8SL1v/nhRbzEyJ6p/6nT6Tjn6l8keqrbnfmaptsoXNF8Fqyq/9oiooonT12DgOZNAEqps7Ozu7u7yWRS/zrR1VYHZVm+/e/3X/x4ffXx65txjPX3E0U9ce781UulVHaLjQMPuZPIS6o16v85D816GWTT3RZVu73E+/cYAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAff4Gcj/JBfUxbgUAAAAASUVORK5CYII=">
+<meta name="apple-mobile-web-app-title" content="Cuadre">
+<style>
+:root{
+  /* Valores iniciales; el JS los reemplaza con los de Personalizar */
+  --bg:#07070D; --bgfill:#07070D; --fg:#fff; --s1:rgba(255,255,255,.06); --s2:rgba(255,255,255,.11); --s3:rgba(255,255,255,.18);
+  --mut:rgba(255,255,255,.62); --faint:rgba(255,255,255,.36);
+  --acc:#fff; --acc2:#D5D9E0; --grad:linear-gradient(135deg,#fff,#D5D9E0); --accfg:#0a0a0a; --accglow:rgba(255,255,255,.3);
+  --minus:#F6465D; --num:#fff; --loosec:#fff; --glowc:#fff; --capc:#fff; --chipc:#34D399;
+  --r:0px; --edge:inset 0 0 0 0 transparent; --dens:1; --tm:1; --ui:1; --numscale:1; --inscale:1; --track:-.03em; --phs:1;
+  --font:'Albert Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --numfont:'Albert Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; --numstyle:normal; --numweight:800;
+  --glow:.35; --gt:5; --gy:40%; --gshape:circle 330px; --gmid:42%;
+  --aurI:.7; --aurS:1; --aurT:20s; --aurA:#1F8A8F; --aurB:#6B2FB3; --aurC:#1B2B5E;
+  --cardbg:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025)); --cardblur:12px;
+  --cardedge:inset 0 0 0 1px rgba(255,255,255,.22); --inedge:inset 0 0 0 1.5px rgba(255,255,255,.6); --capsedge:inset 0 0 0 1px rgba(255,255,255,.32); --capsbg:rgba(255,255,255,.05);
+  --caph:46; --inh:72; --addw:64; --sheetbg:rgba(16,16,26,.55);
+  --texa:.03; --tex:none; --texsize:auto; --vh:100dvh;
+  --ease:cubic-bezier(.2,.8,.2,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+html,body{height:100%;margin:0;color:var(--fg);font-family:var(--font);overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+body{background:var(--bgfill)}
+input,textarea{-webkit-user-select:text;user-select:text}
+::selection{background:rgba(255,255,255,.22);color:inherit}
+button,input,select,textarea{font:inherit;color:inherit;border-radius:var(--r)}
+button{border:0;background:none;cursor:pointer;padding:0}
+input,select,textarea{border:0;outline:0}
+.hidden{display:none!important}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;color:var(--fg);background-image:var(--tex);background-size:var(--texsize);opacity:var(--texa);z-index:1}
+
+/* ====================== FONDO: AURORA + HALO (toda la pantalla) ====================== */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:var(--aurI)}
+.ab{position:absolute;border-radius:50%;will-change:transform}
+.ab.a{width:calc(95vw*var(--aurS));height:calc(95vw*var(--aurS));left:-30vw;top:-10vh;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--aurA) 90%,transparent),transparent);animation:driftA var(--aurT) ease-in-out infinite alternate}
+.ab.b{width:calc(100vw*var(--aurS));height:calc(100vw*var(--aurS));right:-34vw;top:-14vh;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--aurB) 90%,transparent),transparent);animation:driftB calc(var(--aurT)*1.25) ease-in-out infinite alternate}
+.ab.c{width:calc(120vw*var(--aurS));height:calc(80vw*var(--aurS));left:-10vw;bottom:-18vh;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--aurC) 85%,transparent),transparent);animation:driftC calc(var(--aurT)*1.5) ease-in-out infinite alternate}
+.noaurora .aurora{display:none}
+.fxc{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:var(--aurI)}
+.nofxc .fxc{display:none}
+.halo,.halokick{position:fixed;inset:0;pointer-events:none;z-index:0;transform-origin:50% var(--gy)}
+.halo{background:radial-gradient(var(--gshape) at 50% var(--gy),color-mix(in srgb,var(--glowc) 80%,transparent) 0,color-mix(in srgb,var(--glowc) 30%,transparent) var(--gmid),transparent 100%);
+  opacity:calc(var(--glow)*.5);animation:breathe calc(var(--gt)*1s*var(--tm)) ease-in-out infinite}
+.halokick{background:radial-gradient(var(--gshape) at 50% var(--gy),color-mix(in srgb,var(--glowc) 65%,#fff) 0,color-mix(in srgb,var(--glowc) 25%,transparent) 45%,transparent 100%);opacity:0}
+.halokick.go{animation:kick calc(.6s*var(--tm)) ease-out}
+.halokick.go.strong{animation:kickS calc(.85s*var(--tm)) ease-out}
+.nobreathe .halo{animation:none}
+
+/* ====================== APP (solo teléfono) ====================== */
+.app{position:relative;z-index:2;width:100%;height:100vh;height:var(--vh);display:flex;flex-direction:column;
+  gap:calc(10px*var(--dens));padding:calc(env(safe-area-inset-top,0px) + 12px) 0 0;overflow:hidden}
+.app>*{animation:rise calc(.55s*var(--tm)) var(--ease) both}
+.app>:nth-child(2){animation-delay:calc(.06s*var(--tm))}
+.app>:nth-child(3){animation-delay:calc(.12s*var(--tm))}
+.app>:nth-child(4){animation-delay:calc(.2s*var(--tm))}
+
+.rip{position:relative;overflow:hidden}
+.rp{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:currentColor;opacity:.3;pointer-events:none;
+  transform:scale(0);animation:ripple calc(.6s*var(--tm)) ease-out forwards}
+.noripple .rp{display:none}
+
+/* ---- Encabezado ---- */
+.hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin:0 16px}
+.hl{min-width:0}
+.date{font-size:calc(11px*var(--ui));font-weight:600;color:var(--mut);letter-spacing:.02em;margin-bottom:2px;white-space:nowrap}
+.nodate .date{display:none}
+.title{font-weight:800;font-size:calc(23px*var(--ui));letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tupper .title{text-transform:uppercase;letter-spacing:.03em;font-size:calc(19px*var(--ui))}
+.notitle .title{visibility:hidden}
+.nocopytop #copy{display:none}
+.acts{display:flex;gap:6px;flex:none}
+.hb{height:calc(40px*var(--dens));padding:0 14px;background:var(--s1);box-shadow:var(--edge);border-radius:var(--r);color:var(--mut);
+  font-weight:600;font-size:calc(13px*var(--ui));display:inline-grid;place-items:center;transition:background calc(.15s*var(--tm)),transform calc(.12s*var(--tm)) var(--spring)}
+.hb:active{background:var(--s3);transform:scale(.94)}
+.hb.ico{width:calc(40px*var(--dens));padding:0}
+.hb svg{width:20px;height:20px}
+.chiprow{margin:0 16px;display:flex}
+.nochip .chiprow{display:none}
+.statchip{display:inline-flex;align-items:center;gap:9px;height:calc(34px*var(--dens));padding:0 14px 0 12px;
+  background:color-mix(in srgb,var(--chipc) 13%,transparent);color:var(--chipc);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--chipc) 20%,transparent);border-radius:var(--r);
+  font-size:calc(13px*var(--ui));font-weight:700;transition:opacity calc(.25s*var(--tm)),transform calc(.12s*var(--tm)) var(--spring)}
+.statchip:active{transform:scale(.96)}
+.statchip.off{opacity:.6}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--chipc);box-shadow:0 0 9px var(--chipc);flex:none}
+
+/* ====================== TARJETA DE CRISTAL ====================== */
+.card{margin:0 12px;flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:var(--cardbg);box-shadow:var(--cardedge);border-radius:var(--r);overflow:hidden;
+  -webkit-backdrop-filter:blur(var(--cardblur));backdrop-filter:blur(var(--cardblur))}
+.stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 16px 0}
+html[data-pos="top"] .stage{justify-content:flex-start;padding-top:calc(26px*var(--dens))}
+html[data-pos="bottom"] .stage{justify-content:flex-end;padding-bottom:calc(20px*var(--dens))}
+.kicker{font-size:calc(11px*var(--ui));letter-spacing:.34em;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:calc(20px*var(--dens));padding-left:.34em}
+.nokicker .kicker{display:none}
+.big{display:flex;align-items:flex-end;justify-content:center;gap:16px;flex-wrap:wrap;min-height:calc(88px*var(--numscale))}
+.blk{display:flex;flex-direction:column;align-items:center;line-height:1}
+.num{font-family:var(--numfont);font-style:var(--numstyle);font-weight:var(--numweight);letter-spacing:var(--track);
+  font-size:calc(clamp(52px,19vw,92px)*var(--numscale));color:var(--num);font-variant-numeric:tabular-nums}
+html[data-na="pop"] .num,html[data-na="pop"] .op{animation:popIn calc(.3s*var(--tm)) var(--spring)}
+html[data-na="roll"] .num,html[data-na="roll"] .op{animation:rollIn calc(.38s*var(--tm)) var(--ease)}
+.blk.loose .num{color:var(--loosec)}
+.blk.minus .num{color:var(--minus)}
+.blk.dim .num{color:var(--faint)}
+.lbl{font-style:normal;font-size:calc(12px*var(--ui));letter-spacing:.22em;font-weight:700;color:color-mix(in srgb,var(--fg) 82%,transparent);margin-top:calc(14px*var(--dens));text-transform:uppercase;padding-left:.22em}
+.nolbl .lbl{display:none}
+.op{font-family:var(--numfont);font-weight:800;font-size:calc(40px*var(--numscale));margin-bottom:calc(30px*var(--numscale))}
+.nolbl .op{margin-bottom:calc(8px*var(--numscale))}
+.op.loose{color:var(--loosec)} .op.minus{color:var(--minus)}
+.phrase{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:calc(18px*var(--dens));min-height:calc(22px*var(--ui));
+  font-size:calc(15px*var(--ui)*var(--phs));font-weight:600;color:var(--mut)}
+.phrase b{color:var(--fg);font-weight:800}
+.phrase svg{width:1.1em;height:1.1em;flex:none}
+.nophrase .phrase{display:none}
+.meta{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.meta:empty,.nochips .meta{display:none}
+.chip{display:inline-flex;align-items:center;gap:6px;height:calc(26px*var(--ui)*var(--phs));padding:0 10px;background:var(--s2);box-shadow:var(--edge);border-radius:var(--r);
+  font-size:calc(12.5px*var(--ui)*var(--phs));color:var(--mut);font-variant-numeric:tabular-nums}
+.chip b{color:var(--fg);font-weight:700}
+.dot{width:7px;height:7px;display:inline-block}
+
+/* ---- Controles dentro de la tarjeta ---- */
+.ctrls{flex:none;display:flex;flex-direction:column;gap:calc(14px*var(--dens));padding:14px 14px calc(14px*var(--dens))}
+.inrow{display:flex;gap:8px;align-items:stretch}
+.addleft .inrow{flex-direction:row-reverse}
+.inbox{flex:1;position:relative;display:flex;align-items:center;background:var(--s2);box-shadow:var(--inedge);border-radius:var(--r);overflow:hidden;
+  transition:background calc(.2s*var(--tm)),box-shadow calc(.3s*var(--tm))}
+.inbox:focus-within{background:var(--s3);box-shadow:var(--inedge),0 0 24px -4px color-mix(in srgb,var(--glowc) 60%,transparent)}
+.inico{position:absolute;left:16px;top:50%;margin-top:-10px;width:20px;height:20px;color:var(--faint);pointer-events:none}
+.inico svg{width:20px;height:20px;display:block}
+.noinicon .inico{display:none}
+#inMain{width:100%;height:calc(var(--inh)*1px*var(--dens));background:transparent;text-align:center;font-family:var(--numfont);font-weight:800;font-size:calc(38px*var(--inscale));
+  padding:0 52px 0 46px;color:var(--fg);caret-color:var(--fg);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+#inMain::placeholder,.fake{color:var(--faint);font-weight:600;font-size:calc(17px*var(--ui));letter-spacing:0}
+.fake{width:100%;height:calc(var(--inh)*1px*var(--dens));display:grid;place-items:center;text-align:center;padding:0 54px;font-family:var(--numfont);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clr{position:absolute;right:8px;top:50%;margin-top:-20px;width:40px;height:40px;display:grid;place-items:center;background:var(--s3);color:var(--mut);border-radius:var(--r)}
+.clr:active{background:var(--s2)}
+.revrow{flex:1;display:flex;align-items:flex-end;gap:6px}
+.rf{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.rf label{font-size:calc(10px*var(--ui));letter-spacing:.16em;color:var(--mut);text-transform:uppercase;text-align:center;font-weight:700}
+.rf input{width:100%;height:calc(var(--inh)*1px*var(--dens)*.9);background:var(--s2);box-shadow:var(--inedge);border-radius:var(--r);text-align:center;font-family:var(--numfont);font-weight:800;
+  font-size:calc(30px*var(--inscale));padding:0 4px;color:var(--fg);caret-color:var(--fg);font-variant-numeric:tabular-nums}
+.rf input:focus{background:var(--s3)}
+.rplus{font-size:26px;color:var(--faint);padding-bottom:16px}
+.add{width:calc(var(--addw)*1px);flex:none;display:grid;place-items:center;background:var(--grad);color:var(--accfg);border-radius:var(--r);
+  font-size:calc(38px*var(--ui));font-weight:700;line-height:1;box-shadow:0 0 20px var(--accglow);transition:transform calc(.12s*var(--tm)) var(--spring)}
+.add:active{transform:scale(.9)}
+.add.pulse{animation:pop calc(.36s*var(--tm)) var(--spring)}
+.add.shake{animation:shake calc(.28s*var(--tm))}
+
+.capsbox{align-self:center;max-width:100%;padding:4px;background:var(--capsbg);box-shadow:var(--capsedge);border-radius:var(--r)}
+.caps{display:flex;gap:4px;align-items:stretch}
+.cap{flex:none;min-width:calc(62px*var(--ui));padding:0 10px;height:calc(var(--caph)*1px*var(--dens));display:grid;place-items:center;background:transparent;border-radius:var(--r);
+  color:var(--mut);font-weight:800;font-size:calc(18px*var(--ui));font-variant-numeric:tabular-nums;transition:background calc(.2s*var(--tm)),transform calc(.15s*var(--tm)) var(--spring)}
+.cap:active{transform:scale(.93)}
+.cap.on{background:linear-gradient(135deg,var(--c1),var(--c2));color:var(--on);box-shadow:0 0 16px var(--cg),0 0 26px var(--cg2);animation:pop calc(.36s*var(--tm)) var(--spring)}
+.cap.other{position:relative;padding:0;width:calc(66px*var(--ui))}
+.cap.other input{width:100%;height:100%;background:transparent;text-align:center;color:inherit;font-weight:700;font-size:inherit;padding:0 6px;min-width:0}
+.cap.other input::placeholder,.cap.other span{color:var(--faint);font-weight:700;font-size:calc(14px*var(--ui))}
+.cap.other.on input::placeholder{color:var(--on)}
+.revbtn{align-self:center;height:calc(40px*var(--dens));padding:0 16px;display:inline-flex;align-items:center;gap:8px;color:var(--mut);font-weight:700;font-size:calc(14px*var(--ui));
+  border-radius:var(--r);transition:background calc(.2s*var(--tm)),color calc(.2s*var(--tm)),transform calc(.12s*var(--tm)) var(--spring)}
+.revbtn svg{width:16px;height:16px;flex:none}
+.revbtn:active{transform:scale(.94)}
+.revbtn.on{background:var(--s3);color:var(--fg)}
+.norev .revbtn{display:none}
+.keys{align-self:center;display:none;align-items:center;gap:14px;font-size:calc(12px*var(--ui));color:var(--faint)}
+.showkeys .keys{display:flex}
+.keys kbd{font:inherit;font-weight:700;color:var(--mut);padding:3px 8px;background:var(--s2);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--fg) 18%,transparent);border-radius:var(--r);margin-right:6px}
+
+/* ====================== HOJA DEL HISTORIAL ====================== */
+.sheet{flex:none;position:relative;margin:0 12px;background:var(--sheetbg);border-radius:var(--r);box-shadow:var(--edge);padding:0 12px;display:flex;flex-direction:column}
+.dz{touch-action:none;margin:0 -12px;padding:0 12px}
+.grab{height:26px;display:flex;align-items:center;justify-content:center;cursor:grab}
+.grab i{display:block;width:44px;height:4px;background:var(--mut);transition:width calc(.25s*var(--tm)) var(--ease),background calc(.2s*var(--tm))}
+.dz.drag .grab i{width:64px;background:var(--fg)}
+.nograb .grab{display:none}
+.hbar{display:flex;align-items:center;gap:8px;min-height:calc(34px*var(--dens));padding-bottom:6px}
+.sheet[data-hs="closed"] .hbar{display:none}
+.hlabel{display:inline-flex;align-items:center;gap:8px;font-size:calc(13px*var(--ui));font-weight:700;color:color-mix(in srgb,var(--fg) 84%,transparent)}
+.spc{flex:1}
+.hhint{display:inline-flex;align-items:center;gap:6px;font-size:calc(12px*var(--ui));color:var(--mut)}
+.hhint svg{width:14px;height:14px}
+.nohint .hhint{display:none}
+.hbtn{height:calc(30px*var(--dens));padding:0 10px;display:inline-flex;align-items:center;gap:7px;background:var(--s1);box-shadow:var(--edge);border-radius:var(--r);
+  color:var(--mut);font-size:calc(12.5px*var(--ui));font-weight:700;transition:transform calc(.12s*var(--tm)) var(--spring)}
+.hbtn:active{transform:scale(.94)}
+.hbadge{min-width:18px;height:18px;padding:0 5px;background:var(--fg);color:var(--bg);font-size:11px;font-weight:800;display:grid;place-items:center;border-radius:var(--r)}
+.hbadge.bump{animation:pop calc(.4s*var(--tm)) var(--spring)}
+.histwrap{height:0;overflow:hidden;transition:height calc(.42s*var(--tm)) var(--ease)}
+.hist{height:100%;display:flex;flex-direction:column;gap:calc(6px*var(--dens));overflow-y:auto;scrollbar-width:none;padding-bottom:8px}
+.hist::-webkit-scrollbar{display:none}
+.sheet:not([data-hs="open"]) .hist{overflow:hidden}
+.hempty{text-align:center;color:var(--faint);font-size:calc(13px*var(--ui));padding:12px 0}
+.row{position:relative;display:grid;grid-template-columns:1fr auto 30px;align-items:center;gap:8px;min-height:calc(54px*var(--dens));
+  padding:calc(6px*var(--dens)) 2px calc(6px*var(--dens)) 16px;background:var(--s1);box-shadow:var(--edge);border-radius:var(--r);cursor:pointer;flex:none;
+  transition:background calc(.15s*var(--tm)),transform calc(.12s*var(--tm)) var(--spring)}
+.row:active{transform:scale(.985)}
+.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+html[data-row="slide"] .row.new{animation:slideL calc(.38s*var(--tm)) var(--ease)}
+html[data-row="fade"] .row.new{animation:fadeIn calc(.35s*var(--tm)) ease-out}
+html[data-row="pop"] .row.new{animation:popIn calc(.4s*var(--tm)) var(--spring)}
+.q{display:flex;align-items:baseline;gap:6px;min-width:0;white-space:nowrap;font-family:var(--numfont);font-weight:700;font-size:calc(24px*var(--ui));letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.q small{font-family:var(--font);font-size:calc(12px*var(--ui));color:var(--mut);font-weight:600;letter-spacing:0}
+.q .pls{color:var(--faint);font-size:calc(18px*var(--ui))}
+.notime .tm{display:none}
+.r{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.r b{font-family:var(--numfont);font-style:var(--numstyle);font-weight:var(--numweight);font-size:calc(24px*var(--ui));letter-spacing:var(--track)}
+.r u{text-decoration:none;font-size:calc(12px*var(--ui));color:var(--mut);font-weight:600;margin:0 2px 0 3px}
+.r .ls,.r .ms{font-family:var(--numfont);font-weight:700;font-size:calc(19px*var(--ui));margin-left:5px}
+.r .ls{color:var(--loosec)} .r .ms{color:var(--minus)}
+.x{width:30px;height:30px;display:grid;place-items:center;color:var(--faint);font-size:calc(22px*var(--ui));line-height:1}
+.x:active{background:var(--s3)}
+html[data-hs="compacta"] .hist .row{min-height:calc(38px*var(--dens))}
+html[data-hs="compacta"] .hist .q{font-size:calc(18px*var(--ui))}
+html[data-hs="compacta"] .hist .r b{font-size:calc(18px*var(--ui))}
+html[data-hs="compacta"] .hist .r .ls,html[data-hs="compacta"] .hist .r .ms{font-size:calc(15px*var(--ui))}
+
+/* compacto: teclado abierto */
+.compact .date,.compact .keys,.compact .kicker,.compact .hhint{display:none}
+.tiny .meta{display:none}
+.compact .big{min-height:calc(56px*var(--numscale));gap:12px}
+.compact .num{font-size:calc(clamp(38px,12vw,54px)*var(--numscale))}
+.compact .op{font-size:calc(28px*var(--numscale));margin-bottom:calc(12px*var(--numscale))}
+.compact .lbl{margin-top:4px}
+.compact .phrase{margin-top:6px}
+.compact .ctrls{padding-top:6px;gap:8px}
+.compact .revbtn{height:30px}
+.compact .grab{height:14px}
+
+/* ---- Aviso ---- */
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 56px);transform:translate(-50%,-8px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:10px;
+  padding:9px 8px 9px 16px;background-color:rgba(30,30,36,.95);color:#fff;border-radius:var(--r);
+  font-size:13.5px;white-space:nowrap;transition:opacity .22s,transform .3s var(--spring);z-index:80}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{color:#fff;font-weight:800;padding:4px 10px;background:rgba(255,255,255,.14);border-radius:var(--r)}
+
+/* ====================== PERSONALIZAR ====================== */
+.cust{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;background:#000;color:#fff;
+  --bg:#000;--bgfill:#000;--fg:#fff;--s1:rgba(255,255,255,.06);--s2:rgba(255,255,255,.1);--s3:rgba(255,255,255,.17);--mut:rgba(255,255,255,.6);--faint:rgba(255,255,255,.34);
+  --acc:#fff;--acc2:#fff;--grad:linear-gradient(135deg,#fff,#fff);--accfg:#000;--accglow:rgba(255,255,255,.2);--r:0px;--edge:inset 0 0 0 0 transparent;
+  --ui:1;--dens:1;--tm:1;--font:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-family:var(--font);
+  height:100vh;height:var(--vh);transform:translateY(100%);visibility:hidden;transition:transform .4s var(--ease),visibility 0s .4s}
+.cust.open{transform:none;visibility:visible;transition:transform .4s var(--ease),visibility 0s}
+.cust-top{flex:none;padding-top:env(safe-area-inset-top,0px)}
+.cust-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 8px}
+.cust-h h2{margin:0;font-size:20px;font-weight:800}
+.cust-h span{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.cust-btns{display:flex;gap:6px}
+.done{height:38px;padding:0 16px;background:#fff;color:#000;font-weight:800;font-size:13.5px;border-radius:0}
+.done.ghost{background:var(--s3);color:#fff}
+.demo-wrap{position:relative;overflow:hidden;display:flex;justify-content:center;margin:0 14px}
+.demo{position:absolute;left:0;right:0;top:0;display:flex;justify-content:center;pointer-events:none;background:var(--bgfill);color:var(--fg);font-family:var(--font)}
+.demo-in{flex:none;width:390px;padding:12px 0 12px;display:flex;flex-direction:column;gap:calc(10px*var(--dens));transform:scale(var(--ds,.6));transform-origin:top center;position:relative;overflow:hidden}
+.demo-in::before{content:"";position:absolute;inset:0;pointer-events:none;color:var(--fg);background-image:var(--tex);background-size:var(--texsize);opacity:var(--texa);z-index:1}
+.demo-in>*:not(.halo):not(.halokick):not(.aurora){position:relative;z-index:2}
+.demo-in .aurora{position:absolute;inset:0;z-index:0;width:390px;height:100%}
+.demo-in .halo,.demo-in .halokick{position:absolute;z-index:0}
+.demo-in .halo:not(.flash){animation:none}
+.demo-in .ab{animation:none}
+.demo-in .halokick{display:none}
+.demo-in .card{flex:none}
+.demo-in .stage{flex:none;min-height:calc(190px*var(--dens));padding-top:18px;padding-bottom:12px}
+.demo-in .cap.on{animation:none}
+.demo-in .num,.demo-in .op{animation:none!important}
+.demo-in .sheet{margin-bottom:0}
+.flash{animation:flashA .8s ease-out}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:10px 14px 0;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;height:38px;padding:0 14px;background:var(--s1);color:var(--mut);font-weight:700;font-size:13.5px;border-radius:0;transition:background .2s,color .2s}
+.tabs button.on{background:#fff;color:#000}
+.cust-body{flex:1;min-height:0;overflow-y:auto;padding:12px 14px calc(env(safe-area-inset-bottom,0px) + 24px)}
+.cust-body.swap{animation:tabIn .3s var(--ease)}
+.cust-body h4{margin:18px 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.cust-body h4:first-child{margin-top:4px}
+.help{margin:0 0 10px;font-size:13px;line-height:1.45;color:var(--mut)}
+.help b{color:#fff}
+.ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--s1);padding:12px;margin-bottom:6px}
+.ctl .cl{flex:1;min-width:0;font-size:14px;font-weight:600}
+.ctl output{font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.ctl.col{display:block}
+.ctl.col .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;margin:0;display:block}
+input[type=range]::-webkit-slider-runnable-track{height:4px;background:var(--s3)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:#fff;margin-top:-8px;border-radius:0}
+input[type=range]::-moz-range-track{height:4px;background:var(--s3)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;background:#fff;border:0;border-radius:0}
+input[type=color]{-webkit-appearance:none;appearance:none;width:44px;height:34px;padding:0;background:none;border:0;border-radius:0;cursor:pointer}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+input[type=color]::-webkit-color-swatch{border:0;border-radius:0}
+input[type=color]::-moz-color-swatch{border:0;border-radius:0}
+.hex,.txt,.nf{background:var(--s2);height:36px;padding:0 10px;color:#fff;font-size:14px;border-radius:0;min-width:0}
+.hex{width:92px;text-transform:uppercase;font-variant-numeric:tabular-nums}
+.txt{width:100%}
+.nf{width:100%;text-align:center;font-variant-numeric:tabular-nums}
+.hex:focus,.txt:focus,.nf:focus,select:focus,textarea:focus{background:var(--s3)}
+select{background:var(--s2);color:#fff;height:38px;width:100%;padding:0 10px;font-size:14px;border-radius:0;-webkit-appearance:none;appearance:none}
+select option{background:#111;color:#fff}
+.sw{position:relative;width:48px;height:26px;background:var(--s3);flex:none;transition:background .2s}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;width:100%;height:100%;cursor:pointer}
+.sw i{position:absolute;top:3px;left:3px;width:20px;height:20px;background:var(--mut);transition:transform .25s var(--spring),background .2s;pointer-events:none}
+.sw input:checked~i{transform:translateX(22px);background:#000}
+.sw:has(input:checked){background:#fff}
+.seg{display:flex;gap:2px;width:100%}
+.seg button{flex:1;height:36px;background:var(--s2);color:var(--mut);font-size:13px;font-weight:600;border-radius:0;padding:0 4px;transition:background .2s,color .2s}
+.seg button.on{background:#fff;color:#000}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:6px}
+.tile{position:relative;height:54px;color:#000;font-size:11px;font-weight:700;display:grid;place-items:end start;padding:5px 6px;border-radius:0;transition:transform .25s var(--spring)}
+.tile:active{transform:scale(.94)}
+.tile.on{transform:scale(1.07);z-index:1}
+.tile.on::after{content:"✓";position:absolute;right:6px;top:3px;font-size:14px;font-weight:800}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.pst{position:relative;height:96px;text-align:left;padding:10px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;border-radius:0;transition:transform .2s var(--spring)}
+.pst:active{transform:scale(.96)}
+.pst b{font-size:34px;line-height:1;font-weight:800}
+.pst b i{font-style:normal;font-size:20px;margin-left:5px}
+.pst em{font-style:normal;font-size:12px;font-weight:700}
+.pst s{position:absolute;left:0;right:0;bottom:0;height:4px}
+.save{display:flex;gap:6px;margin-bottom:8px}
+.btn{height:40px;padding:0 16px;background:var(--s2);color:#fff;font-weight:700;font-size:14px;border-radius:0;flex:none;transition:filter .15s,transform .15s var(--spring)}
+.btn.pri{background:#fff;color:#000}
+.btn.danger{background:rgba(246,70,93,.2);color:#ff7a8a}
+.btn:active{filter:brightness(.85);transform:scale(.97)}
+.btn.sq{width:40px;padding:0;display:grid;place-items:center}
+.btn.sq svg{width:18px;height:18px}
+.btn.starred{background:#fff;color:#000}
+.trow{display:flex;align-items:center;gap:8px;background:var(--s1);padding:8px;margin-bottom:6px;animation:rise .35s var(--ease) both}
+.tpv{flex:none;width:52px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;line-height:1}
+.tpv b{font-size:22px}
+.tpv i{font-style:normal;font-size:12px;font-weight:800;margin-top:2px}
+.tpv s{position:absolute;left:0;right:0;bottom:0;height:3px}
+.tmeta{flex:1;min-width:0}
+.tmeta .tn{font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tmeta .ts{font-size:11.5px;color:var(--mut);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .btn{height:36px;padding:0 12px}
+.trow .btn.sq{width:36px;padding:0}
+.empty{color:var(--faint);font-size:13px;padding:6px 0 10px}
+textarea{width:100%;min-height:64px;background:var(--s2);color:#fff;padding:10px;font-size:12px;margin-bottom:6px;resize:vertical;border-radius:0}
+.pcard{background:var(--s1);padding:12px;margin-bottom:8px}
+.pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pc-pill{min-width:64px;height:36px;display:grid;place-items:center;font-weight:800;font-size:17px;padding:0 10px}
+.pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pc-grid label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--mut);letter-spacing:.04em}
+.pc-grid .cc{display:flex;gap:6px;align-items:center}
+.pc-grid .cc input[type=color]{width:100%}
+
+/* ====================== TECLADO PROPIO (copia del teclado numérico de Gboard) ====================== */
+.kbwrap{flex:none;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);transition:padding-bottom calc(.34s*var(--tm)) var(--ease),background calc(.3s*var(--tm))}
+.kbo .kbwrap{background:var(--kbbgc);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-backdrop-filter:blur(var(--kbblur));backdrop-filter:blur(var(--kbblur))}
+.nokb .kbwrap{display:none}
+.kb{display:grid;grid-template-rows:0fr;transition:grid-template-rows calc(.34s*var(--tm)) var(--ease);touch-action:manipulation}
+.kbo .kb{grid-template-rows:1fr}
+.kbin{min-height:0;overflow:hidden;opacity:0;transform:translateY(30%);transition:opacity calc(.28s*var(--tm)) ease,transform calc(.34s*var(--tm)) var(--ease)}
+.kbo .kbin{opacity:1;transform:none}
+html[data-ka="fade"] .kb{transition:none}
+html[data-ka="fade"] .kbin{transform:none}
+html[data-ka="none"] .kb,html[data-ka="none"] .kbin{transition:none;transform:none}
+.kbgrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:calc(var(--kbrow)*1px);padding:6px 8px 0}
+.kk{position:relative;display:grid;place-items:center;color:var(--kbfg);background:var(--kbkey);border-radius:var(--kbr);font-family:'Google Sans',Roboto,system-ui,sans-serif;
+  font-size:calc(var(--kbfs)*1px);font-weight:400;line-height:1;margin:2px;-webkit-user-select:none;user-select:none}
+.kk svg{width:calc(var(--kbfs)*1px*.95);height:calc(var(--kbfs)*1px*.95)}
+.kk::before{content:"";position:absolute;left:50%;top:50%;width:calc(var(--kbrow)*1px*.84);height:calc(var(--kbrow)*1px*.84);margin:calc(var(--kbrow)*-.42px) 0 0 calc(var(--kbrow)*-.42px);
+  border-radius:50%;background:rgba(255,255,255,.17);opacity:0;transform:scale(.55);transition:opacity .14s,transform .18s var(--ease);pointer-events:none}
+.kk.pr::before{opacity:1;transform:scale(1)}
+html[data-kp="square"] .kk::before{left:0;top:0;width:100%;height:100%;margin:0;border-radius:var(--kbr)}
+html[data-kp="none"] .kk::before{display:none}
+.kk.act::before{display:none}
+.kk.act{background:transparent}
+.kk.act .pill{display:grid;place-items:center;width:78%;height:calc(var(--kbrow)*1px*.74);background:var(--kbact);color:var(--kbacticon);border-radius:var(--kbar);transition:transform .12s var(--spring)}
+.kk.act.pr .pill{transform:scale(.92)}
+.kbfoot{display:grid;grid-template-columns:repeat(4,1fr);height:44px;padding:0 8px}
+.kbfoot .hide{grid-column:4;height:44px;margin:0}
+.kk.hide svg{width:26px;height:26px}
+.nokbhide .kbfoot{display:none}
+.sig{align-self:center;font-size:11px;font-style:italic;color:#8E8E96;letter-spacing:.01em;-webkit-user-select:none;user-select:none;pointer-events:none;margin-top:-6px}
+.sheet[data-hs="closed"]{visibility:hidden;margin-top:calc(-10px*var(--dens));transition:visibility 0s calc(.42s*var(--tm)),margin-top calc(.42s*var(--tm)) var(--ease)}
+
+/* ====================== RELLENO por elemento (Automático = el de los bloques) ====================== */
+.inbox,.rf input{background:var(--fill-inp,var(--s2))}
+.inbox:focus-within,.rf input:focus{background:var(--fill-inp,var(--s3))}
+.capsbox{background:var(--fill-caps,var(--capsbg))}
+.cap.on{background:var(--fill-sel,linear-gradient(135deg,var(--c1),var(--c2)))}
+.add{background:var(--fill-add,var(--grad))}
+.statchip{background:var(--fill-chip,color-mix(in srgb,var(--chipc) 13%,transparent))}
+.chip{background:var(--fill-meta,var(--s2))}
+.hb,.hbtn{background:var(--fill-btn,var(--s1))}
+.hb:active{background:var(--s3)}
+.row{background:var(--fill-row,var(--s1))}
+.demo-in .fxc{position:absolute;inset:auto;left:0;top:0;width:390px;height:100%;z-index:0}
+.demo-in .kbwrap{background:var(--kbbgc);padding-bottom:0}
+.demo-in .kb{grid-template-rows:1fr}
+.demo-in .kbin{opacity:1;transform:none}
+
+/* ====================== CONTORNOS por elemento ====================== */
+.card{outline:var(--ow-card) var(--os-card) var(--oc-card);outline-offset:calc(var(--ow-card)*-1);border-radius:var(--rd-card)}
+.inbox,.rf input{outline:var(--ow-inp) var(--os-inp) var(--oc-inp);outline-offset:calc(var(--ow-inp)*-1);border-radius:var(--rd-inp)}
+.capsbox{outline:var(--ow-caps) var(--os-caps) var(--oc-caps);outline-offset:calc(var(--ow-caps)*-1);border-radius:var(--rd-caps)}
+.cap{border-radius:var(--rd-sel)}
+.cap.on{outline:var(--ow-sel) var(--os-sel) var(--oc-sel);outline-offset:calc(var(--ow-sel)*-1);box-shadow:var(--bsh-sel),0 0 16px var(--cg),0 0 26px var(--cg2)}
+.add{outline:var(--ow-add) var(--os-add) var(--oc-add);outline-offset:calc(var(--ow-add)*-1);border-radius:var(--rd-add);box-shadow:var(--bsh-add),0 0 20px var(--accglow)}
+.statchip{box-shadow:var(--bsh-chip);outline:var(--ow-chip) var(--os-chip) var(--oc-chip);outline-offset:calc(var(--ow-chip)*-1);border-radius:var(--rd-chip)}
+.chip{box-shadow:var(--bsh-meta);outline:var(--ow-meta) var(--os-meta) var(--oc-meta);outline-offset:calc(var(--ow-meta)*-1);border-radius:var(--rd-meta)}
+.hb,.hbtn{box-shadow:var(--bsh-btn);outline:var(--ow-btn) var(--os-btn) var(--oc-btn);outline-offset:calc(var(--ow-btn)*-1);border-radius:var(--rd-btn)}
+.row{box-shadow:var(--bsh-row);outline:var(--ow-row) var(--os-row) var(--oc-row);outline-offset:calc(var(--ow-row)*-1);border-radius:var(--rd-row)}
+.sheet{box-shadow:var(--bsh-sheet);outline:var(--ow-sheet) var(--os-sheet) var(--oc-sheet);outline-offset:calc(var(--ow-sheet)*-1);border-radius:var(--rd-sheet)}
+.chips2{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.oel{height:34px;padding:0 12px;background:var(--s2);color:var(--mut);font-weight:700;font-size:13px;border-radius:0;transition:background .2s,color .2s}
+.oel.on{background:#fff;color:#000}
+
+/* ====================== ANIMACIONES ====================== */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes popIn{0%{opacity:0;transform:scale(.6)}70%{transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+@keyframes rollIn{from{opacity:0;transform:translateY(42%);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes pop{0%{transform:scale(.88)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes slideL{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes breathe{0%,100%{opacity:calc(var(--glow)*.32);transform:scale(1)}50%{opacity:calc(var(--glow)*.6);transform:scale(1.08)}}
+@keyframes kick{0%{opacity:0;transform:scale(.7)}30%{opacity:.5}100%{opacity:0;transform:scale(1.25)}}
+@keyframes kickS{0%{opacity:0;transform:scale(.6)}25%{opacity:.9}100%{opacity:0;transform:scale(1.4)}}
+@keyframes driftA{to{transform:translate(18vw,10vh) scale(1.2)}}
+@keyframes driftB{to{transform:translate(-16vw,14vh) scale(1.15)}}
+@keyframes driftC{to{transform:translate(14vw,-8vh) scale(1.1)}}
+@keyframes ripple{to{transform:scale(14);opacity:0}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes flashA{0%{filter:brightness(2.4) saturate(1.6)}100%{filter:none}}
+.noanim *,.noanim *::before,.noanim *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){.app>*{animation:none}.halo,.ab{animation:none}}
+</style>
+</head>
+<body>
+<div class="aurora" id="aurora"><i class="ab a"></i><i class="ab b"></i><i class="ab c"></i></div>
+<canvas class="fxc" id="fxc"></canvas>
+<div class="halo" id="halo"></div>
+<div class="halokick" id="halokick"></div>
+
+<div class="app" id="app">
+  <header class="hdr">
+    <div class="hl">
+      <div class="date" id="dateLine"></div>
+      <div class="title" id="appTitle">Cuadre</div>
+    </div>
+    <div class="acts">
+      <button class="hb rip keep" id="copy">Copiar</button>
+      <button class="hb ico rip" id="gear" aria-label="Personalizar"></button>
+    </div>
+  </header>
+
+  <div class="chiprow">
+    <button class="statchip keep" id="statChip" aria-expanded="true" aria-controls="histwrap"><i class="sdot"></i><span id="statTxt">Historial vacío</span></button>
+  </div>
+
+  <section class="card" id="card" aria-label="Calculadora">
+    <div class="stage" id="stage">
+      <div class="kicker" id="kicker">TOTAL</div>
+      <div class="big" id="big"></div>
+      <div class="phrase" id="phrase"></div>
+      <div class="meta" id="meta"></div>
+    </div>
+    <div class="ctrls">
+      <div class="inrow">
+        <div class="inbox" id="fwdBox">
+          <span class="inico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span>
+          <input type="text" id="inMain" inputmode="numeric" enterkeyhint="done" placeholder="Cantidad de jabas" aria-label="Cantidad de jabas" autocomplete="off" maxlength="8">
+          <button class="clr keep hidden" id="clr" aria-label="Borrar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="revrow hidden" id="revBox">
+          <div class="rf"><label for="inP">Pallets</label><input type="text" id="inP" inputmode="numeric" enterkeyhint="next" placeholder="0" autocomplete="off"></div>
+          <span class="rplus">+</span>
+          <div class="rf"><label for="inS">Jabas sueltas</label><input type="text" id="inS" inputmode="numeric" enterkeyhint="done" placeholder="0" autocomplete="off"></div>
+        </div>
+        <button class="add rip keep" id="add" aria-label="Guardar en el historial">+</button>
+      </div>
+      <div class="capsbox"><div class="caps" id="caps" role="group" aria-label="Capacidad por pallet"></div></div>
+      <button class="revbtn rip keep" id="modeBtn" title="Pallets + jabas → total"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V4M3 8l4-4 4 4M17 8v12M21 16l-4 4-4-4"/></svg><span>Reverso</span></button>
+      <div class="sig" id="sig">By: J. Chávez</div>
+      <div class="keys" id="keys"><span><kbd>Enter</kbd>guardar</span><span><kbd>Esc</kbd>borrar</span></div>
+    </div>
+  </section>
+
+  <div class="sheet" id="sheet" data-hs="peek">
+    <div class="dz" id="dz">
+      <div class="grab" aria-hidden="true"><i></i></div>
+      <div class="hbar" id="hbar">
+        <span class="hlabel">Historial<span class="hbadge" id="hcount">0</span></span>
+        <span class="hhint hidden" id="hhint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>desliza para ver todo</span>
+        <span class="spc"></span>
+        <button class="hbtn rip keep hidden" id="histCopy">Copiar</button>
+        <button class="hbtn rip keep hidden" id="histClear">Limpiar</button>
+      </div>
+    </div>
+    <div class="histwrap" id="histwrap"><div class="hist" id="hist"></div></div>
+  </div>
+
+  <div class="kbwrap" id="kbwrap"><div class="kb" id="kb" aria-label="Teclado numérico"><div class="kbin" id="kbin"></div></div></div>
+</div>
+
+<div class="toast" id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
+
+<div class="cust" id="cust" aria-hidden="true">
+  <div class="cust-top">
+    <div class="cust-h">
+      <div><h2>Personalizar</h2><span>Se ve en vivo en el demo</span></div>
+      <div class="cust-btns"><button class="done ghost" id="saveQuick">Guardar tema</button><button class="done" id="custClose">Listo</button></div>
+    </div>
+    <div class="demo-wrap" id="demoWrap"><div class="demo" id="demo"><div class="demo-in" id="demoIn"></div></div></div>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </div>
+  <div class="cust-body" id="custBody"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const clone = o => JSON.parse(JSON.stringify(o));
+const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const plural = (n, a, b) => n === 1 ? a : b;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isHex = s => /^#[0-9a-f]{6}$/i.test(s);
+function hex2rgb(h){ const n = parseInt(h.replace('#',''), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+const rgba = (h, a) => { const c = hex2rgb(h); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; };
+function lum(h){ const c = hex2rgb(h).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; }
+const onColor = h => lum(h) > .45 ? '#0A0A0A' : '#FFFFFF';
+const SYS = 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+const fontStack = f => f === 'Sistema' ? SYS : "'" + f + "'," + SYS;
+const hm = t => { const d = new Date(t); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+const vpH = () => window.visualViewport ? window.visualViewport.height : window.innerHeight;
+const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+const ICONS = {
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  pkg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+  swap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M3 8l4-4 4 4M17 8v12M21 16l-4 4-4-4"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
+  starO:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+};
+
+/* ============================================================
+   CONFIGURACIÓN (Personalizar)
+   El tema inicial copia la interfaz de PalletFlow (captura).
+   ============================================================ */
+const CFG_KEY = 'despacho-cfg-v4', STATE_KEY = 'despacho-jabas-v3', THEMES_KEY = 'despacho-temas-v1', DEFSTYLE_KEY = 'despacho-tema-inicial-v1';
+
+const DEF = {
+  /* ---- visual (entra en los temas) ---- */
+  accent:'#FFFFFF', accent2:'#D5D9E0', fg:'#FFFFFF', numColor:'#FFFFFF', looseColor:'#FFFFFF', minus:'#F6465D',
+  followCapLoose:true, surf:6, blockColor:'#FFFFFF',
+  bg:'#07070D', bgGrad:false, bg2:'#0B0B14', bgAngle:180,
+  fx:'aurora', fxQ:'mid', auroraA:'#1F8A8F', auroraB:'#6B2FB3', auroraC:'#1B2B5E', auroraI:70, auroraS:100, auroraSp:4,
+  glow:35, glowSize:70, glowBlur:12, glowSpeed:5, glowReact:true, followCapGlow:false, glowColor:'#FFFFFF', glowShape:'circle', glowAnchor:'result',
+  texture:'none', texa:3,
+  font:'Albert Sans', numFont:'Albert Sans', numItalic:false, numWeight:800, numScale:100, inScale:100, uiScale:100, track:-3, phraseScale:100,
+  radius:0, cardColor:'#FFFFFF', cardA:5, cardBlur:12,
+  density:100, capH:46, inH:72, addW:64, addSide:'right', addIcon:'+', showRev:true, showCopyTop:true, showInIcon:true,
+  showDate:true, showChip:true, chipColor:'#34D399', showKicker:true, showKeys:false,
+  kbRow:58, kbFs:28, kbBg:'#000000', kbA:100, kbBlur:0, kbFg:'#FFFFFF', kbKeyBg:'#FFFFFF', kbKeyA:0, kbAct:'#7FD1C7', kbActIcon:'#FFFFFF', kbR:14, kbActR:28, kbPress:'circle', kbHide:true, kbAnim:'slide',
+  speed:100, numAnim:'pop', breathe:true, rowAnim:'slide', ripple:true,
+  stagePos:'center', showLabels:true, showPhrase:true, showChips:true,
+  sheetColor:'#10101A', sheetA:55, peekRows:1.6, histH:40, showHint:true,
+  histStyle:'lista', histTime:true, showTitle:true, titleUpper:true,
+  /* ---- no visual ---- */
+  haptics:true, hapticsLvl:'mid', autofocus:true, cutoff:4, title:'Cuadre', shareTitle:'Despacho de jabas vacías', phText:'Cantidad de jabas', kickerText:'TOTAL',
+  histStart:'closed', histMax:50, dragSheet:false,
+  kbOn:true, kbHapt:true, kbk_dash:'none', kbk_space:'none', kbk_comma:'none', kbk_dot:'none',
+  snd:true, sndVol:60, sndPack:'soft', sndPitch:'digit', sndKey:true, sndDel:true, sndSave:true, sndCap:true, sndHist:true, sndErr:true, sndCopy:true, sndHide:false,
+  startCap:72, showOther:true, otherC1:'#C4B5FD', otherC2:'#7C3AED',
+  /* capacidades: pack = jabas por paquete · round = si sobran más de X, se muestra "N+1 − faltantes" */
+  presets:[
+    { cap:72, c1:'#FFFFFF', c2:'#CBD0D7', pack:3, round:46 },
+    { cap:42, c1:'#F5D90A', c2:'#B8860B', pack:0, round:0 },
+    { cap:49, c1:'#3B82F6', c2:'#BFDBFE', pack:0, round:0 }
+  ]
+};
+const STYLE_KEYS = ['accent','accent2','fg','numColor','looseColor','minus','followCapLoose','surf','blockColor','bg','bgGrad','bg2','bgAngle',
+  'fx','fxQ','auroraA','auroraB','auroraC','auroraI','auroraS','auroraSp',
+  'glow','glowSize','glowBlur','glowSpeed','glowReact','followCapGlow','glowColor','glowShape','glowAnchor','texture','texa',
+  'font','numFont','numItalic','numWeight','numScale','inScale','uiScale','track','phraseScale',
+  'radius','cardColor','cardA','cardBlur',
+  'density','capH','inH','addW','addSide','addIcon','showRev','showCopyTop','showInIcon','showDate','showChip','chipColor','showKicker','showKeys',
+  'speed','numAnim','breathe','rowAnim','ripple','stagePos','showLabels','showPhrase','showChips',
+  'sheetColor','sheetA','peekRows','histH','showHint','histStyle','histTime','showTitle','titleUpper',
+  'kbRow','kbFs','kbBg','kbA','kbBlur','kbFg','kbKeyBg','kbKeyA','kbAct','kbActIcon','kbR','kbActR','kbPress','kbHide','kbAnim'];
+
+/* ---- CONTORNOS: cada elemento tiene grosor, color, fuerza, estilo y esquinas propias ---- */
+const EL = [['card','Tarjeta'],['inp','Campo de cantidad'],['caps','Grupo de capacidades'],['sel','Capacidad elegida'],['add','Botón de guardar'],
+  ['chip','Etiqueta del historial'],['meta','Datos del resultado'],['btn','Botones pequeños'],['row','Líneas del historial'],['sheet','Hoja del historial']];
+const EL_DEF = { card:[1,'#FFFFFF',22], inp:[1.5,'#FFFFFF',60], caps:[1,'#FFFFFF',32], sel:[0,'#FFFFFF',100], add:[0,'#FFFFFF',100],
+  chip:[1,'#34D399',20], meta:[0,'#FFFFFF',40], btn:[0,'#FFFFFF',50], row:[0,'#FFFFFF',50], sheet:[0,'#FFFFFF',50] };
+const EL_TARGET = { card:'card', inp:'input', caps:'caps', sel:'caps', add:'add', chip:'chip', meta:'stage', btn:'hdr', row:'hist', sheet:'sheet' };
+const OSTYLES = ['solid','dashed','dotted','double'];
+EL.forEach(e => { const k = e[0], d = EL_DEF[k];
+  DEF['o_' + k + '_w'] = d[0]; DEF['o_' + k + '_c'] = d[1]; DEF['o_' + k + '_a'] = d[2]; DEF['o_' + k + '_s'] = 'solid'; DEF['o_' + k + '_r'] = -1;
+  ['w','c','a','s','r'].forEach(pp => STYLE_KEYS.push('o_' + k + '_' + pp));
+});
+
+/* ---- RELLENO: cada elemento puede tener su propio color de fondo (-1 = automático) ---- */
+const FILL_EL = ['inp','caps','sel','add','chip','meta','btn','row'];
+FILL_EL.forEach(k => { DEF['f_' + k + '_c'] = '#FFFFFF'; DEF['f_' + k + '_a'] = -1; STYLE_KEYS.push('f_' + k + '_c', 'f_' + k + '_a'); });
+
+let cfg = clone(DEF);
+
+const TEX = {
+  none:{ img:'none', size:'auto' },
+  dots:{ img:'radial-gradient(circle, currentColor 1px, transparent 1.6px)', size:'16px 16px' },
+  grid:{ img:'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)', size:'26px 26px' },
+  lines:{ img:'repeating-linear-gradient(0deg, currentColor 0 1px, transparent 1px 7px)', size:'auto' },
+  diag:{ img:'repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 10px)', size:'auto' }
+};
+const FONTS = ['Albert Sans','Figtree','Cabin','Inconsolata','Poppins','Montserrat','Space Grotesk','Oswald','Sistema'];
+const FONT_SPEC = { 'Figtree':'400..900','Albert Sans':'400..900','Cabin':'400..700','Inconsolata':'400..900','Montserrat':'400..900','Space Grotesk':'400..700','Oswald':'400..700','Poppins':'400;500;600;700;800;900' };
+const fontsLoaded = {};
+function loadFont(f){
+  if(f === 'Sistema' || fontsLoaded[f] || !FONT_SPEC[f]) return;
+  fontsLoaded[f] = true;
+  try{
+    const l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=' + f.replace(/ /g, '+') + ':wght@' + FONT_SPEC[f] + '&display=swap';
+    document.head.appendChild(l);
+  }catch(e){}
+}
+
+// Temas viejos traían "pop" (sí/no); ahora es numAnim.
+function normalizeStyle(o){
+  o = Object.assign({}, o);
+  if('pop' in o){ if(o.numAnim === undefined) o.numAnim = o.pop ? 'pop' : 'none'; delete o.pop; }
+  // bordes de la versión anterior → contornos por elemento
+  const old = { cardBw:'card', inBw:'inp', capsBw:'caps' };
+  for(const k in old){ if(k in o){ if(o['o_' + old[k] + '_w'] === undefined) o['o_' + old[k] + '_w'] = o[k]; delete o[k]; } }
+  if('bw' in o){ ['btn','row','sheet','meta'].forEach(e => { if(o['o_' + e + '_w'] === undefined) o['o_' + e + '_w'] = o.bw; }); delete o.bw; }
+  if('bc' in o){ ['card','inp','caps','btn','row','sheet','meta'].forEach(e => { if(o['o_' + e + '_c'] === undefined) o['o_' + e + '_c'] = o.bc; }); delete o.bc; }
+  delete o.bcA;
+  if('auroraOn' in o){ if(o.fx === undefined) o.fx = o.auroraOn ? 'aurora' : 'none'; delete o.auroraOn; }
+  delete o.showGrab;
+  return o;
+}
+function sanitizeCfg(){
+  const d = DEF, oneOf = (k, list) => { if(!list.includes(cfg[k])) cfg[k] = d[k]; };
+  cfg.presets = (Array.isArray(cfg.presets) ? cfg.presets : [])
+    .filter(p => p && Number.isInteger(p.cap) && p.cap > 0 && p.cap < 10000).slice(0, 5)
+    .map(p => ({ cap:p.cap, c1:isHex(p.c1) ? p.c1 : '#FFFFFF', c2:isHex(p.c2) ? p.c2 : '#9CA3AF',
+                 pack:Number.isInteger(p.pack) && p.pack > 0 ? p.pack : 0, round:Number.isInteger(p.round) && p.round > 0 ? p.round : 0 }));
+  if(!cfg.presets.length) cfg.presets = clone(d.presets);
+  ['accent','accent2','fg','numColor','looseColor','minus','blockColor','bg','bg2','cardColor','chipColor','auroraA','auroraB','auroraC','glowColor','sheetColor','otherC1','otherC2','kbBg','kbFg','kbKeyBg','kbAct','kbActIcon']
+    .forEach(k => { if(!isHex(cfg[k])) cfg[k] = d[k]; });
+  oneOf('texture', Object.keys(TEX)); oneOf('rowAnim', ['slide','fade','pop','none']); oneOf('numAnim', ['pop','count','roll','none']);
+  oneOf('stagePos', ['top','center','bottom']); oneOf('histStyle', ['lista','compacta']); oneOf('hapticsLvl', ['low','mid','high']); oneOf('addSide', ['right','left']);
+  oneOf('glowShape', ['circle','ellipse']); oneOf('glowAnchor', ['result','center','top','bottom']); oneOf('addIcon', ['+','✓','↵']);
+  oneOf('fx', FX_LIST.map(x => x[0])); oneOf('fxQ', ['low','mid','high']); oneOf('kbPress', ['circle','square','none']); oneOf('kbAnim', ['slide','fade','none']);
+  ['kbk_dash','kbk_space','kbk_comma','kbk_dot'].forEach(k => oneOf(k, KB_ACT.map(x => x[0]))); oneOf('sndPack', SND_PACKS.map(x => x[0])); oneOf('sndPitch', ['digit','same']);
+  if(cfg.histStart === 'peek') cfg.histStart = 'closed';
+  oneOf('histStart', ['last','closed','open']); oneOf('histMax', [20,50,100,200]); oneOf('font', FONTS); oneOf('numFont', FONTS);
+  if(cfg.startCap !== 'last' && !Number.isInteger(cfg.startCap)) cfg.startCap = d.startCap;
+  ['surf','glow','glowSize','glowBlur','glowSpeed','texa','numWeight','numScale','inScale','uiScale','track','phraseScale','radius','cardA','cardBlur',
+   'auroraI','auroraS','auroraSp','density','capH','inH','addW','speed','histH','peekRows','sheetA','cutoff','bgAngle','kbRow','kbFs','kbA','kbBlur','kbKeyA','kbR','kbActR','sndVol']
+    .forEach(k => { if(typeof cfg[k] !== 'number' || isNaN(cfg[k])) cfg[k] = d[k]; });
+  ['followCapLoose','bgGrad','glowReact','followCapGlow','numItalic','breathe','ripple','showLabels','showPhrase','showChips','histTime','showTitle','titleUpper',
+   'haptics','autofocus','showOther','showRev','showCopyTop','showInIcon','showDate','showChip','showKicker','showKeys','showHint','kbHide','kbOn','kbHapt','dragSheet','snd','sndKey','sndDel','sndSave','sndCap','sndHist','sndErr','sndCopy','sndHide']
+    .forEach(k => { if(typeof cfg[k] !== 'boolean') cfg[k] = d[k]; });
+  ['title','shareTitle','phText','kickerText'].forEach(k => { if(typeof cfg[k] !== 'string') cfg[k] = d[k]; });
+  FILL_EL.forEach(e => { const k = 'f_' + e + '_'; if(typeof cfg[k + 'a'] !== 'number' || isNaN(cfg[k + 'a'])) cfg[k + 'a'] = -1; if(!isHex(cfg[k + 'c'])) cfg[k + 'c'] = '#FFFFFF'; });
+  EL.forEach(e => { const k = 'o_' + e[0] + '_';
+    ['w','a','r'].forEach(pp => { if(typeof cfg[k + pp] !== 'number' || isNaN(cfg[k + pp])) cfg[k + pp] = d[k + pp]; });
+    if(!isHex(cfg[k + 'c'])) cfg[k + 'c'] = d[k + 'c'];
+    if(!OSTYLES.includes(cfg[k + 's'])) cfg[k + 's'] = 'solid';
+  });
+}
+function loadCfg(){
+  let s = null;
+  try{ s = JSON.parse(localStorage.getItem(CFG_KEY) || 'null'); }catch(e){}
+  if(s && typeof s === 'object') cfg = Object.assign(clone(DEF), normalizeStyle(s));
+  else cfg = Object.assign(clone(DEF), getDefStyle());      // primera vez: tema predeterminado
+  sanitizeCfg();
+  if(cfg.title === 'Despacho') cfg.title = 'Cuadre';
+  if(cfg.title === 'Cuadre' && !cfg._cuadre){ cfg.titleUpper = true; cfg._cuadre = 1; }   // la pantalla principal dice CUADRE (se puede volver a cambiar en Personalizar)
+}
+function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }catch(e){} }
+
+/* ============================================================
+   ESTADO
+   hist: [{ mode:'f', n, cap, t } | { mode:'r', p, s, n, cap, t }]  (más reciente primero)
+   El historial NO suma nada: solo guarda lo que ya calculaste.
+   hs: estado de la hoja → 'closed' (oculto) | 'peek' (asoma) | 'open' (abierta)
+   ============================================================ */
+const S = { cap:72, customCap:null, mode:'fwd', buf:{ main:'', p:'', s:'' }, hist:[], hs:'peek' };
+let undoSnap = null, toastTimer = null, lastAdded = false, lastCapApplied = null, booted = false, lastCount = 0;
+
+const presetOf = cap => cfg.presets.find(p => p.cap === cap) || null;
+const roundOf = cap => { const p = presetOf(cap); return p && p.round > 0 ? p.round : 0; };
+const packOf = cap => { const p = presetOf(cap); return p && p.pack > 0 ? p.pack : 0; };
+function capColors(cap){
+  const p = presetOf(cap), c1 = p ? p.c1 : cfg.otherC1, c2 = p ? p.c2 : cfg.otherC2;
+  return { c1, c2, on:onColor(c1), cg:rgba(c1, .4), cg2:rgba(c2, .28) };
+}
+const VIB = { low:4, mid:9, high:18 };
+const vib = () => { if(cfg.haptics){ try{ navigator.vibrate && navigator.vibrate(VIB[cfg.hapticsLvl] || 9); }catch(e){} } };
+
+function validItem(it){
+  if(!it || (it.mode !== 'f' && it.mode !== 'r') || !Number.isInteger(it.cap) || it.cap < 1 || !Number.isInteger(it.n) || it.n < 1) return false;
+  if(it.mode === 'r' && (!Number.isInteger(it.p) || !Number.isInteger(it.s))) return false;
+  return typeof it.t === 'number';
+}
+function loadState(){
+  S.cap = cfg.presets[0].cap;
+  let saved = null;
+  try{ saved = JSON.parse(localStorage.getItem(STATE_KEY) || 'null'); }catch(e){}
+  S.hs = cfg.histStart === 'last' ? 'closed' : cfg.histStart;
+  if(saved){
+    if(Number.isInteger(saved.customCap) && saved.customCap > 0) S.customCap = saved.customCap;
+    if(saved.mode === 'rev') S.mode = 'rev';
+    if(Array.isArray(saved.hist)) S.hist = saved.hist.filter(validItem).slice(0, cfg.histMax);
+    if(saved.buf) for(const k of ['main','p','s']) if(/^\d*$/.test(saved.buf[k] || '')) S.buf[k] = saved.buf[k] || '';
+    if(cfg.startCap === 'last' && Number.isInteger(saved.cap) && saved.cap > 0) S.cap = saved.cap;
+    if(cfg.histStart === 'last' && ['closed','peek','open'].includes(saved.hs)) S.hs = saved.hs;
+  }
+  if(cfg.startCap !== 'last'){ S.cap = cfg.startCap; if(!presetOf(S.cap)) S.customCap = S.cap; }    // capacidad por default: se queda fija al abrir la app
+}
+function saveState(){
+  try{ localStorage.setItem(STATE_KEY, JSON.stringify({ cap:S.cap, customCap:S.customCap, mode:S.mode, hist:S.hist, hs:S.hs, buf:{ ...S.buf } })); }catch(e){}
+}
+
+/* ============================================================
+   LÓGICA DE CANTIDADES — igual que PalletFlow
+   - Si la cantidad no llega a un pallet: solo jabas.
+   - Si es justa: pallets completos.
+   - Capacidad con "redondeo" (72 por defecto, desde más de 46 sobrantes):
+       500 jabas → 6 pallets + 68  se muestra como  7 − 4
+   - Resto de capacidades: pallets + sobrante.
+   - Reverso: pallets × capacidad + sueltas = total de jabas.
+   ============================================================ */
+function calc(total, cap){
+  const safe = Math.max(0, total || 0), c = Math.max(1, cap);
+  const pallets = Math.floor(safe / c), rest = safe % c;
+  if(safe < c) return { pallets:0, jabas:safe, onlyJabas:true, operator:null };
+  if(rest === 0) return { pallets, jabas:0, onlyJabas:false, operator:null };
+  const th = roundOf(c);
+  if(th && rest > th) return { pallets:pallets + 1, jabas:c - rest, onlyJabas:false, operator:'-' };
+  return { pallets, jabas:rest, onlyJabas:false, operator:'+' };
+}
+function current(){            // lo que hay escrito ahora
+  const cap = S.cap;
+  if(S.mode === 'fwd'){
+    const n = parseInt(S.buf.main, 10) || 0;
+    return n > 0 ? { mode:'f', n, cap } : null;
+  }
+  const p = parseInt(S.buf.p, 10) || 0, s = parseInt(S.buf.s, 10) || 0;
+  return (p || s) ? { mode:'r', p, s, n:p * cap + s, cap } : null;
+}
+
+/* ============================================================
+   HTML DE LOS COMPONENTES (lo usan la app y el demo)
+   ============================================================ */
+function blk(n, label, cls){ return '<div class="blk ' + cls + '"><b class="num" data-v="' + n + '">' + fmt(n) + '</b><i class="lbl">' + label + '</i></div>'; }
+function bigHTML(d){
+  if(!d) return blk(0, 'pallets', 'dim');
+  if(d.mode === 'r') return blk(d.n, plural(d.n, 'jaba', 'jabas'), '');
+  const r = calc(d.n, d.cap);
+  if(r.onlyJabas) return blk(r.jabas, plural(r.jabas, 'jaba', 'jabas'), 'loose');
+  let h = blk(r.pallets, plural(r.pallets, 'pallet', 'pallets'), '');
+  if(r.jabas > 0){
+    const m = r.operator === '-';
+    h += '<div class="op ' + (m ? 'minus' : 'loose') + '">' + (m ? '−' : '+') + '</div>' + blk(r.jabas, plural(r.jabas, 'jaba', 'jabas'), m ? 'minus' : 'loose');
+  }
+  return h;
+}
+function phraseHTML(d){
+  const PK = ICONS.pkg;
+  if(!d) return 'Ingresa una cantidad para calcular';
+  if(d.mode === 'r') return PK + '<b>' + fmt(d.p) + '</b> ' + plural(d.p, 'pallet', 'pallets') + ' + <b>' + fmt(d.s) + '</b> ' + plural(d.s, 'jaba', 'jabas');
+  const res = calc(d.n, d.cap), cap = d.cap, pk = packOf(cap);
+  if(pk > 0){
+    const pucho = d.n % cap, base = pucho === 0 ? cap : pucho, paq = Math.floor(base / pk), sue = base % pk;
+    let h = PK + '<b>' + paq + '</b> ' + plural(paq, 'paquete', 'paquetes');
+    if(sue > 0) h += ' + <b>' + sue + '</b> ' + plural(sue, 'jaba', 'jabas');
+    return h;
+  }
+  if(res.onlyJabas){ const f = cap - res.jabas; return PK + 'Te faltan <b>' + fmt(f) + '</b> ' + plural(f, 'jaba', 'jabas') + ' para un pallet'; }
+  if(res.operator === '-') return PK + 'Agrega <b>' + fmt(res.jabas) + '</b> ' + plural(res.jabas, 'jaba', 'jabas') + ' para completar otro pallet';
+  if(res.jabas === 0) return '¡<b>' + fmt(res.pallets) + '</b> ' + plural(res.pallets, 'pallet', 'pallets') + ' completos!';
+  return PK + '<b>' + fmt(res.pallets) + '</b> ' + plural(res.pallets, 'pallet', 'pallets') + ' con <b>' + fmt(res.jabas) + '</b> ' + plural(res.jabas, 'jaba', 'jabas') + ' extra';
+}
+function metaHTML(d){
+  if(!d) return '';
+  let h = '';
+  if(d.mode === 'f' && packOf(d.cap) > 0 && d.n % d.cap > 0){
+    h += '<span class="chip">Faltan <b>' + fmt(d.cap - d.n % d.cap) + '</b> para ' + (d.n < d.cap ? 'un' : 'otro') + ' pallet</span>';
+  }
+  return h;
+}
+function qHTML(it){
+  const t = it.t ? '<small class="tm">' + hm(it.t) + '</small>' : '';
+  if(it.mode === 'r') return fmt(it.p) + '<small>p</small><span class="pls">+</span>' + fmt(it.s) + '<small>×' + it.cap + '</small>' + t;
+  return fmt(it.n) + '<small>×' + it.cap + '</small>' + t;
+}
+function resHTML(it){
+  if(it.mode === 'r') return '<b>' + fmt(it.n) + '</b><u>jabas</u>';
+  const r = calc(it.n, it.cap);
+  if(r.onlyJabas) return '<b>' + fmt(r.jabas) + '</b><u>' + plural(r.jabas, 'jaba', 'jabas') + '</u>';
+  let h = '<b>' + fmt(r.pallets) + '</b><u>p</u>';
+  if(r.jabas > 0) h += r.operator === '-' ? '<span class="ms">− ' + fmt(r.jabas) + '</span>' : '<span class="ls">+ ' + fmt(r.jabas) + '</span>';
+  return h;
+}
+function rowHTML(it, o){
+  o = o || {};
+  return '<div class="row' + (o.isNew ? ' new' : '') + '"' + (o.i != null ? ' data-i="' + o.i + '"' : '') + ' style="--c:' + capColors(it.cap).c1 + '">' +
+    '<div class="q">' + qHTML(it) + '</div><div class="r">' + resHTML(it) + '</div>' +
+    (o.x ? '<button class="x" data-del="' + o.i + '" aria-label="Quitar del historial">×</button>' : '<span></span>') + '</div>';
+}
+function capsMarkup(real){
+  const tag = real ? 'button' : 'div';
+  let h = cfg.presets.map(p => {
+    const c = capColors(p.cap);
+    return '<' + tag + ' class="cap rip keep' + (p.cap === S.cap ? ' on' : '') + '" data-c="' + p.cap + '" style="--c1:' + c.c1 + ';--c2:' + c.c2 + ';--on:' + c.on + ';--cg:' + c.cg + ';--cg2:' + c.cg2 + '">' + p.cap + '</' + tag + '>';
+  }).join('');
+  if(cfg.showOther){
+    const c = { c1:cfg.otherC1, c2:cfg.otherC2, on:onColor(cfg.otherC1), cg:rgba(cfg.otherC1, .4), cg2:rgba(cfg.otherC2, .28) };
+    const st = '--c1:' + c.c1 + ';--c2:' + c.c2 + ';--on:' + c.on + ';--cg:' + c.cg + ';--cg2:' + c.cg2;
+    h += real
+      ? '<div class="cap other" id="otherWrap" style="' + st + '"><input id="capOther" type="text" inputmode="numeric" enterkeyhint="next" maxlength="4" placeholder="Otra" aria-label="Otra capacidad" autocomplete="off"></div>'
+      : '<div class="cap other" style="' + st + '"><span>Otra</span></div>';
+  }
+  return h;
+}
+function dateLine(){
+  const d = new Date(); if(d.getHours() < cfg.cutoff) d.setDate(d.getDate() - 1);
+  const s = DIAS[d.getDay()];
+  return s.charAt(0).toUpperCase() + s.slice(1) + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()];
+}
+const statText = n => n ? 'Historial · ' + n + (n === 1 ? ' guardado' : ' guardados') : 'Historial vacío';
+
+/* ============================================================
+   APLICAR CONFIGURACIÓN (variables CSS) — a la app y al demo
+   ============================================================ */
+function haloShape(R, RX){ return cfg.glowShape === 'ellipse' ? 'ellipse ' + RX + 'px ' + R + 'px' : 'circle ' + R + 'px'; }
+function varsFor(){
+  const cc = capColors(S.cap), sp = cfg.surf, H = vpH(), W = window.innerWidth;
+  const mix = p => 'color-mix(in srgb, ' + cfg.fg + ' ' + p + '%, transparent)';
+  const blk = p => p <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.blockColor + ' ' + Math.min(100, p) + '%, transparent)';
+  const cm = p => p <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.cardColor + ' ' + Math.min(100, p) + '%, transparent)';
+  const R = Math.round(cfg.glowSize / 100 * H * .62), RX = Math.round(cfg.glowSize / 100 * W * .95);
+  const aurT = (80 / Math.max(1, cfg.auroraSp)) * (cfg.speed > 0 ? 100 / cfg.speed : 0);
+  const v = {
+    '--bg':cfg.bg, '--bgfill':cfg.bgGrad ? 'linear-gradient(' + cfg.bgAngle + 'deg, ' + cfg.bg + ', ' + cfg.bg2 + ')' : cfg.bg,
+    '--fg':cfg.fg, '--s1':blk(sp), '--s2':blk(sp * 1.8), '--s3':blk(sp * 3), '--mut':mix(62), '--faint':mix(36),
+    '--acc':cfg.accent, '--acc2':cfg.accent2, '--grad':'linear-gradient(135deg, ' + cfg.accent + ', ' + cfg.accent2 + ')',
+    '--accfg':onColor(cfg.accent), '--accglow':rgba(cfg.accent, .3),
+    '--minus':cfg.minus, '--num':cfg.numColor, '--chipc':cfg.chipColor,
+    '--r':cfg.radius + 'px', '--edge':'inset 0 0 0 0 transparent', '--cardedge':'inset 0 0 0 0 transparent', '--inedge':'inset 0 0 0 0 transparent', '--capsedge':'inset 0 0 0 0 transparent',
+    '--cardbg':cfg.cardA <= 0 ? 'transparent' : 'linear-gradient(180deg, ' + cm(cfg.cardA * 1.6) + ', ' + cm(cfg.cardA * .5) + ')',
+    '--capsbg':cm(cfg.cardA * 1.1), '--cardblur':cfg.cardBlur + 'px',
+    '--dens':cfg.density / 100, '--tm':cfg.speed > 0 ? 100 / cfg.speed : 0, '--ui':cfg.uiScale / 100,
+    '--numscale':cfg.numScale / 100, '--inscale':cfg.inScale / 100, '--track':(cfg.track / 100) + 'em', '--phs':cfg.phraseScale / 100,
+    '--font':fontStack(cfg.font), '--numfont':fontStack(cfg.numFont), '--numstyle':cfg.numItalic ? 'italic' : 'normal', '--numweight':cfg.numWeight,
+    '--aurI':cfg.auroraI / 100, '--aurS':cfg.auroraS / 100, '--aurT':aurT + 's', '--aurA':cfg.auroraA, '--aurB':cfg.auroraB, '--aurC':cfg.auroraC,
+    '--glow':cfg.glow / 100, '--gt':cfg.glowSpeed, '--gshape':haloShape(R, RX), '--gmid':Math.max(10, 55 - cfg.glowBlur * 1.1) + '%',
+    '--glowc':cfg.followCapGlow ? cc.c1 : cfg.glowColor, '--capc':cc.c1, '--loosec':cfg.followCapLoose ? cc.c1 : cfg.looseColor,
+    '--caph':cfg.capH, '--inh':cfg.inH, '--addw':cfg.addW,
+    '--sheetbg':cfg.sheetA <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.sheetColor + ' ' + cfg.sheetA + '%, transparent)',
+    '--texa':cfg.texa / 100, '--tex':TEX[cfg.texture].img, '--texsize':TEX[cfg.texture].size,
+    '--kbrow':cfg.kbRow, '--kbfs':cfg.kbFs, '--kbfg':cfg.kbFg, '--kbact':cfg.kbAct, '--kbacticon':cfg.kbActIcon, '--kbr':cfg.kbR + 'px', '--kbar':cfg.kbActR + 'px',
+    '--kbbgc':cfg.kbA <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.kbBg + ' ' + cfg.kbA + '%, transparent)', '--kbblur':cfg.kbBlur + 'px',
+    '--kbkey':cfg.kbKeyA <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.kbKeyBg + ' ' + cfg.kbKeyA + '%, transparent)'
+  };
+  EL.forEach(e => { const k = 'o_' + e[0] + '_', w = cfg[k + 'w'], st = cfg[k + 's'];
+    const col = w > 0 ? 'color-mix(in srgb, ' + cfg[k + 'c'] + ' ' + cfg[k + 'a'] + '%, transparent)' : 'transparent';
+    const solid = st === 'solid';
+    v['--bsh-' + e[0]] = (w > 0 && solid) ? 'inset 0 0 0 ' + w + 'px ' + col : 'inset 0 0 0 0 transparent';   // liso: sombra interior (acepta 0.5 px)
+    v['--ow-' + e[0]] = (w > 0 && !solid) ? w + 'px' : '0px'; v['--os-' + e[0]] = st; v['--oc-' + e[0]] = col;   // rayas, puntos, doble: outline
+    v['--rd-' + e[0]] = (cfg[k + 'r'] < 0 ? cfg.radius : cfg[k + 'r']) + 'px';
+  });
+  v['--cardedge'] = v['--bsh-card']; v['--inedge'] = v['--bsh-inp']; v['--capsedge'] = v['--bsh-caps'];
+  FILL_EL.forEach(k => { const a = cfg['f_' + k + '_a'];
+    v['--fill-' + k] = a < 0 ? null : (a === 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg['f_' + k + '_c'] + ' ' + Math.min(100, a) + '%, transparent)'); });
+  return v;
+}
+function applyCfg(){
+  const v = varsFor(), root = document.documentElement;
+  [root, $('demo')].forEach(el => { if(el) for(const k in v){ if(v[k] === null) el.style.removeProperty(k); else el.style.setProperty(k, v[k]); } });
+  const dh = $('demoHalo');
+  if(dh){ dh.style.setProperty('--gy', '36%'); dh.style.setProperty('--gshape', haloShape(Math.round(cfg.glowSize / 100 * 420), Math.round(cfg.glowSize / 100 * 380))); }
+  const cl = root.classList;
+  cl.toggle('noanim', cfg.speed === 0); cl.toggle('nobreathe', !cfg.breathe); cl.toggle('noripple', !cfg.ripple); cl.toggle('noaurora', cfg.fx !== 'aurora'); cl.toggle('nofxc', !FXD[cfg.fx]); cl.toggle('nokb', !cfg.kbOn); cl.toggle('nokbhide', !cfg.kbHide);
+  cl.toggle('nolbl', !cfg.showLabels); cl.toggle('nophrase', !cfg.showPhrase); cl.toggle('nochips', !cfg.showChips);
+  cl.toggle('notime', !cfg.histTime); cl.toggle('notitle', !cfg.showTitle); cl.toggle('tupper', cfg.titleUpper); cl.toggle('addleft', cfg.addSide === 'left');
+  cl.toggle('nohint', !cfg.showHint); cl.toggle('nograb', !cfg.dragSheet); cl.toggle('nocopytop', !cfg.showCopyTop); cl.toggle('norev', !cfg.showRev);
+  cl.toggle('nodate', !cfg.showDate); cl.toggle('nochip', !cfg.showChip); cl.toggle('nokicker', !cfg.showKicker); cl.toggle('showkeys', cfg.showKeys); cl.toggle('noinicon', !cfg.showInIcon);
+  root.dataset.na = cfg.numAnim; root.dataset.row = cfg.rowAnim; root.dataset.pos = cfg.stagePos; root.dataset.hs = cfg.histStyle; root.dataset.ka = cfg.kbAnim; root.dataset.kp = cfg.kbPress;
+  const m = document.querySelector('meta[name=theme-color]'); if(m) m.content = cfg.bg;
+  loadFont(cfg.font); loadFont(cfg.numFont);
+  lastCapApplied = S.cap;
+  applyInputMode(); fxUpdate();
+  schedHalo();
+}
+
+/* ---- el halo sigue al resultado (o se queda donde lo pongas) ---- */
+let haloQ = false, haloYnum = 300;
+function schedHalo(){ if(haloQ) return; haloQ = true; requestAnimationFrame(() => { haloQ = false; placeHalo(); }); }
+function placeHalo(){
+  let y, n, H = vpH();
+  if(cfg.glowAnchor === 'center'){ y = '50%'; n = H * .5; }
+  else if(cfg.glowAnchor === 'top'){ y = '24%'; n = H * .24; }
+  else if(cfg.glowAnchor === 'bottom'){ y = '78%'; n = H * .78; }
+  else{
+    const a = $('big').getBoundingClientRect();
+    const last = (cfg.showChips && $('meta').offsetHeight) ? $('meta') : (cfg.showPhrase && $('phrase').offsetHeight ? $('phrase') : $('big'));
+    const b = last.getBoundingClientRect();
+    n = Math.round((a.top + (b.bottom || a.bottom)) / 2); y = n + 'px';
+  }
+  haloYnum = n;
+  document.documentElement.style.setProperty('--gy', y);
+}
+
+
+/* ============================================================
+   FONDOS ANIMADOS (lienzo): agua, anillos, burbujas, lluvia, estrellas, brasas, luciérnagas, lava, neón, nieve
+   Todos usan los 3 colores A, B y C de «Fondo y luz».
+   ============================================================ */
+const FX_LIST = [['none','Ninguno'],['aurora','Aurora'],['water','Agua'],['rings','Halo (anillos)'],['bubbles','Burbujas'],['rain','Lluvia'],['stars','Estrellas'],
+  ['embers','Brasas'],['fireflies','Luciérnagas'],['lava','Lava'],['grid','Neón (cuadrícula)'],['snow','Nieve']];
+const FX_PAL = { aurora:['#1F8A8F','#6B2FB3','#1B2B5E'], water:['#5EC8F2','#1565A8','#06203A'], rings:['#7DD3FC','#C084FC','#0B1020'], bubbles:['#8FE3F7','#3B82F6','#07182E'],
+  rain:['#9CC9FF','#3B6AA8','#0A1220'], stars:['#FFFFFF','#9DB4FF','#05060F'], embers:['#FF8A3D','#FF3D2E','#1A0805'], fireflies:['#E6FF7A','#6EE7B7','#05100A'],
+  lava:['#FF5A3C','#FFB13C','#2A0A2E'], grid:['#FF3DCB','#7C3AED','#12002B'], snow:['#FFFFFF','#BFD7FF','#0B1220'] };
+const rg = (c, a) => 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+const TAU = Math.PI * 2, rnd = Math.random;
+const FXD = {
+  water:{
+    init(f){ f.rip = []; },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, B = f.B, C = f.C, d = f.d;
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rg(C, .95)); g.addColorStop(.55, rg(B, .6)); g.addColorStop(1, rg(C, .98));
+      c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.globalCompositeOperation = 'lighter';
+      for(let i = 0; i < 7; i++){
+        const x = (Math.sin(t * .35 + i * 1.9) * .5 + .5) * W, y = (Math.cos(t * .29 + i * 2.4) * .5 + .5) * H, r = (.2 + .08 * Math.sin(t * .6 + i)) * Math.max(W, H) * .6 * d;
+        const gg = c.createRadialGradient(x, y, 0, x, y, r); gg.addColorStop(0, rg(A, .14)); gg.addColorStop(1, rg(A, 0)); c.fillStyle = gg; c.fillRect(x - r, y - r, r * 2, r * 2);
+      }
+      c.globalCompositeOperation = 'source-over';
+      for(let L = 0; L < 4; L++){
+        const base = H * (.3 + L * .18), amp = H * (.016 + L * .006) * d, k = (2 + L * .6) * Math.PI / W, sp = t * (1 + L * .3) * (L % 2 ? 1 : -1);
+        c.beginPath(); c.moveTo(0, H);
+        for(let x = 0; x <= W + 4; x += 4) c.lineTo(x, base + Math.sin(x * k + sp) * amp + Math.sin(x * k * 2.3 - sp * 1.4) * amp * .45);
+        c.lineTo(W, H); c.closePath(); c.fillStyle = rg(A, .06 + L * .03); c.fill();
+      }
+      f.rip = f.rip.filter(r => r.a > .02);
+      f.rip.forEach(r => {
+        r.r += dt * H * .22; r.a = 1 - r.r / (H * .5);
+        c.lineWidth = Math.max(1, W * .006);
+        c.beginPath(); c.arc(r.x, r.y, r.r, 0, TAU); c.strokeStyle = rg(A, Math.max(0, r.a) * .55); c.stroke();
+        c.beginPath(); c.arc(r.x, r.y, r.r * .7, 0, TAU); c.strokeStyle = rg(A, Math.max(0, r.a) * .28); c.stroke();
+      });
+    },
+    tap(f, x, y){ f.rip.push({ x, y, r:0, a:1 }); }
+  },
+  rings:{
+    init(f){ f.rings = []; f.acc = 9; f.n = 0; },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, A = f.A, B = f.B, C = f.C, cx = W / 2, cy = f.cy();
+      c.fillStyle = rg(C, .55); c.fillRect(0, 0, W, H);
+      const core = c.createRadialGradient(cx, cy, 0, cx, cy, H * .35 * f.d); core.addColorStop(0, rg(A, .38)); core.addColorStop(1, rg(A, 0)); c.fillStyle = core; c.fillRect(0, 0, W, H);
+      f.acc += dt; if(f.acc > 1.5){ f.acc = 0; f.rings.push({ r:0, x:cx, y:cy, c:(f.n++ % 2) ? A : B }); }
+      f.rings = f.rings.filter(r => r.r < H * .9);
+      f.rings.forEach(r => {
+        r.r += dt * H * .2; const a = 1 - r.r / (H * .9);
+        c.beginPath(); c.arc(r.x, r.y, r.r, 0, TAU); c.strokeStyle = rg(r.c, a * .6); c.lineWidth = Math.max(1, W * .012 * a + 1); c.stroke();
+      });
+    },
+    tap(f, x, y){ f.rings.push({ r:0, x, y, c:f.A }); }
+  },
+  bubbles:{
+    init(f){ const n = Math.round(34 * f.d); f.parts = []; for(let i = 0; i < n; i++) f.parts.push(bubNew(f, true)); },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, B = f.B, C = f.C;
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rg(C, .9)); g.addColorStop(1, rg(B, .35)); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      f.parts.forEach((p, i) => {
+        p.y -= p.vy * dt; if(p.y < -p.r * 2) f.parts[i] = p = bubNew(f, false);
+        const x = p.x + Math.sin(t * p.sw + p.ph) * p.r * .9;
+        c.beginPath(); c.arc(x, p.y, p.r, 0, TAU); c.fillStyle = rg(A, .07); c.fill(); c.lineWidth = Math.max(1, W * .004); c.strokeStyle = rg(A, .42); c.stroke();
+        c.beginPath(); c.arc(x - p.r * .3, p.y - p.r * .3, p.r * .4, 3.5, 4.8); c.strokeStyle = 'rgba(255,255,255,.6)'; c.stroke();
+      });
+    }
+  },
+  rain:{
+    init(f){ const n = Math.round(90 * f.d); f.parts = []; for(let i = 0; i < n; i++) f.parts.push({ x:rnd() * f.W * 1.2, y:rnd() * f.H, l:f.H * (.03 + rnd() * .05), v:f.H * (.7 + rnd() * .7) }); },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, A = f.A, B = f.B, C = f.C;
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rg(C, .95)); g.addColorStop(1, rg(B, .3)); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.strokeStyle = rg(A, .38); c.lineWidth = Math.max(1, W * .004);
+      f.parts.forEach(p => {
+        p.y += p.v * dt; p.x -= p.v * dt * .18;
+        if(p.y > H + p.l){ p.y = -p.l; p.x = rnd() * W * 1.2; }
+        c.beginPath(); c.moveTo(p.x, p.y); c.lineTo(p.x + p.l * .18, p.y - p.l); c.stroke();
+      });
+    }
+  },
+  stars:{
+    init(f){ const n = Math.round(130 * f.d); f.parts = []; for(let i = 0; i < n; i++) f.parts.push({ x:rnd() * f.W, y:rnd() * f.H, z:.2 + rnd() * .8, tw:rnd() * TAU }); f.sh = null; f.acc = 0; },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, B = f.B, C = f.C;
+      c.fillStyle = rg(C, .92); c.fillRect(0, 0, W, H);
+      const ng = c.createRadialGradient(W * .7, H * .3, 0, W * .7, H * .3, W * .7); ng.addColorStop(0, rg(B, .2)); ng.addColorStop(1, rg(B, 0)); c.fillStyle = ng; c.fillRect(0, 0, W, H);
+      f.parts.forEach((p, i) => {
+        p.x -= dt * W * .012 * p.z; if(p.x < 0) p.x += W;
+        const a = .3 + .7 * (Math.sin(t * (1 + p.z) + p.tw) * .5 + .5), r = Math.max(.7, p.z * W * .006);
+        c.fillStyle = (i % 3) ? 'rgba(255,255,255,' + a + ')' : rg(A, a); c.beginPath(); c.arc(p.x, p.y, r, 0, TAU); c.fill();
+      });
+      f.acc += dt; if(!f.sh && f.acc > 4 + rnd() * 3){ f.acc = 0; f.sh = { x:rnd() * W, y:rnd() * H * .4, l:0 }; }
+      if(f.sh){ const s = f.sh; s.l += dt * 1.6; s.x -= dt * W * .9; s.y += dt * W * .5;
+        const g = c.createLinearGradient(s.x, s.y, s.x + W * .18, s.y - W * .1); g.addColorStop(0, 'rgba(255,255,255,.9)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+        c.strokeStyle = g; c.lineWidth = Math.max(1, W * .006); c.beginPath(); c.moveTo(s.x, s.y); c.lineTo(s.x + W * .18, s.y - W * .1); c.stroke();
+        if(s.l > 1) f.sh = null; }
+    }
+  },
+  embers:{
+    init(f){ const n = Math.round(70 * f.d); f.parts = []; for(let i = 0; i < n; i++) f.parts.push(emNew(f, true)); },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, B = f.B, C = f.C;
+      c.fillStyle = rg(C, .95); c.fillRect(0, 0, W, H);
+      const bg = c.createRadialGradient(W / 2, H * 1.05, 0, W / 2, H * 1.05, H * .7); bg.addColorStop(0, rg(B, .4)); bg.addColorStop(1, rg(B, 0)); c.fillStyle = bg; c.fillRect(0, 0, W, H);
+      c.globalCompositeOperation = 'lighter';
+      f.parts.forEach((p, i) => {
+        p.y -= p.v * dt; p.life -= dt * .22; if(p.life <= 0 || p.y < -10){ f.parts[i] = p = emNew(f, false); }
+        const x = p.x + Math.sin(t * 1.5 + p.ph) * W * .03, a = Math.max(0, p.life) * (.6 + .4 * Math.sin(t * 9 + p.ph)), r = p.r * (.5 + p.life * .7);
+        const col = p.life > .5 ? A : B, gg = c.createRadialGradient(x, p.y, 0, x, p.y, r * 3); gg.addColorStop(0, rg(col, a)); gg.addColorStop(1, rg(col, 0)); c.fillStyle = gg; c.fillRect(x - r * 3, p.y - r * 3, r * 6, r * 6);
+      });
+      c.globalCompositeOperation = 'source-over';
+    }
+  },
+  fireflies:{
+    init(f){ const n = Math.round(30 * f.d); f.parts = []; for(let i = 0; i < n; i++) f.parts.push({ x:rnd() * f.W, y:rnd() * f.H, a:rnd() * TAU, s:f.W * (.02 + rnd() * .04), ph:rnd() * TAU, r:f.W * (.012 + rnd() * .012) }); },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, C = f.C;
+      c.fillStyle = rg(C, .95); c.fillRect(0, 0, W, H);
+      c.globalCompositeOperation = 'lighter';
+      f.parts.forEach(p => {
+        p.a += (rnd() - .5) * dt * 4; p.x += Math.cos(p.a) * p.s * dt; p.y += Math.sin(p.a) * p.s * dt;
+        if(p.x < -20) p.x = W + 20; if(p.x > W + 20) p.x = -20; if(p.y < -20) p.y = H + 20; if(p.y > H + 20) p.y = -20;
+        const pulse = .5 + .5 * Math.sin(t * 1.6 + p.ph), r = p.r * (2.2 + pulse * 2.2);
+        const gg = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, r); gg.addColorStop(0, rg(A, .55 * pulse + .08)); gg.addColorStop(1, rg(A, 0)); c.fillStyle = gg; c.fillRect(p.x - r, p.y - r, r * 2, r * 2);
+        c.fillStyle = 'rgba(255,255,255,' + (.75 * pulse) + ')'; c.beginPath(); c.arc(p.x, p.y, Math.max(.8, p.r * .22), 0, TAU); c.fill();
+      });
+      c.globalCompositeOperation = 'source-over';
+    }
+  },
+  lava:{
+    init(f){ f.parts = []; for(let i = 0; i < 6; i++) f.parts.push({ fx:.12 + rnd() * .22, fy:.1 + rnd() * .2, px:rnd() * TAU, py:rnd() * TAU, r:.3 + rnd() * .3, c:i % 3 }); },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, cols = [f.A, f.B, f.C];
+      c.fillStyle = rg(f.C, 1); c.fillRect(0, 0, W, H);
+      c.globalCompositeOperation = 'lighter';
+      f.parts.forEach((p, i) => {
+        const x = (.5 + .4 * Math.sin(t * p.fx + p.px)) * W, y = (.5 + .45 * Math.cos(t * p.fy + p.py)) * H, r = (p.r + .08 * Math.sin(t * .6 + i)) * Math.max(W, H) * .8 * f.d;
+        const gg = c.createRadialGradient(x, y, 0, x, y, r); gg.addColorStop(0, rg(cols[p.c], .55)); gg.addColorStop(.6, rg(cols[p.c], .18)); gg.addColorStop(1, rg(cols[p.c], 0)); c.fillStyle = gg; c.fillRect(x - r, y - r, r * 2, r * 2);
+      });
+      c.globalCompositeOperation = 'source-over';
+    }
+  },
+  grid:{
+    init(f){},
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, B = f.B, C = f.C, hy = H * .56, cx = W / 2;
+      const sky = c.createLinearGradient(0, 0, 0, hy); sky.addColorStop(0, rg(C, 1)); sky.addColorStop(1, rg(B, .55)); c.fillStyle = sky; c.fillRect(0, 0, W, hy);
+      c.fillStyle = rg(C, 1); c.fillRect(0, hy, W, H - hy);
+      const R = W * .3 * f.d, sy = hy - R * .15;
+      c.save(); c.beginPath(); c.rect(0, 0, W, hy); c.clip();
+      const sun = c.createLinearGradient(0, sy - R, 0, sy + R); sun.addColorStop(0, rg(A, 1)); sun.addColorStop(1, rg(B, 1)); c.fillStyle = sun; c.beginPath(); c.arc(cx, sy, R, 0, TAU); c.fill();
+      c.fillStyle = rg(C, 1); for(let i = 0; i < 6; i++){ const yy = sy + R * (.05 + i * .17), hh = R * (.02 + i * .016); c.fillRect(cx - R, yy, R * 2, hh); }
+      c.restore();
+      c.strokeStyle = rg(A, .7); c.lineWidth = Math.max(1, W * .004);
+      for(let i = -14; i <= 14; i++){ c.beginPath(); c.moveTo(cx + i * W * .012, hy); c.lineTo(cx + i * W * .32, H); c.stroke(); }
+      const N = 12, off = (t * .35) % 1;
+      for(let j = 0; j < N; j++){ const z = (j + off) / N, y = hy + (H - hy) * z * z; c.strokeStyle = rg(A, .12 + .65 * z); c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke(); }
+      const gl = c.createLinearGradient(0, hy - 2, 0, hy + 14); gl.addColorStop(0, rg(A, .8)); gl.addColorStop(1, rg(A, 0)); c.fillStyle = gl; c.fillRect(0, hy - 2, W, 16);
+    }
+  },
+  snow:{
+    init(f){ const n = Math.round(90 * f.d); f.parts = []; for(let i = 0; i < n; i++) f.parts.push({ x:rnd() * f.W, y:rnd() * f.H, r:Math.max(.8, f.W * (.004 + rnd() * .01)), v:f.H * (.05 + rnd() * .12), ph:rnd() * TAU }); },
+    draw(f, dt){
+      const c = f.ctx, W = f.W, H = f.H, t = f.t, A = f.A, B = f.B, C = f.C;
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rg(C, .95)); g.addColorStop(1, rg(B, .3)); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      f.parts.forEach(p => {
+        p.y += p.v * dt; if(p.y > H + 6){ p.y = -6; p.x = rnd() * W; }
+        const x = p.x + Math.sin(t * .8 + p.ph) * W * .03; c.fillStyle = rg(A, .55 + p.r / (W * .02)); c.beginPath(); c.arc(x, p.y, p.r, 0, TAU); c.fill();
+      });
+    }
+  }
+};
+function bubNew(f, init){ const W = f.W, H = f.H; return { x:rnd() * W, y:init ? rnd() * H : H + 20, r:(3 + rnd() * 14) * (W / 260), vy:(.05 + rnd() * .12) * H, ph:rnd() * TAU, sw:.4 + rnd() * .8 }; }
+function emNew(f, init){ const W = f.W, H = f.H; return { x:rnd() * W, y:init ? rnd() * H : H + 6, r:W * (.006 + rnd() * .012), v:H * (.06 + rnd() * .14), ph:rnd() * TAU, life:init ? rnd() : 1 }; }
+
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FXQ = { low:.35, mid:.55, high:.9 };
+function mkFx(canvas, isDemo){ return { cvs:canvas, ctx:canvas.getContext('2d'), W:2, H:2, t:0, acc:0, n:0, name:'', active:false, isDemo:!!isDemo, parts:[], rip:[], cssW:0, cssH:0,
+  cy(){ return isDemo ? this.H * .36 : haloYnum * (this.H / Math.max(1, vpH())); } }; }
+const fxMain = mkFx($('fxc'), false);
+let fxDemo = null, fxRaf = 0, fxLast = 0;
+function fxResize(f, cw, ch){
+  if(!cw || !ch) return; const q = FXQ[cfg.fxQ] || .55;
+  f.cssW = cw; f.cssH = ch; f.cvs.width = f.W = Math.max(2, Math.round(cw * q)); f.cvs.height = f.H = Math.max(2, Math.round(ch * q));
+  f.parts = []; f.rip = []; const F = FXD[f.name]; if(F && F.init) F.init(f);
+}
+function fxSetup(f, name){
+  f.active = !!FXD[name];
+  if(f.name !== name){ f.name = name; f.t = 0; f.acc = 9; f.n = 0; f.parts = []; f.rip = []; const F = FXD[name]; if(F && F.init) F.init(f); }
+}
+function fxDraw(f, dt){
+  const F = FXD[f.name]; if(!F) return;
+  f.t += dt; f.A = hex2rgb(cfg.auroraA); f.B = hex2rgb(cfg.auroraB); f.C = hex2rgb(cfg.auroraC); f.d = cfg.auroraS / 100;
+  f.ctx.clearRect(0, 0, f.W, f.H); F.draw(f, dt);
+}
+function fxLoop(ts){
+  fxRaf = 0;
+  const raw = Math.min(.05, Math.max(0, (ts - fxLast) / 1000) || 0); fxLast = ts;
+  const dt = raw * (cfg.auroraSp / 4) * (cfg.speed / 100);
+  let any = false;
+  [fxMain, fxDemo].forEach(f => { if(f && f.active && f.cvs.isConnected){ any = true; fxDraw(f, dt); } });
+  if(any && cfg.speed > 0 && !document.hidden && !reduceMotion) fxRaf = requestAnimationFrame(fxLoop);
+}
+function fxKick(){ if(!fxRaf){ fxLast = performance.now(); fxRaf = requestAnimationFrame(fxLoop); } }
+function fxUpdate(){
+  fxSetup(fxMain, cfg.fx);
+  if(fxMain.active){
+    const w = window.innerWidth, h = vpH();
+    if(!fxMain.cssW || Math.abs(fxMain.cssW - w) > 2 || Math.abs(fxMain.cssH - h) > 40 || Math.abs(fxMain.W - w * (FXQ[cfg.fxQ] || .55)) > 2) fxResize(fxMain, w, h);
+  }
+  if(fxDemo && fxDemo.cvs.isConnected) fxSetup(fxDemo, cfg.fx);
+  fxKick();
+}
+function fxAttachDemo(){
+  const cv = $('demoFx'); if(!cv){ fxDemo = null; return; }
+  fxDemo = mkFx(cv, true); fxSetup(fxDemo, cfg.fx);
+  fxResize(fxDemo, 390, $('demoIn').offsetHeight || 700); fxKick();
+}
+document.addEventListener('visibilitychange', () => { if(!document.hidden) fxKick(); });
+document.addEventListener('pointerdown', e => {
+  if(!fxMain.active) return; const F = FXD[fxMain.name]; if(!F || !F.tap) return;
+  const qx = fxMain.W / Math.max(1, window.innerWidth), qy = fxMain.H / Math.max(1, vpH());
+  F.tap(fxMain, e.clientX * qx, e.clientY * qy); fxKick();
+}, { passive:true });
+
+/* ============================================================
+   SONIDOS (se generan en el teléfono, no hay archivos) — todos se pueden cambiar o apagar
+   ============================================================ */
+const SND_PACKS = [['soft','Suave'],['click','Clic'],['wood','Madera'],['bubble','Burbuja'],['mech','Teclado mecánico'],['retro','Retro']];
+let actx = null, master = null;
+function audio(){
+  if(!actx){ try{ actx = new (window.AudioContext || window.webkitAudioContext)(); master = actx.createGain(); master.connect(actx.destination); }catch(e){ actx = null; } }
+  if(actx && actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function tone(f, dur, type, vol, slide, when){
+  const c = audio(); if(!c) return; const t = c.currentTime + (when || 0);
+  const o = c.createOscillator(), g = c.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+  if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, f + slide), t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(.0002, vol), t + .004); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .03);
+}
+let noiseBuf = null;
+function noise(dur, vol, hp, lp, when){
+  const c = audio(); if(!c) return; const t = c.currentTime + (when || 0);
+  if(!noiseBuf){ noiseBuf = c.createBuffer(1, c.sampleRate * .3, c.sampleRate); const d = noiseBuf.getChannelData(0); for(let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+  const s = c.createBufferSource(); s.buffer = noiseBuf; const g = c.createGain();
+  const hf = c.createBiquadFilter(); hf.type = 'highpass'; hf.frequency.value = hp || 800;
+  const lf = c.createBiquadFilter(); lf.type = 'lowpass'; lf.frequency.value = lp || 12000;
+  g.gain.setValueAtTime(Math.max(.0002, vol), t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  s.connect(hf); hf.connect(lf); lf.connect(g); g.connect(master); s.start(t); s.stop(t + dur + .02);
+}
+const PACK = {
+  soft:{ key:d => tone(480 + d * 24, .07, 'sine', .9), del:() => tone(300, .09, 'sine', .8, -110), save:() => { tone(620, .09, 'sine', .9); tone(930, .16, 'sine', .8, 0, .08); },
+    cap:() => tone(700, .06, 'triangle', .7), hist:() => tone(420, .1, 'sine', .8, 120), err:() => tone(150, .16, 'triangle', .9, -30), copy:() => tone(880, .07, 'sine', .8), hide:() => tone(380, .1, 'sine', .7, -120) },
+  click:{ key:() => noise(.025, .9, 2500), del:() => noise(.04, .8, 900, 6000), save:() => { noise(.03, 1, 1800); tone(1000, .06, 'square', .25, 0, .03); },
+    cap:() => noise(.03, .8, 1400, 7000), hist:() => noise(.05, .7, 600, 5000), err:() => noise(.12, .9, 200, 900), copy:() => { noise(.02, .8, 2500); noise(.02, .8, 2500, 0, .05); }, hide:() => noise(.05, .6, 500, 3000) },
+  wood:{ key:d => { tone(260 + d * 26, .06, 'triangle', 1, -90); noise(.02, .35, 700, 3500); }, del:() => tone(180, .09, 'triangle', .9, -60), save:() => { tone(330, .08, 'triangle', 1); tone(495, .12, 'triangle', .9, 0, .07); },
+    cap:() => tone(390, .06, 'triangle', .8), hist:() => tone(240, .1, 'triangle', .9, 80), err:() => tone(120, .15, 'triangle', 1), copy:() => tone(520, .06, 'triangle', .8), hide:() => tone(200, .1, 'triangle', .8, -50) },
+  bubble:{ key:d => tone(420 + d * 38, .09, 'sine', 1, 320), del:() => tone(520, .1, 'sine', .8, -300), save:() => { tone(520, .1, 'sine', .9, 300); tone(780, .14, 'sine', .8, 380, .09); },
+    cap:() => tone(600, .08, 'sine', .8, 260), hist:() => tone(360, .12, 'sine', .9, 340), err:() => tone(200, .14, 'sine', 1, -120), copy:() => tone(700, .08, 'sine', .8, 300), hide:() => tone(480, .1, 'sine', .7, -260) },
+  mech:{ key:() => { noise(.02, 1, 1500); tone(180, .045, 'square', .3, -60); }, del:() => { noise(.03, .9, 900); tone(130, .06, 'square', .3, -40); }, save:() => { noise(.03, 1, 1200); tone(220, .08, 'square', .3, 40); tone(330, .1, 'square', .25, 0, .06); },
+    cap:() => { noise(.02, .8, 1500); tone(200, .04, 'square', .25); }, hist:() => { noise(.04, .8, 800); tone(150, .08, 'square', .25); }, err:() => tone(100, .18, 'square', .35), copy:() => { noise(.02, .8, 1800); tone(260, .05, 'square', .25); }, hide:() => { noise(.04, .7, 700); } },
+  retro:{ key:d => tone(300 + d * 55, .05, 'square', .3), del:() => tone(220, .08, 'square', .3, -80), save:() => { tone(523, .07, 'square', .3); tone(784, .12, 'square', .28, 0, .07); },
+    cap:() => tone(660, .05, 'square', .28), hist:() => tone(392, .09, 'square', .28, 100), err:() => tone(110, .18, 'sawtooth', .3, -20), copy:() => tone(880, .06, 'square', .28), hide:() => tone(330, .09, 'square', .26, -90) }
+};
+const SND_KEY = { key:'sndKey', del:'sndDel', save:'sndSave', cap:'sndCap', hist:'sndHist', err:'sndErr', copy:'sndCopy', hide:'sndHide' };
+function snd(ev, d, force){
+  if(!force && (!cfg.snd || !cfg[SND_KEY[ev]])) return;
+  const c = audio(); if(!c) return;
+  master.gain.value = Math.max(0, Math.min(1, cfg.sndVol / 100)) * .7;
+  const f = (PACK[cfg.sndPack] || PACK.soft)[ev]; if(f) f(cfg.sndPitch === 'same' ? 5 : (d || 0));
+}
+document.addEventListener('pointerdown', () => { if(cfg.snd) audio(); }, { once:true, passive:true });
+
+/* ============================================================
+   TECLADO PROPIO — copia del teclado numérico de Gboard (sin la franja gris de arriba)
+   Posiciones: 1 2 3 – / 4 5 6 ␣ / 7 8 9 ⌫ / , 0 . ✓   +   flecha para ocultar abajo a la derecha
+   ============================================================ */
+const KB_ACT = [['none','Nada'],['capNext','Capacidad siguiente'],['capPrev','Capacidad anterior'],['rev','Reverso'],['copy','Copiar el resultado'],['clear','Limpiar la cantidad']];
+const KB_IDS = ['inMain','inP','inS','capOther'];
+const KB_MAX = { inMain:6, inP:4, inS:5, capOther:4 };
+let kbOpen = false, kbTarget = 'inMain', kbFocusing = false;
+const KI = {
+  bs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12a1 1 0 001-1V6a1 1 0 00-1-1z"/><path d="M17 9.5l-5 5M12 9.5l5 5"/></svg>',
+  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  sp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4.5h16V10"/></svg>',
+  hide:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg>'
+};
+function kbMarkup(real){
+  const k = (code, inner, cls) => '<button class="kk keep' + (cls ? ' ' + cls : '') + '" tabindex="-1" data-kk="' + code + '" aria-label="' + code + '">' + inner + '</button>';
+  return '<div class="kbgrid"' + (real ? ' id="kbgrid"' : '') + '>' +
+    k('1','1') + k('2','2') + k('3','3') + k('dash','–') +
+    k('4','4') + k('5','5') + k('6','6') + k('space', KI.sp) +
+    k('7','7') + k('8','8') + k('9','9') + k('bs', KI.bs) +
+    k('comma',',') + k('0','0') + k('dot','.') + k('ok', '<span class="pill">' + KI.ok + '</span>', 'act') +
+    '</div><div class="kbfoot"><button class="kk keep hide" tabindex="-1" data-kk="hide"' + (real ? ' id="kbHide"' : '') + ' aria-label="Ocultar teclado">' + KI.hide + '</button></div>';
+}
+function updateCompact(){
+  const root = document.documentElement, h = vpH();
+  root.classList.toggle('compact', h < 640 || (kbOpen && cfg.kbOn));
+  root.classList.toggle('tiny', kbOpen && cfg.kbOn && h < 700);
+}
+function applyInputMode(){
+  ['inMain','inP','inS','capOther'].forEach(id => { const el = $(id); if(el) el.setAttribute('inputmode', cfg.kbOn ? 'none' : 'numeric'); });
+}
+function showKb(){
+  if(!cfg.kbOn || kbOpen) return;
+  kbOpen = true; document.documentElement.classList.add('kbo'); updateCompact();
+  if(S.hs !== 'closed') setHS('closed');                 // teclado e historial no se muestran a la vez
+}
+function hideKb(){
+  if(!kbOpen) return;
+  kbOpen = false; document.documentElement.classList.remove('kbo'); updateCompact();
+  const a = document.activeElement; if(a && KB_IDS.includes(a.id)) a.blur();
+}
+function activeInput(){
+  const a = document.activeElement; if(a && KB_IDS.includes(a.id)) return a;
+  return $(kbTarget) || (S.mode === 'rev' ? $('inP') : $('inMain'));
+}
+const allSel = el => el.value.length > 0 && el.selectionStart === 0 && el.selectionEnd === el.value.length;
+function kbSet(el, v){
+  el.value = v; el.dispatchEvent(new Event('input', { bubbles:true }));
+  try{ el.setSelectionRange(v.length, v.length); }catch(e){}
+}
+function kbType(d){
+  const el = activeInput(); if(!el) return;
+  let focused = document.activeElement === el;
+  if(!focused){ kbFocusing = true; try{ el.focus({ preventScroll:true }); }catch(e){} }
+  const base = (focused && allSel(el)) ? '' : el.value;
+  const v = digits(base + d, KB_MAX[el.id] || 6);
+  if(v === el.value && base === el.value) return;
+  kbSet(el, v);
+}
+function kbBack(){
+  const el = activeInput(); if(!el) return;
+  if(document.activeElement !== el){ kbFocusing = true; try{ el.focus({ preventScroll:true }); }catch(e){} }
+  kbSet(el, allSel(el) ? '' : el.value.slice(0, -1));
+}
+function kbEnter(){
+  const el = activeInput();
+  if(el && el.id === 'inP'){ kbFocusing = true; $('inS').focus(); snd('cap'); return; }
+  if(el && el.id === 'capOther'){ focusMain(true); snd('cap'); return; }
+  commit();
+}
+function runAction(a){
+  if(a === 'capNext' || a === 'capPrev'){
+    const list = cfg.presets.map(p => p.cap); let i = list.indexOf(S.cap); if(i < 0) i = 0;
+    i = (i + (a === 'capNext' ? 1 : list.length - 1)) % list.length; S.cap = list[i]; render(); kick(false); snd('cap');
+  }else if(a === 'rev') toggleMode();
+  else if(a === 'copy') copyCurrent();
+  else if(a === 'clear'){ clearBuf(); syncInputs(); render(); snd('del'); }
+}
+let kbRep = 0, kbRepT = 0;
+function kbPress(code){
+  if(cfg.kbHapt && cfg.haptics){ try{ navigator.vibrate && navigator.vibrate(Math.max(3, Math.round((VIB[cfg.hapticsLvl] || 9) * .6))); }catch(e){} }
+  if(/^[0-9]$/.test(code)){ snd('key', +code); return kbType(code); }
+  if(code === 'bs'){ snd('del'); kbBack(); clearTimeout(kbRepT); kbRepT = setTimeout(() => { kbRep = setInterval(() => { kbBack(); }, 70); }, 420); return; }
+  if(code === 'ok') return kbEnter();
+  if(code === 'hide'){ snd('hide'); return hideKb(); }
+  const act = cfg['kbk_' + code]; if(act && act !== 'none') runAction(act);
+}
+function kbStopRep(){ clearTimeout(kbRepT); clearInterval(kbRep); kbRep = 0; }
+const kbDown = {};
+$('kbin').innerHTML = kbMarkup(true);
+$('kbin').addEventListener('pointerdown', e => {
+  const k = e.target.closest('.kk'); if(!k) return;
+  kbDown[e.pointerId] = k; k.classList.add('pr'); kbPress(k.dataset.kk);
+});
+['pointerup','pointercancel','pointerleave'].forEach(ev => $('kbin').addEventListener(ev, e => {
+  const k = kbDown[e.pointerId]; if(k){ k.classList.remove('pr'); delete kbDown[e.pointerId]; if(k.dataset.kk === 'bs') kbStopRep(); }
+}));
+
+/* ============================================================
+   PINTAR LA APP
+   ============================================================ */
+function setHTML(el, h){ if(el._h === h) return false; el.innerHTML = h; el._h = h; return true; }
+
+// halo: destello al cambiar / al guardar
+function kick(strong){
+  if(!cfg.glowReact || cfg.speed === 0) return;
+  const k = $('halokick'); k.classList.remove('go', 'strong'); void k.offsetWidth;
+  if(strong) k.classList.add('strong'); k.classList.add('go');
+}
+// números que "cuentan" hasta el nuevo valor
+const shown = [], raf = [];
+function paintNums(){
+  const nums = [].slice.call($('big').querySelectorAll('.num'));
+  nums.forEach((el, i) => {
+    const to = +el.dataset.v, from = shown[i];
+    cancelAnimationFrame(raf[i]);
+    if(cfg.numAnim !== 'count' || cfg.speed === 0 || from === undefined || from === to || !booted){ shown[i] = to; return; }
+    const dur = Math.min(700, 240 + Math.log10(Math.abs(to - from) + 1) * 170) * (100 / cfg.speed), t0 = performance.now();
+    el.textContent = fmt(from);
+    (function step(now){
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4), v = Math.round(from + (to - from) * e);
+      el.textContent = fmt(v); shown[i] = v;
+      if(k < 1) raf[i] = requestAnimationFrame(step); else shown[i] = to;
+    })(t0);
+  });
+  shown.length = nums.length;
+}
+function renderStage(){
+  const d = current();
+  const changed = setHTML($('big'), bigHTML(d));
+  setHTML($('phrase'), phraseHTML(d)); setHTML($('meta'), metaHTML(d));
+  if(changed){ paintNums(); if(booted) kick(false); }
+  schedHalo();
+}
+
+/* ---- hoja del historial ---- */
+const rowPx = () => (54 + 6) * cfg.density / 100;
+function targetH(st){
+  const compact = document.documentElement.classList.contains('compact');
+  const content = $('hist').scrollHeight || 44;
+  const peek = Math.min(content, Math.round(rowPx() * cfg.peekRows * (compact ? .6 : 1)));
+  const open = Math.max(peek, Math.min(content, Math.round(vpH() * cfg.histH / 100 * (compact ? .45 : 1))));
+  return st === 'closed' ? 0 : st === 'peek' ? peek : open;
+}
+function applyHist(animate){
+  const w = $('histwrap');
+  if(!animate) w.style.transition = 'none';
+  w.style.height = targetH(S.hs) + 'px';
+  if(!animate){ void w.offsetHeight; w.style.transition = ''; }
+  schedHalo();
+}
+function setHS(st){
+  S.hs = st; renderHist(); saveState();
+}
+function renderHist(){
+  const list = $('hist'), n = S.hist.length;
+  list.innerHTML = n
+    ? S.hist.map((it, i) => rowHTML(it, { i, x:true, isNew:lastAdded && i === 0 })).join('')
+    : '<div class="hempty">Aún no guardas nada. Toca + para guardar un resultado.</div>';
+  if(lastAdded) list.scrollTop = 0;
+  const c = $('hcount'); c.textContent = n;
+  if(n !== lastCount && booted){ c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+  const open = S.hs === 'open';
+  $('sheet').dataset.hs = S.hs;
+  $('statTxt').textContent = statText(n);
+  $('statChip').classList.toggle('off', S.hs === 'closed'); $('statChip').setAttribute('aria-expanded', String(S.hs !== 'closed'));
+  $('histCopy').classList.toggle('hidden', !(open && n)); $('histClear').classList.toggle('hidden', !(open && n));
+  $('hhint').classList.toggle('hidden', !(S.hs === 'peek' && n > 1));
+  applyHist(booted);
+  lastCount = n; lastAdded = false;
+}
+// arrastrar la hoja
+(function(){
+  const dz = $('dz'), w = $('histwrap'); let drag = null;
+  dz.addEventListener('pointerdown', e => {
+    if(!cfg.dragSheet || e.target.closest('button')) return;
+    drag = { y0:e.clientY, h0:w.getBoundingClientRect().height, t0:performance.now(), moved:false, st:S.hs };
+    try{ dz.setPointerCapture(e.pointerId); }catch(err){}
+    w.style.transition = 'none'; dz.classList.add('drag');
+  });
+  dz.addEventListener('pointermove', e => {
+    if(!drag) return;
+    const dy = e.clientY - drag.y0; if(Math.abs(dy) > 5) drag.moved = true;
+    if(!drag.moved) return;
+    w.style.height = Math.max(0, Math.min(targetH('open') + 24, drag.h0 - dy)) + 'px'; schedHalo();
+  });
+  const end = e => {
+    if(!drag) return;
+    const d = drag; drag = null; dz.classList.remove('drag'); w.style.transition = '';
+    if(!d.moved){                                   // toque: abre / cierra un paso
+      vib(); setHS(d.st === 'open' ? 'peek' : d.st === 'peek' ? 'open' : 'peek'); return;
+    }
+    const sts = ['closed', 'peek', 'open'], hs = sts.map(targetH), h = parseFloat(w.style.height) || 0;
+    let idx = 0; hs.forEach((x, i) => { if(Math.abs(x - h) < Math.abs(hs[idx] - h)) idx = i; });
+    const v = (e.clientY - d.y0) / Math.max(1, performance.now() - d.t0), si = sts.indexOf(d.st);
+    if(v < -.45) idx = Math.min(2, Math.max(idx, si + 1)); else if(v > .45) idx = Math.max(0, Math.min(idx, si - 1));
+    vib(); setHS(sts[idx]);
+  };
+  dz.addEventListener('pointerup', end); dz.addEventListener('pointercancel', end);
+})();
+
+function buildCaps(){ $('caps').innerHTML = capsMarkup(true); applyInputMode(); syncCaps(); }
+function syncCaps(){
+  const isPre = !!presetOf(S.cap);
+  document.querySelectorAll('#caps .cap[data-c]').forEach(b => b.classList.toggle('on', Number(b.dataset.c) === S.cap));
+  const ow = $('otherWrap'), oi = $('capOther');
+  if(ow){
+    ow.classList.toggle('on', !isPre);
+    if(document.activeElement !== oi) oi.value = !isPre ? String(S.cap) : (S.customCap ? String(S.customCap) : '');
+  }
+  $('modeBtn').classList.toggle('on', S.mode === 'rev');
+}
+function syncInputs(){
+  $('inMain').value = S.buf.main; $('inP').value = S.buf.p; $('inS').value = S.buf.s;
+  $('fwdBox').classList.toggle('hidden', S.mode === 'rev');
+  $('revBox').classList.toggle('hidden', S.mode !== 'rev');
+  $('clr').classList.toggle('hidden', !S.buf.main || S.mode === 'rev');
+}
+function render(){
+  if(lastCapApplied !== S.cap) applyCfg();
+  renderStage(); renderHist(); syncCaps();
+  $('clr').classList.toggle('hidden', !S.buf.main || S.mode === 'rev');
+  $('appTitle').textContent = cfg.title; $('dateLine').textContent = dateLine(); $('kicker').textContent = cfg.kickerText;
+  $('inMain').placeholder = cfg.phText; $('add').textContent = cfg.addIcon;
+  saveState();
+}
+function focusMain(sel){
+  if(cfg.kbOn && !kbOpen) return;                 // con el teclado oculto no se enfoca nada
+  const el = S.mode === 'rev' ? (S.buf.p || !S.buf.s ? $('inP') : $('inS')) : $('inMain');
+  try{ el.focus({ preventScroll:true }); if(sel) el.select(); }catch(e){}
+}
+
+/* ============================================================
+   ACCIONES
+   ============================================================ */
+function clearBuf(){ S.buf.main = ''; S.buf.p = ''; S.buf.s = ''; }
+function shake(){
+  vib();
+  const a = $('add'); a.classList.remove('shake'); void a.offsetWidth; a.classList.add('shake');
+}
+function pulseBig(){
+  if(cfg.speed === 0 || !$('big').animate) return;
+  $('big').animate([{ transform:'scale(1)' }, { transform:'scale(1.09)' }, { transform:'scale(1)' }], { duration:380 * 100 / cfg.speed, easing:'cubic-bezier(.34,1.56,.64,1)' });
+}
+function commit(){               // guarda en el historial; el resultado se queda en pantalla
+  const d = current();
+  if(!d){ snd('err'); return shake(); }
+  S.hist.unshift({ ...d, t:Date.now() }); S.hist = S.hist.slice(0, cfg.histMax); lastAdded = true;
+  vib(); snd('save'); kick(true); pulseBig();
+  const a = $('add'); a.classList.remove('pulse'); void a.offsetWidth; a.classList.add('pulse');
+  render(); focusMain(true);
+}
+function reuse(i){               // tocar una línea del historial la vuelve a poner en la calculadora
+  const it = S.hist[i]; if(!it) return;
+  S.cap = it.cap; S.mode = it.mode === 'r' ? 'rev' : 'fwd'; clearBuf();
+  if(it.mode === 'r'){ S.buf.p = String(it.p); S.buf.s = String(it.s); } else S.buf.main = String(it.n);
+  syncInputs(); render(); kick(true); snd('cap');
+}
+function removeHist(i){
+  undoSnap = { hist:S.hist.slice() };
+  S.hist.splice(i, 1);
+  toast('Quitado del historial', 'Deshacer', undo); snd('del'); render();
+}
+function clearHist(){
+  if(!S.hist.length) return;
+  undoSnap = { hist:S.hist.slice() }; S.hist = [];
+  toast('Historial limpio', 'Deshacer', undo); snd('del'); render();
+}
+function undo(){
+  if(!undoSnap) return;
+  S.hist = undoSnap.hist; undoSnap = null; hideToast(); render();
+}
+function toggleMode(){
+  S.mode = S.mode === 'fwd' ? 'rev' : 'fwd'; clearBuf(); syncInputs(); render(); focusMain();
+}
+
+/* ---- Copiar ---- */
+function shiftDate(t){
+  const d = t ? new Date(t) : new Date(); if(d.getHours() < cfg.cutoff) d.setDate(d.getDate() - 1);
+  const p = n => String(n).padStart(2, '0');
+  return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear();
+}
+const jb = n => fmt(n) + ' ' + plural(n, 'jaba', 'jabas');
+const pl = n => fmt(n) + ' ' + plural(n, 'pallet', 'pallets');
+function resText(res){
+  if(res.onlyJabas) return jb(res.jabas);
+  return pl(res.pallets) + (res.jabas > 0 ? (res.operator === '-' ? ' − ' : ' + ') + jb(res.jabas) : '');
+}
+function lineText(it){
+  if(it.mode === 'r') return (it.p ? pl(it.p) + (it.s ? ' + ' + jb(it.s) : '') : jb(it.s)) + ' (cap. ' + it.cap + ') = ' + jb(it.n);
+  return jb(it.n) + ' (cap. ' + it.cap + ') = ' + resText(calc(it.n, it.cap));
+}
+async function toClipboard(t, okMsg){
+  let ok = false;
+  try{ await navigator.clipboard.writeText(t); ok = true; }
+  catch(e){
+    try{
+      const ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
+    }catch(e2){}
+  }
+  toast(ok ? okMsg : 'No se pudo copiar'); if(ok) snd('copy');
+}
+function copyCurrent(){
+  const d = current();
+  if(!d){ toast('Escribe una cantidad para copiar el resultado'); return; }
+  toClipboard(lineText(d), 'Resultado copiado');
+}
+function copyHist(){
+  if(!S.hist.length) return;
+  const lines = S.hist.map(it => '• ' + hm(it.t) + ' - ' + lineText(it));
+  toClipboard([cfg.shareTitle + ' (' + shiftDate() + ')'].concat(lines).join('\n'), 'Historial copiado');
+}
+
+/* ---- Aviso ---- */
+function toast(msg, label, fn){
+  $('tmsg').textContent = msg;
+  const b = $('tact');
+  if(label){ b.textContent = label; b.style.display = ''; b.onclick = fn; } else { b.style.display = 'none'; b.onclick = null; }
+  $('toast').classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, label ? 5000 : 2200);
+}
+function hideToast(){ $('toast').classList.remove('show'); }
+
+/* ============================================================
+   ENTRADAS (teclado del teléfono)
+   ============================================================ */
+const digits = (v, max) => v.replace(/\D/g, '').replace(/^0+/, '').slice(0, max);
+$('inMain').addEventListener('input', e => {
+  const plus = e.target.value.includes('+');
+  const v = digits(e.target.value, 6); e.target.value = v; S.buf.main = v;
+  if(plus && v) return commit();
+  render();
+});
+$('inMain').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); commit(); } });
+$('inP').addEventListener('input', e => {
+  const plus = e.target.value.includes('+');
+  const v = digits(e.target.value, 4); e.target.value = v; S.buf.p = v; render();
+  if(plus) $('inS').focus();
+});
+$('inP').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); $('inS').focus(); } });
+$('inS').addEventListener('input', e => {
+  const plus = e.target.value.includes('+');
+  const v = digits(e.target.value, 5); e.target.value = v; S.buf.s = v;
+  if(plus) return commit();
+  render();
+});
+$('inS').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); commit(); } });
+// al enfocar una cantidad, se selecciona para reemplazarla de una
+['inMain','inP','inS'].forEach(id => $(id).addEventListener('focus', e => {
+  kbTarget = id; if(kbFocusing){ kbFocusing = false; return; }
+  showKb(); const t = e.target; setTimeout(() => { try{ t.select(); }catch(err){} }, 0);
+}));
+// tocar cualquier parte de la caja de cantidad escribe ahí (sin tener que confirmar la capacidad)
+$('fwdBox').addEventListener('click', e => { if(e.target.closest('#clr')) return; if(document.activeElement !== $('inMain')) $('inMain').focus(); });
+$('clr').addEventListener('click', () => { S.buf.main = ''; syncInputs(); render(); snd('del'); focusMain(); });
+$('add').addEventListener('click', commit);
+// los botones no le quitan el foco al campo (así el teclado no se cierra)
+document.addEventListener('mousedown', e => { if(e.target.closest('.keep')) e.preventDefault(); });
+
+$('caps').addEventListener('click', e => {
+  const b = e.target.closest('.cap[data-c]');
+  if(b){ vib(); S.cap = +b.dataset.c; render(); kick(false); snd('cap'); focusMain(); }
+});
+$('modeBtn').addEventListener('click', () => { vib(); snd('cap'); toggleMode(); });
+$('caps').addEventListener('focusin', e => {
+  if(e.target.id !== 'capOther') return;
+  kbTarget = 'capOther'; if(kbFocusing){ kbFocusing = false; return; } showKb();
+  if(S.customCap && S.cap !== S.customCap){ S.cap = S.customCap; render(); }
+  setTimeout(() => { try{ e.target.select(); }catch(err){} }, 0);
+});
+$('caps').addEventListener('input', e => {
+  if(e.target.id !== 'capOther') return;
+  const v = digits(e.target.value, 4); e.target.value = v;
+  if(!v) return;
+  S.cap = +v; if(!presetOf(S.cap)) S.customCap = S.cap;
+  render();
+});
+$('caps').addEventListener('keydown', e => { if(e.target.id === 'capOther' && e.key === 'Enter'){ e.preventDefault(); focusMain(true); } });
+
+$('hist').addEventListener('click', e => {
+  const x = e.target.closest('[data-del]'); if(x){ removeHist(+x.dataset.del); return; }
+  const row = e.target.closest('.row[data-i]'); if(row) reuse(+row.dataset.i);
+});
+$('statChip').addEventListener('click', () => {
+  vib(); hideKb(); const a = document.activeElement; if(a && KB_IDS.includes(a.id)) a.blur();   // también oculta el teclado del sistema
+  snd('hist'); setHS(S.hs === 'closed' ? 'open' : 'closed');
+});
+$('histCopy').addEventListener('click', copyHist);
+$('histClear').addEventListener('click', clearHist);
+$('copy').addEventListener('click', copyCurrent);
+$('gear').innerHTML = ICONS.gear;
+// teclado físico (solo si lo conectas): Esc borra
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('cust').classList.contains('open')){ clearBuf(); syncInputs(); render(); } });
+
+// ondas al tocar
+document.addEventListener('pointerdown', e => {
+  if(!cfg.ripple || cfg.speed === 0) return;
+  const t = e.target.closest('.rip'); if(!t) return;
+  const r = t.getBoundingClientRect(), s = document.createElement('i');
+  s.className = 'rp'; s.style.left = (e.clientX - r.left) + 'px'; s.style.top = (e.clientY - r.top) + 'px';
+  t.appendChild(s); setTimeout(() => s.remove(), 700);
+});
+
+/* ============================================================
+   PERSONALIZAR
+   ============================================================ */
+let curTab = 'temas', flashTimer = null;
+const TABS = [['temas','Temas'],['colores','Colores'],['fondo','Fondo y luz'],['tarjeta','Tarjeta'],['cont','Contornos y relleno'],['kb','Teclado'],['snd','Sonido'],['texto','Texto'],['res','Resultado'],['hist','Hoja e historial'],['ui','Interfaz'],['forma','Forma'],['mov','Movimiento'],['caps','Capacidades'],['gen','General']];
+
+const ACC_THEMES = [
+  ['Blanco','#FFFFFF','#D5D9E0'],['Violeta','#8B5CF6','#D946EF'],['Azul','#3B82F6','#06B6D4'],['Rosa','#EC4899','#A855F7'],
+  ['Verde','#22C55E','#14B8A6'],['Naranja','#F97316','#EC4899'],['Índigo','#6366F1','#38BDF8'],['Fuego','#EF4444','#F97316'],
+  ['Esmeralda','#10B981','#A3E635'],['Fucsia','#D946EF','#8B5CF6'],['Dorado','#EAB308','#F59E0B'],['Cian','#06B6D4','#10B981'],['Coral','#FB7185','#EC4899']
+];
+const BG_SWATCHES = ['#07070D','#000000','#0B0C0F','#04070F','#0A0510','#050F08','#0F0503','#0F0C03'];
+const STYLES = [
+  ['Mi tema DJ1', { accent:'#FFFFFF', accent2:'#FFFFFF', fg:'#FFFFFF', numColor:'#EFFFE6', looseColor:'#A3E635', minus:'#F6465D', followCapLoose:true, surf:0, bg:'#000000',
+    auroraOn:false, glow:100, glowSize:100, followCapGlow:true, texture:'dots', texa:3, font:'Montserrat', numFont:'Figtree', numItalic:false, numWeight:900, numScale:65, inScale:110, uiScale:110,
+    track:2, radius:0, cardA:0, o_card_w:0, o_inp_w:0, o_caps_w:0, cardBlur:0, density:100, speed:200, numAnim:'pop', breathe:true, rowAnim:'fade', showChip:false, showKicker:false, showDate:false,
+    inH:64, titleUpper:true, sheetColor:'#161616', sheetA:70 }],
+  ['Dorado', { accent:'#EAB308', accent2:'#F59E0B', numColor:'#FFF4C2', followCapLoose:false, looseColor:'#EAB308', followCapGlow:false, glowColor:'#EAB308', auroraA:'#8A6A12', auroraB:'#7A3B10', auroraC:'#3A2A08', chipColor:'#EAB308' }],
+  ['Azul eléctrico', { accent:'#3B82F6', accent2:'#06B6D4', numColor:'#E6F1FF', followCapLoose:false, looseColor:'#38BDF8', followCapGlow:false, glowColor:'#3B82F6', bg:'#02050B', auroraA:'#0E4A8F', auroraB:'#1B2F9A', auroraC:'#0B2548', chipColor:'#38BDF8' }],
+  ['Verde neón', { accent:'#22C55E', accent2:'#A3E635', numColor:'#EFFFE6', followCapLoose:false, looseColor:'#A3E635', followCapGlow:false, glowColor:'#22C55E', numFont:'Space Grotesk', texture:'grid', texa:5, auroraA:'#0F7A4A', auroraB:'#2E6A1E', auroraC:'#0A3A24', chipColor:'#A3E635' }],
+  ['Fuego', { accent:'#EF4444', accent2:'#F97316', numColor:'#FFE9E0', followCapLoose:false, looseColor:'#F97316', minus:'#FFB4A8', followCapGlow:false, glowColor:'#EF4444', bg:'#060202', auroraA:'#8F2A12', auroraB:'#7A1030', auroraC:'#3A0E08', chipColor:'#F97316' }],
+  ['Violeta', { accent:'#8B5CF6', accent2:'#D946EF', numColor:'#F4EBFF', followCapLoose:false, looseColor:'#D946EF', followCapGlow:false, glowColor:'#8B5CF6', bg:'#05020A', auroraA:'#5B21B6', auroraB:'#A21CAF', auroraC:'#2A0E55', chipColor:'#D946EF' }],
+  ['Clásico', { surf:5, glow:60, auroraOn:false, cardA:0, o_card_w:0, o_inp_w:0, o_caps_w:0, cardBlur:0, texture:'none', font:'Figtree', numFont:'Cabin', numItalic:true, numWeight:800, numScale:100, track:-3, speed:100, rowAnim:'slide', bg:'#000000', showChip:false }],
+  ['Seco', { glow:0, auroraOn:false, breathe:false, glowReact:false, numAnim:'none', speed:60, ripple:false, texture:'none', numFont:'Inconsolata', numWeight:700, cardBlur:0 }]
+];
+
+/* --- Definición de controles --- */
+const R = (k, label, min, max, step, t, f) => ({ type:'range', k, label, min, max, step, t, f:f || (v => v) });
+const C = (k, label, t) => ({ type:'color', k, label, t });
+const TG = (k, label, t) => ({ type:'toggle', k, label, t });
+const SG = (k, label, opts, t) => ({ type:'seg', k, label, opts, t });
+const SL = (k, label, opts, t) => ({ type:'select', k, label, opts, t });
+const TX = (k, label, t) => ({ type:'text', k, label, t });
+const H = label => ({ type:'head', label });
+const NUM_SEG = ['numWeight', 'histMax'];
+const px = v => v === 0 ? 'Sin borde' : v + ' px';
+const TAB_DEFS = {
+  colores:[
+    H('Color de acento'), { type:'accgrid' }, C('accent', 'Acento', 'add'), C('accent2', 'Acento (segundo color del degradado)', 'add'),
+    H('Números y textos'), C('fg', 'Color del texto', 'all'), C('numColor', 'Número de pallets', 'stage'),
+    TG('followCapLoose', 'Sueltas con el color de la capacidad', 'stage'), C('looseColor', 'Color de las sueltas (si no sigue la capacidad)', 'stage'),
+    C('minus', 'Color del signo menos (7 − 4)', 'stage'),
+    H('Bloques (botones y líneas del historial)'), R('surf', 'Intensidad de los bloques', 0, 100, 1, 'all', v => v === 0 ? 'Transparentes' : v + '%'), C('blockColor', 'Color de los bloques', 'all')
+  ],
+  fondo:[
+    H('Color de fondo'), { type:'bggrid' }, C('bg', 'Fondo', 'all'),
+    TG('bgGrad', 'Fondo en degradado', 'all'), C('bg2', 'Segundo color del degradado', 'all'), R('bgAngle', 'Dirección del degradado', 0, 360, 15, 'all', v => v + '°'),
+    H('Fondo animado'), SL('fx', 'Elige el fondo', FX_LIST, 'aurora'),
+    { type:'help', text:'Al elegir un fondo se ponen sus colores; luego puedes cambiarlos aquí. El agua y los anillos reaccionan cuando tocas la pantalla.' },
+    SG('fxQ', 'Calidad (más baja = gasta menos batería)', [['low','Baja'],['mid','Media'],['high','Alta']], 'aurora'),
+    C('auroraA', 'Color A', 'aurora'), C('auroraB', 'Color B', 'aurora'), C('auroraC', 'Color C (el fondo oscuro)', 'aurora'),
+    R('auroraI', 'Intensidad', 0, 100, 5, 'aurora', v => v + '%'), R('auroraS', 'Tamaño / cantidad', 50, 160, 10, 'aurora', v => v + '%'), R('auroraSp', 'Velocidad', 1, 10, 1, 'aurora', v => 'x' + v),
+    H('Halo detrás del resultado'), R('glow', 'Intensidad', 0, 100, 5, 'halo', v => v + '%'), R('glowSize', 'Tamaño', 20, 200, 10, 'halo', v => v + '%'),
+    R('glowBlur', 'Suavidad', 0, 40, 2, 'halo', v => v + ''), SG('glowShape', 'Forma', [['circle','Círculo'],['ellipse','Ovalado']], 'halo'),
+    SG('glowAnchor', 'Dónde está', [['result','Sigue al resultado'],['center','Centro'],['top','Arriba'],['bottom','Abajo']], 'halo'),
+    R('glowSpeed', 'Ritmo de la respiración', 2, 12, 1, 'halo', v => v + ' s'),
+    TG('followCapGlow', 'El halo toma el color de la capacidad', 'halo'), C('glowColor', 'Color del halo (si no sigue la capacidad)', 'halo'),
+    H('Textura'), SG('texture', 'Textura', [['none','Ninguna'],['dots','Puntos'],['grid','Cuadros'],['lines','Líneas'],['diag','Diagonal']], 'all'),
+    R('texa', 'Intensidad de la textura', 0, 25, 1, 'all', v => v + '%')
+  ],
+  tarjeta:[
+    H('Tarjeta de cristal'), C('cardColor', 'Color del cristal', 'card'), R('cardA', 'Transparencia del cristal', 0, 40, 1, 'card', v => v === 0 ? 'Sin cristal' : v + '%'),
+    R('cardBlur', 'Desenfoque del fondo', 0, 30, 1, 'card', v => v + ' px'),
+    { type:'help', text:'Los contornos de cada elemento (grosor, color, estilo y esquinas) se ajustan en la pestaña <b>Contornos</b>.' },
+    H('Encabezado'), TG('showDate', 'Mostrar la fecha', 'hdr'), TG('showChip', 'Mostrar la etiqueta del historial', 'chip'), C('chipColor', 'Color de la etiqueta', 'chip'),
+    H('Dentro de la tarjeta'), TG('showKicker', 'Mostrar el texto de arriba («TOTAL»)', 'stage'), TX('kickerText', 'Texto de arriba', 'stage'),
+    TG('showKeys', 'Mostrar atajos de teclado (Enter / Esc)', 'card')
+  ],
+  texto:[
+    H('Letras'), SL('font', 'Letra de la app', FONTS.map(f => [f, f]), 'hdr'), SL('numFont', 'Letra de los números', FONTS.map(f => [f, f]), 'stage'),
+    TG('numItalic', 'Números en cursiva', 'stage'), SG('numWeight', 'Grosor de los números', [[600,'Medio'],[700,'Negrita'],[800,'Extra'],[900,'Black']], 'stage'),
+    H('Tamaños'), R('numScale', 'Tamaño de los números', 40, 160, 5, 'stage', v => v + '%'),
+    R('uiScale', 'Tamaño del texto general', 85, 125, 5, 'all', v => v + '%'), R('track', 'Espacio entre números', -8, 4, 1, 'stage', v => v)
+  ],
+  res:[
+    H('Dónde va el resultado'), SG('stagePos', 'Posición', [['top','Arriba'],['center','Centro'],['bottom','Abajo']], 'stage'),
+    H('Qué muestra'), TG('showLabels', 'Mostrar «PALLETS» y «JABAS» bajo los números', 'stage'),
+    TG('showPhrase', 'Mostrar la frase (paquetes, faltantes)', 'stage'), TG('showChips', 'Mostrar los datos (capacidad, faltan…)', 'stage'),
+    R('phraseScale', 'Tamaño de la frase y los datos', 70, 150, 5, 'stage', v => v + '%'),
+    H('Animación de los números'), SG('numAnim', 'Cómo cambian al escribir', [['pop','Salto'],['count','Contar'],['roll','Deslizar'],['none','Ninguna']], 'stage')
+  ],
+  hist:[
+    H('La hoja'), C('sheetColor', 'Color de la hoja', 'sheet'), R('sheetA', 'Opacidad de la hoja', 0, 100, 5, 'sheet', v => v === 0 ? 'Invisible' : v + '%'),
+    H('Cómo se abre el historial'), { type:'help', text:'El historial se abre y se cierra <b>solo con el botón «Historial»</b> de arriba.' },
+    SG('histStart', 'Al abrir la app', [['last','La última'],['closed','Oculto'],['open','Abierto']], 'hist'),
+    TG('dragSheet', 'También poder arrastrar la hoja hacia arriba (puede abrirse sin querer)', 'sheet'),
+    TG('showHint', 'Mostrar «desliza para ver todo» (solo con el arrastre)', 'hist'), R('peekRows', 'Filas que asoman (solo con el arrastre)', 1, 3, .5, 'hist', v => v + ' filas'), R('histH', 'Alto con la hoja abierta', 25, 70, 5, 'hist', v => v + '% de la pantalla'),
+    H('Las líneas'), SG('histStyle', 'Estilo', [['lista','Lista'],['compacta','Compacta']], 'hist'),
+    TG('histTime', 'Mostrar la hora de cada línea', 'hist'), SG('histMax', 'Cuántas líneas guarda', [[20,'20'],[50,'50'],[100,'100'],[200,'200']], 'hist')
+  ],
+  ui:[
+    H('Encabezado'), TG('showCopyTop', 'Botón «Copiar» arriba', 'hdr'),
+    H('Campo de cantidad'), TX('phText', 'Texto del campo vacío', 'input'), R('inH', 'Alto del campo', 48, 96, 2, 'input', v => v + ' px'),
+    R('inScale', 'Tamaño de lo que escribes', 70, 140, 5, 'input', v => v + '%'), TG('showInIcon', 'Icono de caja dentro del campo', 'input'),
+    H('Botón de guardar'), SG('addIcon', 'Símbolo', [['+','+'],['✓','✓'],['↵','↵']], 'add'), R('addW', 'Ancho', 48, 110, 2, 'add', v => v + ' px'),
+    SG('addSide', 'Lado', [['right','Derecha'],['left','Izquierda']], 'add'),
+    H('Capacidades'), R('capH', 'Alto de los botones', 36, 64, 2, 'caps', v => v + ' px'), TG('showRev', 'Mostrar el botón «Reverso»', 'caps')
+  ],
+  forma:[
+    H('Esquinas'), R('radius', 'Esquinas redondeadas', 0, 28, 1, 'all', v => v === 0 ? 'Cuadradas' : v + ' px'),
+    { type:'help', text:'Cada elemento puede tener sus propias esquinas en la pestaña <b>Contornos</b>; si no, usa estas.' },
+    H('Espacio'), R('density', 'Espaciado entre elementos', 80, 130, 5, 'all', v => v + '%')
+  ],
+  mov:[
+    H('Velocidad'), R('speed', 'Velocidad de las animaciones', 0, 300, 10, 'stage', v => v === 0 ? 'Apagadas' : v + '%'),
+    H('Luces'), TG('breathe', 'El halo respira', 'halo'), TG('glowReact', 'El halo reacciona al escribir y al guardar', 'halo'),
+    H('Al tocar y al guardar'), SG('rowAnim', 'Entrada de una línea nueva', [['slide','Desliza'],['fade','Aparece'],['pop','Salta'],['none','Nada']], 'hist'),
+    TG('ripple', 'Ondas al tocar un botón', 'add'),
+    H('Vibración'), TG('haptics', 'Vibrar al tocar y al guardar', 'add'), SG('hapticsLvl', 'Intensidad', [['low','Suave'],['mid','Media'],['high','Fuerte']], 'add')
+  ],
+  kb:[
+    H('Teclado'), TG('kbOn', 'Usar el teclado propio (si lo apagas se usa el del teléfono)', 'kb'),
+    SG('kbPress', 'Resalte al tocar una tecla', [['circle','Círculo'],['square','Cuadrado'],['none','Ninguno']], 'kb'),
+    TG('kbHide', 'Mostrar la flecha para ocultar el teclado', 'kb'), SG('kbAnim', 'Al aparecer y ocultarse', [['slide','Desliza'],['fade','Aparece'],['none','Nada']], 'kb'),
+    H('Tamaños'), R('kbRow', 'Alto de las teclas', 44, 84, 2, 'kb', v => v + ' px'), R('kbFs', 'Tamaño de los números', 18, 44, 1, 'kb', v => v + ' px'),
+    H('Colores y transparencia'), C('kbBg', 'Fondo del teclado', 'kb'), R('kbA', 'Opacidad del fondo', 0, 100, 5, 'kb', v => v === 0 ? 'Invisible' : v + '%'),
+    R('kbBlur', 'Desenfoque detrás del teclado', 0, 30, 1, 'kb', v => v + ' px'), C('kbFg', 'Color de los números', 'kb'),
+    C('kbKeyBg', 'Color del fondo de cada tecla', 'kb'), R('kbKeyA', 'Fondo de cada tecla', 0, 40, 1, 'kb', v => v === 0 ? 'Sin fondo' : v + '%'),
+    C('kbAct', 'Color de la tecla ✓', 'kb'), C('kbActIcon', 'Color del ✓', 'kb'),
+    H('Esquinas'), R('kbR', 'Esquinas de las teclas', 0, 40, 1, 'kb', v => v + ' px'), R('kbActR', 'Esquinas de la tecla ✓', 0, 50, 1, 'kb', v => v + ' px'),
+    H('Teclas extra: –  ␣  ,  .'), { type:'help', text:'Igual que en Gboard, pero no escriben nada en un campo de números. Puedes darles una acción.' },
+    SL('kbk_dash', 'Tecla  –', KB_ACT, 'kb'), SL('kbk_space', 'Tecla  ␣', KB_ACT, 'kb'), SL('kbk_comma', 'Tecla  ,', KB_ACT, 'kb'), SL('kbk_dot', 'Tecla  .', KB_ACT, 'kb'),
+    H('Vibración'), TG('kbHapt', 'Vibrar al tocar una tecla', 'kb'), TG('haptics', 'Vibración general de la app', 'kb'), SG('hapticsLvl', 'Intensidad', [['low','Suave'],['mid','Media'],['high','Fuerte']], 'kb')
+  ],
+  snd:[
+    H('Sonidos'), TG('snd', 'Sonidos activados', null), R('sndVol', 'Volumen', 0, 100, 5, null, v => v + '%'), SL('sndPack', 'Estilo de sonido', SND_PACKS, null),
+    SG('sndPitch', 'Tono de los números', [['digit','Distinto por número'],['same','Igual']], null), { type:'btn', id:'sndTest', label:'Probar el sonido' },
+    H('Cuándo suena'), TG('sndKey', 'Al tocar un número', null), TG('sndDel', 'Al borrar', null), TG('sndSave', 'Al guardar en el historial', null),
+    TG('sndCap', 'Al cambiar de capacidad o de modo', null), TG('sndHist', 'Al abrir o cerrar el historial', null), TG('sndErr', 'Cuando falta la cantidad', null),
+    TG('sndCopy', 'Al copiar', null), TG('sndHide', 'Al ocultar el teclado', null)
+  ],
+  gen:[
+    H('La app'), TX('title', 'Nombre que se ve arriba', 'hdr'), TG('showTitle', 'Mostrar el nombre', 'hdr'), TG('titleUpper', 'Nombre en MAYÚSCULAS', 'hdr'),
+    TG('autofocus', 'Abrir con el teclado visible', null),
+    H('Lo que copias'), TX('shareTitle', 'Título del historial copiado', null),
+    R('cutoff', 'La fecha cuenta como del día anterior hasta las', 0, 8, 1, null, v => v + ':00 a. m.'),
+    H('Datos'), { type:'reset' }
+  ]
+};
+function outDefsFor(k){
+  const t = EL_TARGET[k], p = 'o_' + k + '_';
+  const out = [H('Contorno'), R(p + 'w', 'Grosor', 0, 8, .5, t, px), C(p + 'c', 'Color', t), R(p + 'a', 'Fuerza', 0, 100, 5, t, v => v + '%'),
+    SG(p + 's', 'Estilo', [['solid','Liso'],['dashed','Rayas'],['dotted','Puntos'],['double','Doble']], t),
+    R(p + 'r', 'Esquinas', -1, 40, 1, t, v => v < 0 ? 'Igual que el resto' : v + ' px')];
+  if(FILL_EL.includes(k)) out.push(H('Relleno (el fondo de este elemento)'), R('f_' + k + '_a', 'Fuerza del relleno', -1, 100, 1, t, v => v < 0 ? 'Automático' : v === 0 ? 'Sin relleno' : v + '%'), C('f_' + k + '_c', 'Color del relleno', t));
+  return out;
+}
+const OUT_DEFS = [].concat(...EL.map(e => outDefsFor(e[0])));
+const ALL_DEFS = [].concat(...Object.values(TAB_DEFS), OUT_DEFS);
+let outSel = 'card';
+function tabCont(){
+  let h = '<h4>Contorno y relleno</h4><p class="help">Elige un elemento y ajusta su contorno: grosor, color, fuerza, estilo y esquinas, y también el color de su fondo (poner «Sin relleno» lo hace desaparecer). En «Esquinas», <b>Igual que el resto</b> usa la forma de la pestaña Forma.</p>' +
+    '<div class="chips2">' + EL.map(e => '<button class="oel' + (e[0] === outSel ? ' on' : '') + '" data-oel="' + e[0] + '">' + e[1] + '</button>').join('') + '</div>';
+  h += outDefsFor(outSel).map(ctlHTML).join('');
+  if(!FILL_EL.includes(outSel)) h += '<p class="help">El relleno de la tarjeta está en la pestaña <b>Tarjeta</b> y el de la hoja en <b>Hoja e historial</b>.</p>';
+  h += '<h4>Acciones rápidas</h4><div class="save"><button class="btn" id="outCopy" style="flex:1">Usar este contorno en todos</button></div>' +
+    '<button class="btn danger" id="outNone" style="width:100%">Quitar todos los contornos</button>';
+  return h;
+}
+
+function ctlHTML(d){
+  const tt = d.t ? ' data-t="' + d.t + '"' : '';
+  switch(d.type){
+    case 'head': return '<h4>' + d.label + '</h4>';
+    case 'range': return '<label class="ctl col"' + tt + '><div class="top"><span class="cl">' + d.label + '</span><output id="o-' + d.k + '">' + d.f(cfg[d.k]) + '</output></div>' +
+      '<input type="range" data-k="' + d.k + '" min="' + d.min + '" max="' + d.max + '" step="' + d.step + '" value="' + cfg[d.k] + '"></label>';
+    case 'color': return '<div class="ctl"' + tt + '><span class="cl">' + d.label + '</span><input type="color" data-k="' + d.k + '" value="' + cfg[d.k].toLowerCase() + '">' +
+      '<input class="hex" type="text" data-k="' + d.k + '" data-hex="1" maxlength="7" value="' + cfg[d.k].toUpperCase() + '" aria-label="Código de color"></div>';
+    case 'toggle': return '<label class="ctl"' + tt + '><span class="cl">' + d.label + '</span><span class="sw"><input type="checkbox" data-k="' + d.k + '"' + (cfg[d.k] ? ' checked' : '') + '><i></i></span></label>';
+    case 'seg': return '<div class="ctl col"' + tt + '><div class="top"><span class="cl">' + d.label + '</span></div><div class="seg">' +
+      d.opts.map(o => '<button data-seg="' + d.k + '" data-v="' + o[0] + '" class="' + (String(cfg[d.k]) === String(o[0]) ? 'on' : '') + '">' + o[1] + '</button>').join('') + '</div></div>';
+    case 'select': return '<div class="ctl col"' + tt + '><div class="top"><span class="cl">' + d.label + '</span></div><select data-k="' + d.k + '">' +
+      d.opts.map(o => '<option value="' + o[0] + '"' + (cfg[d.k] === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>';
+    case 'text': return '<div class="ctl col"' + tt + '><div class="top"><span class="cl">' + d.label + '</span></div><input class="txt" type="text" data-k="' + d.k + '" maxlength="40" value="' + esc(cfg[d.k]) + '"></div>';
+    case 'accgrid': return '<div class="grid">' + ACC_THEMES.map((a, i) =>
+      '<button class="tile' + (cfg.accent.toUpperCase() === a[1] && cfg.accent2.toUpperCase() === a[2] ? ' on' : '') + '" data-acc="' + i + '" style="background:linear-gradient(135deg,' + a[1] + ',' + a[2] + ')">' + a[0] + '</button>').join('') + '</div>';
+    case 'bggrid': return '<div class="grid">' + BG_SWATCHES.map(b =>
+      '<button class="tile' + (cfg.bg.toUpperCase() === b ? ' on' : '') + '" data-bg="' + b + '" style="background:' + b + ';color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)">' + (b === '#000000' ? 'AMOLED' : b === '#07070D' ? 'INICIAL' : '') + '</button>').join('') + '</div>';
+    case 'startcap': return '<div class="ctl col"><div class="top"><span class="cl">Capacidad por default</span></div><select data-k="startCap">' +
+      '<option value="last"' + (cfg.startCap === 'last' ? ' selected' : '') + '>La última que usé</option>' +
+      cfg.presets.map(p => '<option value="' + p.cap + '"' + (cfg.startCap === p.cap ? ' selected' : '') + '>' + p.cap + '</option>').join('') +
+      (typeof cfg.startCap === 'number' && !presetOf(cfg.startCap) ? '<option value="' + cfg.startCap + '" selected>' + cfg.startCap + ' (Otra)</option>' : '') + '</select></div>';
+    case 'btn': return '<button class="btn pri" id="' + d.id + '" style="width:100%;margin-bottom:6px">' + d.label + '</button>';
+    case 'help': return '<p class="help">' + d.text + '</p>';
+    case 'reset': return '<button class="btn danger" id="resetAll" style="width:100%">Restablecer a mi tema predeterminado</button>';
+  }
+  return '';
+}
+const TG_HTML = (k, l, t) => ctlHTML(TG(k, l, t));
+function pickStyle(o){ const r = {}; STYLE_KEYS.forEach(k => r[k] = o[k]); return r; }
+
+/* --- Temas guardados --- */
+function loadThemes(){ try{ const t = JSON.parse(localStorage.getItem(THEMES_KEY) || '[]'); return Array.isArray(t) ? t.filter(x => x && x.name && x.style).map(x => ({ name:x.name, style:normalizeStyle(x.style) })) : []; }catch(e){ return []; } }
+function saveThemes(t){ try{ localStorage.setItem(THEMES_KEY, JSON.stringify(t)); }catch(e){} }
+function readDef(){ try{ const s = JSON.parse(localStorage.getItem(DEFSTYLE_KEY) || 'null'); if(s && s.ref && s.style) return s; }catch(e){} return null; }
+function getDefStyle(){ const d = readDef(); return d ? Object.assign(pickStyle(DEF), normalizeStyle(d.style)) : pickStyle(DEF); }
+function getDefRef(){ const d = readDef(); return d ? d.ref : 'b'; }
+function setDefStyle(ref, style){ try{ if(ref === 'b') localStorage.removeItem(DEFSTYLE_KEY); else localStorage.setItem(DEFSTYLE_KEY, JSON.stringify({ ref, style })); }catch(e){} }
+const sameStyle = (a, b) => JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), a))) === JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), b)));
+
+function themePreview(st){
+  const o = Object.assign(pickStyle(DEF), st);
+  const bgc = o.bgGrad ? 'linear-gradient(' + o.bgAngle + 'deg,' + o.bg + ',' + o.bg2 + ')' : o.bg;
+  const au = o.auroraOn ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
+  return '<span class="tpv" style="background:' + au + bgc + ';color:' + o.fg + '"><b style="font-family:' + fontStack(o.numFont) + ';font-style:' + (o.numItalic ? 'italic' : 'normal') + ';font-weight:' + o.numWeight + ';color:' + o.numColor +
+    '">7</b><i style="color:' + (o.followCapLoose ? '#fff' : o.looseColor) + '">− 4</i><s style="background:linear-gradient(90deg,' + o.accent + ',' + o.accent2 + ')"></s></span>';
+}
+function tabTemas(){
+  const themes = loadThemes(), defRef = getDefRef(), builtin = pickStyle(DEF);
+  const row = (name, st, isBuiltin, i) => {
+    const isDef = defRef === (isBuiltin ? 'b' : 't:' + name), isCur = sameStyle(st, cfg);
+    return '<div class="trow">' + themePreview(st) + '<div class="tmeta"><div class="tn">' + esc(name) + '</div><div class="ts">' +
+      (isDef ? 'Predeterminado' : '') + (isDef && isCur ? ' · ' : '') + (isCur ? 'En uso' : '') + (!isDef && !isCur ? (isBuiltin ? 'Tema de la app' : 'Guardado') : '') + '</div></div>' +
+      '<button class="btn" data-tapply="' + (isBuiltin ? 'b' : i) + '">Aplicar</button>' +
+      '<button class="btn sq' + (isDef ? ' starred' : '') + '" data-tdef="' + (isBuiltin ? 'b' : i) + '" aria-label="Usar como predeterminado" title="Predeterminado">' + (isDef ? ICONS.star : ICONS.starO) + '</button>' +
+      (isBuiltin ? '' : '<button class="btn danger sq" data-tdel="' + i + '" aria-label="Eliminar tema">×</button>') + '</div>';
+  };
+  let h = '<h4>Guardar el tema actual</h4><p class="help">Guarda tus colores, aurora, tarjeta, letras, halo, hoja y movimiento con un nombre para volver a ellos.</p>' +
+    '<div class="save"><input class="txt" id="themeName" type="text" maxlength="24" placeholder="Nombre del tema"><button class="btn pri" id="themeSave">Guardar tema</button></div>';
+  h += '<h4>Mis temas</h4><p class="help">La estrella marca el tema <b>predeterminado</b>: al restablecer, la app vuelve a ese.</p>';
+  h += row('Tema inicial (PalletFlow)', builtin, true, -1) + themes.map((t, i) => row(t.name, t.style, false, i)).join('');
+  if(!themes.length) h += '<div class="empty">Todavía no guardaste ningún tema propio.</div>';
+  h += '<h4>Estilos listos</h4><div class="pgrid">' + STYLES.map((s, i) => {
+    const o = Object.assign(pickStyle(DEF), s[1]);
+    const au = o.auroraOn ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
+    return '<button class="pst" data-pst="' + i + '" style="background:' + au + o.bg + ';color:' + o.fg + '"><b style="font-family:' + fontStack(o.numFont) + ';font-style:' + (o.numItalic ? 'italic' : 'normal') + ';color:' + o.numColor + '">7<i style="color:' + (o.followCapLoose ? '#fff' : o.looseColor) + '">− 4</i></b><em>' + s[0] + '</em><s style="background:linear-gradient(90deg,' + o.accent + ',' + o.accent2 + ')"></s></button>';
+  }).join('') + '</div>';
+  h += '<h4>Compartir un tema</h4><p class="help">Copia el código de tu tema para pasarlo a otro celular, o pega aquí uno que te hayan pasado.</p>' +
+    '<div class="save"><button class="btn" id="codeCopy">Copiar código</button></div><textarea id="codeBox" placeholder="Pega aquí un código para importar"></textarea><button class="btn pri" id="codeImport" style="width:100%">Importar tema</button>';
+  return h;
+}
+function tabCaps(){
+  let h = '<h4>Capacidad por default</h4><p class="help">Es la capacidad con la que arranca la app cada vez que la abres; se queda fija aunque la cierres. Con «La última que usé» recuerda la que tenías al cerrar.</p>' + ctlHTML({ type:'startcap' }) +
+    '<button class="btn" id="capPin" style="width:100%;margin-bottom:6px">Fijar la capacidad que tengo ahora (' + S.cap + ')</button><h4>Capacidades rápidas</h4><p class="help">Son los botones de capacidad de la pantalla principal. «Paquete de» muestra la frase de paquetes (en 72 son de 3). «Redondear» hace que, si sobran más de esas jabas, se muestre el pallet siguiente restando lo que falta: con 72 y 46, 500 jabas sale <b>7 − 4</b> en vez de 6 + 68.</p>';
+  h += cfg.presets.map((p, i) =>
+    '<div class="pcard"><div class="pc-top"><div class="pc-pill" style="background:linear-gradient(135deg,' + p.c1 + ',' + p.c2 + ');color:' + onColor(p.c1) + '">' + p.cap + '</div>' +
+    (cfg.presets.length > 1 ? '<button class="btn danger" data-pdel="' + i + '" style="height:34px">Quitar</button>' : '') + '</div>' +
+    '<div class="pc-grid"><label>Capacidad (jabas por pallet)<input class="nf" type="text" inputmode="numeric" data-pi="' + i + '" data-pf="cap" value="' + p.cap + '"></label>' +
+    '<label>Colores<span class="cc"><input type="color" data-pi="' + i + '" data-pf="c1" value="' + p.c1.toLowerCase() + '"><input type="color" data-pi="' + i + '" data-pf="c2" value="' + p.c2.toLowerCase() + '"></span></label>' +
+    '<label>Paquete de (jabas)<input class="nf" type="text" inputmode="numeric" placeholder="—" data-pi="' + i + '" data-pf="pack" value="' + (p.pack || '') + '"></label>' +
+    '<label>Redondear si sobran más de<input class="nf" type="text" inputmode="numeric" placeholder="—" data-pi="' + i + '" data-pf="round" value="' + (p.round || '') + '"></label></div></div>').join('');
+  if(cfg.presets.length < 5) h += '<button class="btn" id="presetAdd" style="width:100%;margin-bottom:6px">+ Añadir capacidad</button>';
+  h += '<h4>Botón «Otra»</h4>' + TG_HTML('showOther', 'Mostrar el botón «Otra»', 'caps') +
+    '<div class="ctl" data-t="caps"><span class="cl">Colores de «Otra»</span><input type="color" data-k="otherC1" value="' + cfg.otherC1.toLowerCase() + '"><input type="color" data-k="otherC2" value="' + cfg.otherC2.toLowerCase() + '"></div>';
+  return h;
+}
+function renderTabs(){
+  $('tabs').innerHTML = TABS.map(t => '<button role="tab" data-tab="' + t[0] + '" class="' + (t[0] === curTab ? 'on' : '') + '">' + t[1] + '</button>').join('');
+}
+function renderBody(keepScroll){
+  const b = $('custBody'), sc = b.scrollTop;
+  b.innerHTML = curTab === 'temas' ? tabTemas() : curTab === 'caps' ? tabCaps() : curTab === 'cont' ? tabCont() : TAB_DEFS[curTab].map(ctlHTML).join('');
+  b.scrollTop = keepScroll ? sc : 0;
+  if(!keepScroll){ b.classList.remove('swap'); void b.offsetWidth; b.classList.add('swap'); }
+}
+
+/* --- Demo en vivo --- */
+function demoHTML(){
+  const p0 = cfg.presets[0], p1 = cfg.presets[1] || cfg.presets[0], now = Date.now();
+  const d = { mode:'f', n:p0.cap * 7 - 4, cap:p0.cap, t:now - 45000 }, d2 = { mode:'f', n:p1.cap * 2 + 16, cap:p1.cap, t:now - 600000 };
+  const ph = Math.round(rowPx() * cfg.peekRows);
+  const lower = curTab === 'kb'
+    ? '<div class="kbwrap" data-demo="kb"><div class="kb"><div class="kbin">' + kbMarkup(false) + '</div></div></div>'
+    : '<div class="sheet" data-demo="sheet" data-hs="peek"><div class="dz"><div class="grab"><i></i></div>' +
+      '<div class="hbar" data-demo="hist"><span class="hlabel">Historial<span class="hbadge">2</span></span></div></div>' +
+      '<div class="histwrap" data-demo="hist" style="height:' + (rowPx() * 2 + 14) + 'px;transition:none"><div class="hist">' + rowHTML(d) + rowHTML(d2) + '</div></div></div>';
+  return '<div class="aurora" data-demo="aurora"><i class="ab a"></i><i class="ab b"></i><i class="ab c"></i></div><canvas class="fxc" id="demoFx" data-demo="aurora"></canvas>' +
+    '<div class="halo" id="demoHalo" data-demo="halo"></div>' +
+    '<div class="hdr" data-demo="hdr"><div class="hl"><div class="date">' + dateLine() + '</div><div class="title">' + esc(cfg.title) + '</div></div><div class="acts"><span class="hb">Copiar</span><span class="hb ico">' + ICONS.gear + '</span></div></div>' +
+    '<div class="chiprow" data-demo="chip"><span class="statchip"><i class="sdot"></i>' + statText(2) + '</span></div>' +
+    '<section class="card" data-demo="card"><div class="stage" data-demo="stage"><div class="kicker">' + esc(cfg.kickerText) + '</div><div class="big">' + bigHTML(d) + '</div><div class="phrase">' + phraseHTML(d) + '</div><div class="meta">' + metaHTML(d) + '</div></div>' +
+    '<div class="ctrls"><div class="inrow"><div class="inbox" data-demo="input"><span class="inico">' + ICONS.pkg + '</span><span class="fake">' + esc(cfg.phText) + '</span></div><div class="add" data-demo="add">' + esc(cfg.addIcon) + '</div></div>' +
+    '<div class="capsbox" data-demo="caps"><div class="caps">' + capsMarkup(false) + '</div></div>' +
+    '<span class="revbtn">' + ICONS.swap + '<span>Reverso</span></span><div class="sig">By: J. Chávez</div><div class="keys"><span><kbd>Enter</kbd>guardar</span><span><kbd>Esc</kbd>borrar</span></div></div></section>' +
+    lower;
+}
+function demoScale(){
+  const h = vpH();
+  const ds = h >= 780 ? .5 : h >= 640 ? .42 : h >= 500 ? .33 : .26;
+  $('demo').style.setProperty('--ds', ds);
+  const hh = Math.ceil($('demoIn').offsetHeight * ds) + 2;
+  $('demoWrap').style.height = hh + 'px';
+}
+function refreshDemo(){ $('demoIn').innerHTML = demoHTML(); fxAttachDemo(); applyCfg(); demoScale(); }
+function flash(t){
+  if(!t) return;
+  const els = t === 'all' ? [$('demoIn')] : document.querySelectorAll('#demoIn [data-demo="' + t + '"]');
+  els.forEach(el => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+  clearTimeout(flashTimer); flashTimer = setTimeout(() => els.forEach(el => el.classList.remove('flash')), 850);
+}
+
+/* --- Cambios de configuración --- */
+function afterChange(t, structural){
+  applyCfg();
+  if(structural) buildCaps();
+  render(); refreshDemo(); saveCfg();
+  if(t) flash(t);
+}
+function setKey(k, v, t){
+  cfg[k] = v;
+  if(k === 'fx' && FX_PAL[v]){ cfg.auroraA = FX_PAL[v][0]; cfg.auroraB = FX_PAL[v][1]; cfg.auroraC = FX_PAL[v][2]; }
+  if(k === 'kbOn' && !v){ kbOpen = false; document.documentElement.classList.remove('kbo'); updateCompact(); }
+  if(k === 'histMax') S.hist = S.hist.slice(0, v);
+  if(k === 'showRev' && !v && S.mode === 'rev'){ S.mode = 'fwd'; clearBuf(); syncInputs(); }
+  afterChange(t, k === 'showOther' || k === 'otherC1' || k === 'otherC2');
+  if(k === 'fx') renderBody(true);
+  const out = $('o-' + k);
+  if(out){ const d = ALL_DEFS.find(x => x.k === k); if(d && d.f) out.textContent = d.f(v); }
+}
+function applyStyle(patch, full){
+  Object.assign(cfg, full ? pickStyle(DEF) : {}, normalizeStyle(patch)); sanitizeCfg();
+  afterChange('all', true); renderBody(true);
+}
+
+function openCust(){
+  $('cust').classList.add('open'); $('cust').setAttribute('aria-hidden', 'false');
+  renderTabs(); renderBody(); refreshDemo();
+  setTimeout(demoScale, 420);
+}
+function closeCust(){
+  $('cust').classList.remove('open'); $('cust').setAttribute('aria-hidden', 'true');
+  if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  buildCaps(); render(); saveCfg();
+  if(cfg.autofocus) setTimeout(() => { if(cfg.kbOn) showKb(); focusMain(false); }, 420);
+}
+$('gear').addEventListener('click', openCust);
+$('custClose').addEventListener('click', closeCust);
+$('saveQuick').addEventListener('click', () => {
+  curTab = 'temas'; renderTabs(); renderBody();
+  const n = $('themeName'); if(n){ setTimeout(() => n.focus(), 60); }
+});
+$('tabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-tab]'); if(!b) return;
+  curTab = b.dataset.tab; renderTabs(); renderBody(); refreshDemo();
+  b.scrollIntoView({ inline:'nearest', block:'nearest' });
+});
+
+const body = $('custBody');
+body.addEventListener('input', e => {
+  const el = e.target;
+  // capacidades rápidas
+  if(el.dataset.pi !== undefined){
+    const i = +el.dataset.pi, f = el.dataset.pf, p = cfg.presets[i]; if(!p) return;
+    if(f === 'c1' || f === 'c2'){ p[f] = el.value.toUpperCase(); }
+    else{
+      const v = el.value.replace(/\D/g, '').slice(0, 4); el.value = v;
+      if(f === 'cap'){ const n = parseInt(v, 10); if(!n) return; const old = p.cap; p.cap = n; if(S.cap === old) S.cap = n; if(cfg.startCap === old) cfg.startCap = n; }
+      else p[f] = parseInt(v, 10) || 0;
+    }
+    buildCaps(); applyCfg(); render(); refreshDemo(); saveCfg(); flash(f === 'round' || f === 'pack' ? 'stage' : 'caps');
+    const pill = el.closest('.pcard').querySelector('.pc-pill'); pill.textContent = p.cap; pill.style.background = 'linear-gradient(135deg,' + p.c1 + ',' + p.c2 + ')'; pill.style.color = onColor(p.c1);
+    return;
+  }
+  const k = el.dataset.k; if(!k) return;
+  const wrap = el.closest('[data-t]'), t = wrap ? wrap.dataset.t : null;
+  if(el.dataset.hex){
+    if(!isHex(el.value)) return;
+    const pick = el.parentElement.querySelector('input[type=color]'); if(pick) pick.value = el.value.toLowerCase();
+    return setKey(k, el.value.toUpperCase(), t);
+  }
+  if(el.type === 'color'){
+    const hx = el.parentElement.querySelector('.hex'); if(hx) hx.value = el.value.toUpperCase();
+    return setKey(k, el.value.toUpperCase(), t);
+  }
+  if(el.type === 'checkbox') return setKey(k, el.checked, t);
+  if(el.type === 'range') return setKey(k, +el.value, t);
+  if(k === 'startCap') return setKey(k, el.value === 'last' ? 'last' : +el.value, t);
+  setKey(k, el.value, t);
+});
+body.addEventListener('click', e => {
+  const t = e.target;
+  let b;
+  if((b = t.closest('[data-seg]'))){
+    const k = b.dataset.seg, raw = b.dataset.v, v = NUM_SEG.includes(k) ? +raw : raw;
+    b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    const wrap = b.closest('[data-t]'); return setKey(k, v, wrap ? wrap.dataset.t : null);
+  }
+  if((b = t.closest('[data-acc]'))){ const a = ACC_THEMES[+b.dataset.acc]; cfg.accent = a[1]; cfg.accent2 = a[2]; afterChange('add'); return renderBody(true); }
+  if((b = t.closest('[data-bg]'))){ cfg.bg = b.dataset.bg; afterChange('all'); return renderBody(true); }
+  if((b = t.closest('[data-pst]'))){ return applyStyle(STYLES[+b.dataset.pst][1], true); }
+  if((b = t.closest('[data-oel]'))){ outSel = b.dataset.oel; renderBody(true); return flash(EL_TARGET[outSel]); }
+  if(t.closest('#outNone')){ EL.forEach(e => { cfg['o_' + e[0] + '_w'] = 0; }); afterChange('all'); toast('Sin contornos'); return renderBody(true); }
+  if(t.closest('#outCopy')){
+    EL.forEach(e => { if(e[0] === outSel) return; ['w','c','a','s'].forEach(pp => { cfg['o_' + e[0] + '_' + pp] = cfg['o_' + outSel + '_' + pp]; }); });
+    afterChange('all'); toast('Contorno aplicado a todos'); return renderBody(true);
+  }
+  if(t.closest('#themeSave')){
+    const n = $('themeName').value.trim(); if(!n){ toast('Ponle un nombre al tema'); $('themeName').focus(); return; }
+    const th = loadThemes(); th.unshift({ name:n.slice(0, 24), style:pickStyle(cfg) }); saveThemes(th.slice(0, 20));
+    toast('Tema «' + n.slice(0, 24) + '» guardado'); return renderBody(true);
+  }
+  if((b = t.closest('[data-tapply]'))){
+    const v = b.dataset.tapply, st = v === 'b' ? pickStyle(DEF) : (loadThemes()[+v] || {}).style;
+    if(st){ applyStyle(st, true); toast('Tema aplicado'); } return;
+  }
+  if((b = t.closest('[data-tdef]'))){
+    const v = b.dataset.tdef, th = v === 'b' ? null : loadThemes()[+v];
+    if(v === 'b'){ setDefStyle('b'); toast('«Tema inicial» es el predeterminado'); renderBody(true); }
+    else if(th){ setDefStyle('t:' + th.name, th.style); toast('«' + th.name + '» es el predeterminado'); renderBody(true); }
+    return;
+  }
+  if((b = t.closest('[data-tdel]'))){
+    const th = loadThemes(), gone = th.splice(+b.dataset.tdel, 1)[0];
+    if(gone && getDefRef() === 't:' + gone.name) setDefStyle('b');
+    saveThemes(th); return renderBody(true);
+  }
+  if(t.closest('#codeCopy')){
+    const code = 'DJ1:' + btoa(unescape(encodeURIComponent(JSON.stringify(pickStyle(cfg)))));
+    $('codeBox').value = code;
+    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => toast('Código copiado'), () => toast('Copia el código del recuadro'));
+    return;
+  }
+  if(t.closest('#codeImport')){
+    const v = $('codeBox').value.trim();
+    try{
+      if(v.indexOf('DJ1:') !== 0) throw 0;
+      const st = JSON.parse(decodeURIComponent(escape(atob(v.slice(4)))));
+      applyStyle(st, true); toast('Tema importado');
+    }catch(err){ toast('Ese código no es válido'); }
+    return;
+  }
+  if(t.closest('#capPin')){ cfg.startCap = S.cap; saveCfg(); toast('Capacidad por default: ' + S.cap); return renderBody(true); }
+  if(t.closest('#sndTest')){ snd('key', 3, true); setTimeout(() => snd('save', 0, true), 170); return; }
+  if(t.closest('#presetAdd')){
+    const pal = [['#FB7185','#EC4899'],['#10B981','#A3E635'],['#F97316','#EC4899'],['#06B6D4','#10B981'],['#D946EF','#8B5CF6']];
+    const c = pal[cfg.presets.length % pal.length]; let cap = 60; while(presetOf(cap)) cap++;
+    cfg.presets.push({ cap, c1:c[0], c2:c[1], pack:0, round:0 });
+    buildCaps(); applyCfg(); render(); refreshDemo(); saveCfg(); flash('caps'); return renderBody(true);
+  }
+  if((b = t.closest('[data-pdel]'))){
+    const i = +b.dataset.pdel, p = cfg.presets[i];
+    if(S.cap === p.cap) S.customCap = p.cap;
+    cfg.presets.splice(i, 1);
+    if(cfg.startCap === p.cap) cfg.startCap = cfg.presets[0].cap;
+    buildCaps(); applyCfg(); render(); refreshDemo(); saveCfg(); flash('caps'); return renderBody(true);
+  }
+  if(t.closest('#resetAll')){
+    const r = $('resetAll');
+    if(!r.dataset.sure){ r.dataset.sure = '1'; r.textContent = 'Toca otra vez para confirmar'; setTimeout(() => { if(r.isConnected){ delete r.dataset.sure; r.textContent = 'Restablecer a mi tema predeterminado'; } }, 3000); return; }
+    cfg = Object.assign(clone(DEF), getDefStyle()); S.cap = cfg.presets[0].cap;
+    afterChange('all', true); renderBody(true); toast('Restablecido'); return;
+  }
+});
+
+/* ============================================================
+   AJUSTE A LA PANTALLA (teclado abierto)
+   ============================================================ */
+function fit(){
+  const h = vpH(), root = document.documentElement;
+  root.style.setProperty('--vh', h + 'px');
+  updateCompact();
+  if(window.visualViewport) window.scrollTo(0, 0);
+  applyCfg(); applyHist(false);
+  if($('cust').classList.contains('open')) demoScale();
+}
+if(window.visualViewport){ window.visualViewport.addEventListener('resize', fit); window.visualViewport.addEventListener('scroll', () => window.scrollTo(0, 0)); }
+window.addEventListener('resize', fit);
+if(window.ResizeObserver) new ResizeObserver(schedHalo).observe($('stage'));
+document.addEventListener('visibilitychange', () => { if(!document.hidden) $('dateLine').textContent = dateLine(); });
+
+/* ============================================================
+   INICIO
+   ============================================================ */
+loadCfg(); loadState();
+applyCfg();
+buildCaps(); syncInputs(); fit(); render();
+setTimeout(() => { booted = true; }, 600);
+if(cfg.autofocus) setTimeout(() => { if(cfg.kbOn) showKb(); focusMain(false); }, 60);
+})();
+</script>
+</body>
+</html>
