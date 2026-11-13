@@ -1849,6 +1849,7 @@ function getDefRef(){ const d = readDef(); return d ? d.ref : 'b'; }
 function setDefStyle(ref, style){ try{ if(ref === 'b') localStorage.removeItem(DEFSTYLE_KEY); else localStorage.setItem(DEFSTYLE_KEY, JSON.stringify({ ref, style })); }catch(e){} }
 const sameStyle = (a, b) => JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), a))) === JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), b)));
 
+const themeCode = st => 'DJ1:' + btoa(unescape(encodeURIComponent(JSON.stringify(pickStyle(Object.assign(pickStyle(DEF), normalizeStyle(st)))))));
 function themePreview(st){
   const o = Object.assign(pickStyle(DEF), normalizeStyle(st));
   const bgc = o.bgGrad ? 'linear-gradient(' + o.bgAngle + 'deg,' + o.bg + ',' + o.bg2 + ')' : o.bg;
@@ -1863,6 +1864,7 @@ function tabTemas(){
     return '<div class="trow">' + themePreview(st) + '<div class="tmeta"><div class="tn">' + esc(name) + '</div><div class="ts">' +
       (isDef ? 'Predeterminado' : '') + (isDef && isCur ? ' · ' : '') + (isCur ? 'En uso' : '') + (!isDef && !isCur ? (isBuiltin ? 'Tema de la app' : 'Guardado') : '') + '</div></div>' +
       '<button class="btn" data-tapply="' + (isBuiltin ? 'b' : i) + '">Aplicar</button>' +
+      '<button class="btn sq" data-tcode="' + (isBuiltin ? 'b' : i) + '" aria-label="Copiar el código de este tema" title="Copiar código">&lt;/&gt;</button>' +
       '<button class="btn sq' + (isDef ? ' starred' : '') + '" data-tdef="' + (isBuiltin ? 'b' : i) + '" aria-label="Usar como predeterminado" title="Predeterminado">' + (isDef ? ICONS.star : ICONS.starO) + '</button>' +
       (isBuiltin ? '' : '<button class="btn danger sq" data-tdel="' + i + '" aria-label="Eliminar tema">×</button>') + '</div>';
   };
@@ -1876,7 +1878,7 @@ function tabTemas(){
     const au = o.fx !== 'none' ? 'radial-gradient(circle at 15% 10%,' + rgba(o.auroraA, .75) + ',transparent 60%),radial-gradient(circle at 90% 5%,' + rgba(o.auroraB, .75) + ',transparent 60%),' : '';
     return '<button class="pst" data-pst="' + i + '" style="background:' + au + o.bg + ';color:' + o.fg + '"><b style="font-family:' + fontStack(o.numFont) + ';font-style:' + (o.numItalic ? 'italic' : 'normal') + ';color:' + o.numColor + '">7<i style="color:' + (o.followCapLoose ? '#fff' : o.looseColor) + '">− 4</i></b><em>' + s[0] + '</em><s style="background:linear-gradient(90deg,' + o.accent + ',' + o.accent2 + ')"></s></button>';
   }).join('') + '</div>';
-  h += '<h4>Compartir un tema</h4><p class="help">Copia el código de tu tema para pasarlo a otro celular, o pega aquí uno que te hayan pasado.</p>' +
+  h += '<h4>Compartir un tema</h4><p class="help">Copia el código de tu tema (o el de cualquier tema con el botón <b>&lt;/&gt;</b>) para pasarlo a otro celular, o pega aquí uno que te hayan pasado.</p>' +
     '<div class="save"><button class="btn" id="codeCopy">Copiar código</button></div><textarea id="codeBox" placeholder="Pega aquí un código para importar"></textarea><button class="btn pri" id="codeImport" style="width:100%">Importar tema</button>';
   return h;
 }
@@ -2049,6 +2051,11 @@ body.addEventListener('click', e => {
     const v = b.dataset.tapply, st = v === 'b' ? pickStyle(DEF) : (loadThemes()[+v] || {}).style;
     if(st){ applyStyle(st, true); toast('Tema aplicado'); } return;
   }
+  if((b = t.closest('[data-tcode]'))){
+    const v = b.dataset.tcode, th = v === 'b' ? { name:'Tema inicial', style:pickStyle(DEF) } : loadThemes()[+v];
+    if(th){ const code = themeCode(th.style); $('codeBox').value = code; writeClip(code).then(ok => toast(ok ? 'Código de «' + th.name + '» copiado' : 'Copia el código del recuadro de abajo')); }
+    return;
+  }
   if((b = t.closest('[data-tdef]'))){
     const v = b.dataset.tdef, th = v === 'b' ? null : loadThemes()[+v];
     if(v === 'b'){ setDefStyle('b'); toast('«Tema inicial» es el predeterminado'); renderBody(true); }
@@ -2061,7 +2068,7 @@ body.addEventListener('click', e => {
     saveThemes(th); return renderBody(true);
   }
   if(t.closest('#codeCopy')){
-    const code = 'DJ1:' + btoa(unescape(encodeURIComponent(JSON.stringify(pickStyle(cfg)))));
+    const code = themeCode(pickStyle(cfg));
     $('codeBox').value = code;
     writeClip(code).then(ok => toast(ok ? 'Código copiado' : 'Copia el código del recuadro'));
     return;
