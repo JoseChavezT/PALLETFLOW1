@@ -112,6 +112,10 @@ html[data-pos="bottom"] .stage{justify-content:flex-end;padding-bottom:calc(20px
   font-size:calc(clamp(52px,19vw,92px)*var(--numscale));color:var(--num);font-variant-numeric:tabular-nums}
 html[data-na="pop"] .num,html[data-na="pop"] .op{animation:popIn calc(.3s*var(--tm)) var(--spring)}
 html[data-na="roll"] .num,html[data-na="roll"] .op{animation:rollIn calc(.38s*var(--tm)) var(--ease)}
+html[data-na="fade"] .num,html[data-na="fade"] .op{animation:fadeIn calc(.32s*var(--tm)) ease-out}
+html[data-na="rise"] .num,html[data-na="rise"] .op{animation:softRise calc(.42s*var(--tm)) var(--ease)}
+html[data-na="focus"] .num,html[data-na="focus"] .op{animation:focusIn calc(.45s*var(--tm)) var(--ease)}
+html[data-na="zoom"] .num,html[data-na="zoom"] .op{animation:zoomIn calc(.4s*var(--tm)) var(--ease)}
 .blk.loose .num{color:var(--loosec)}
 .blk.minus .num{color:var(--minus)}
 .blk.dim .num{color:var(--faint)}
@@ -213,6 +217,9 @@ html[data-na="roll"] .num,html[data-na="roll"] .op{animation:rollIn calc(.38s*va
 html[data-row="slide"] .row.new{animation:slideL calc(.38s*var(--tm)) var(--ease)}
 html[data-row="fade"] .row.new{animation:fadeIn calc(.35s*var(--tm)) ease-out}
 html[data-row="pop"] .row.new{animation:popIn calc(.4s*var(--tm)) var(--spring)}
+html[data-row="rise"] .row.new{animation:softRise calc(.42s*var(--tm)) var(--ease)}
+html[data-row="focus"] .row.new{animation:focusIn calc(.45s*var(--tm)) var(--ease)}
+html[data-row="unfold"] .row.new{animation:unfold calc(.45s*var(--tm)) var(--ease)}
 .q{display:flex;align-items:baseline;gap:6px;min-width:0;white-space:nowrap;font-family:var(--numfont);font-weight:700;font-size:calc(24px*var(--ui));letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .q small{font-family:var(--font);font-size:calc(12px*var(--ui));color:var(--mut);font-weight:600;letter-spacing:0}
 .q .pls{color:var(--faint);font-size:calc(18px*var(--ui))}
@@ -284,6 +291,12 @@ html[data-hs="compacta"] .hist .r .ls,html[data-hs="compacta"] .hist .r .ms{font
 .tabs button.on{background:#fff;color:#000}
 .cust-body{flex:1;min-height:0;overflow-y:auto;padding:12px 14px calc(env(safe-area-inset-bottom,0px) + 24px)}
 .cust-body.swap{animation:tabIn .3s var(--ease)}
+.cust-body.swap>*{animation:optIn .34s var(--ease) both}
+.cust-body.swap>*:nth-child(2){animation-delay:.02s}.cust-body.swap>*:nth-child(3){animation-delay:.04s}.cust-body.swap>*:nth-child(4){animation-delay:.06s}
+.cust-body.swap>*:nth-child(5){animation-delay:.08s}.cust-body.swap>*:nth-child(6){animation-delay:.1s}.cust-body.swap>*:nth-child(7){animation-delay:.12s}
+.cust-body.swap>*:nth-child(n+8){animation-delay:.14s}
+.cust-body .ctl.appear{animation:optIn .3s var(--ease) both}
+.noanim .cust-body.swap>*,.noanim .cust-body .ctl.appear{animation:none}
 .cust-body h4{margin:18px 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-weight:700}
 .cust-body h4:first-child{margin-top:4px}
 .help{margin:0 0 10px;font-size:13px;line-height:1.45;color:var(--mut)}
@@ -317,6 +330,9 @@ select option{background:#111;color:#fff}
 .seg{display:flex;gap:2px;width:100%}
 .seg button{flex:1;height:36px;background:var(--s2);color:var(--mut);font-size:13px;font-weight:600;border-radius:0;padding:0 4px;transition:background .2s,color .2s}
 .seg button.on{background:#fff;color:#000}
+.seg:has(>button:nth-child(5)){flex-wrap:wrap}
+.seg:has(>button:nth-child(5))>button{flex:1 1 calc(25% - 2px);min-width:calc(25% - 2px)}
+.seg button.on{transition:background .25s var(--ease),color .25s var(--ease)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:6px}
 .tile{position:relative;height:54px;color:#000;font-size:11px;font-weight:700;display:grid;place-items:end start;padding:5px 6px;border-radius:0;transition:transform .25s var(--spring)}
 .tile:active{transform:scale(.94)}
@@ -368,6 +384,8 @@ textarea{width:100%;min-height:64px;background:var(--s2);color:#fff;padding:10px
 html[data-ka="fade"] .kb{transition:none}
 html[data-ka="fade"] .kbin{transform:none}
 html[data-ka="none"] .kb,html[data-ka="none"] .kbin{transition:none;transform:none}
+html[data-ka="soft"] .kbin{transform:translateY(6%);filter:blur(6px);transition:opacity calc(.32s*var(--tm)) ease,transform calc(.38s*var(--tm)) var(--ease),filter calc(.38s*var(--tm)) var(--ease)}
+html[data-ka="soft"].kbo .kbin{transform:none;filter:none}
 .kbgrid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:calc(var(--kbrow)*1px);padding:6px 8px 0}
 .kk{position:relative;display:grid;place-items:center;color:var(--kbfg);background:var(--kbkey);border-radius:var(--kbr);font-family:'Google Sans',Roboto,system-ui,sans-serif;
   font-size:calc(var(--kbfs)*1px);font-weight:400;line-height:1;margin:2px;-webkit-user-select:none;user-select:none}
@@ -427,6 +445,11 @@ html[data-kp="none"] .kk::before{display:none}
 @keyframes pop{0%{transform:scale(.88)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
 @keyframes slideL{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes softRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes focusIn{from{opacity:0;filter:blur(8px)}to{opacity:1;filter:none}}
+@keyframes zoomIn{from{opacity:0;transform:scale(1.14)}to{opacity:1;transform:none}}
+@keyframes unfold{from{opacity:0;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0)}}
+@keyframes optIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes breathe{0%,100%{opacity:calc(var(--glow)*.32);transform:scale(1)}50%{opacity:calc(var(--glow)*.6);transform:scale(1.08)}}
 @keyframes kick{0%{opacity:0;transform:scale(.7)}30%{opacity:.5}100%{opacity:0;transform:scale(1.25)}}
@@ -575,7 +598,7 @@ const DEF = {
   radius:0, cardColor:'#FFFFFF', cardA:5, cardBlur:12,
   density:100, capH:46, inH:72, addW:64, addSide:'right', addIcon:'+', showRev:true, showCopyTop:true, showInIcon:true,
   showDate:true, showChip:true, chipColor:'#34D399', showKicker:true, showKeys:false,
-  kbRow:58, kbFs:28, kbBg:'#000000', kbA:100, kbBlur:0, kbFg:'#FFFFFF', kbKeyBg:'#FFFFFF', kbKeyA:0, kbAct:'#7FD1C7', kbActIcon:'#FFFFFF', kbR:14, kbActR:28, kbPress:'circle', kbHide:true, kbAnim:'slide',
+  kbRow:58, kbFs:28, kbBg:'#000000', kbA:100, kbBlur:0, kbFg:'#FFFFFF', kbKeyBg:'#FFFFFF', kbKeyA:0, kbAct:'#7FD1C7', kbActIcon:'#FFFFFF', kbR:14, kbActR:28, kbPress:'circle', kbHide:true, kbAnim:'slide', saveAnim:'pulse',
   speed:100, numAnim:'pop', breathe:true, rowAnim:'slide', ripple:true,
   stagePos:'center', showLabels:true, showPhrase:true, showChips:true,
   sheetColor:'#10101A', sheetA:55, peekRows:1.6, histH:40, showHint:true,
@@ -601,7 +624,7 @@ const STYLE_KEYS = ['accent','accent2','fg','numColor','looseColor','minus','fol
   'density','capH','inH','addW','addSide','addIcon','showRev','showCopyTop','showInIcon','showDate','showChip','chipColor','showKicker','showKeys',
   'speed','numAnim','breathe','rowAnim','ripple','stagePos','showLabels','showPhrase','showChips',
   'sheetColor','sheetA','peekRows','histH','showHint','histStyle','histTime','showTitle','titleUpper',
-  'kbRow','kbFs','kbBg','kbA','kbBlur','kbFg','kbKeyBg','kbKeyA','kbAct','kbActIcon','kbR','kbActR','kbPress','kbHide','kbAnim'];
+  'kbRow','kbFs','kbBg','kbA','kbBlur','kbFg','kbKeyBg','kbKeyA','kbAct','kbActIcon','kbR','kbActR','kbPress','kbHide','kbAnim','saveAnim'];
 
 /* ---- CONTORNOS: cada elemento tiene grosor, color, fuerza, estilo y esquinas propias ---- */
 const EL = [['card','Tarjeta'],['inp','Campo de cantidad'],['caps','Grupo de capacidades'],['sel','Capacidad elegida'],['add','Botón de guardar'],
@@ -664,10 +687,10 @@ function sanitizeCfg(){
   if(!cfg.presets.length) cfg.presets = clone(d.presets);
   ['accent','accent2','fg','numColor','looseColor','minus','blockColor','bg','bg2','cardColor','chipColor','auroraA','auroraB','auroraC','glowColor','sheetColor','otherC1','otherC2','kbBg','kbFg','kbKeyBg','kbAct','kbActIcon']
     .forEach(k => { if(!isHex(cfg[k])) cfg[k] = d[k]; });
-  oneOf('texture', Object.keys(TEX)); oneOf('rowAnim', ['slide','fade','pop','none']); oneOf('numAnim', ['pop','count','roll','none']);
+  oneOf('texture', Object.keys(TEX)); oneOf('rowAnim', ['slide','fade','pop','rise','focus','unfold','none']); oneOf('numAnim', ['pop','count','roll','fade','rise','focus','zoom','none']); oneOf('saveAnim', ['pulse','lift','glow','none']);
   oneOf('stagePos', ['top','center','bottom']); oneOf('histStyle', ['lista','compacta']); oneOf('hapticsLvl', ['low','mid','high']); oneOf('addSide', ['right','left']);
   oneOf('glowShape', ['circle','ellipse']); oneOf('glowAnchor', ['result','center','top','bottom']); oneOf('addIcon', ['+','✓','↵']);
-  oneOf('fx', FX_LIST.map(x => x[0])); oneOf('fxQ', ['low','mid','high']); oneOf('kbPress', ['circle','square','none']); oneOf('kbAnim', ['slide','fade','none']);
+  oneOf('fx', FX_LIST.map(x => x[0])); oneOf('fxQ', ['low','mid','high']); oneOf('kbPress', ['circle','square','none']); oneOf('kbAnim', ['slide','soft','fade','none']);
   ['kbk_dash','kbk_space','kbk_comma','kbk_dot'].forEach(k => oneOf(k, KB_ACT.map(x => x[0]))); oneOf('sndPack', SND_PACKS.map(x => x[0])); oneOf('sndPitch', ['digit','same']);
   if(cfg.histStart === 'peek') cfg.histStart = 'closed';
   oneOf('histStart', ['last','closed','open']); oneOf('histMax', [20,50,100,200]); oneOf('font', FONTS); oneOf('numFont', FONTS);
@@ -1443,9 +1466,15 @@ function shake(){
   vib();
   const a = $('add'); a.classList.remove('shake'); void a.offsetWidth; a.classList.add('shake');
 }
+const SAVE_FX = {
+  pulse:[[{ transform:'scale(1)' }, { transform:'scale(1.09)' }, { transform:'scale(1)' }], 380, 'cubic-bezier(.34,1.56,.64,1)'],
+  lift:[[{ transform:'none' }, { transform:'translateY(-7px)' }, { transform:'none' }], 460, 'cubic-bezier(.2,.8,.2,1)'],
+  glow:[[{ filter:'brightness(1)' }, { filter:'brightness(1.6) drop-shadow(0 0 14px rgba(255,255,255,.35))' }, { filter:'brightness(1)' }], 560, 'ease-out']
+};
 function pulseBig(){
-  if(cfg.speed === 0 || !$('big').animate) return;
-  $('big').animate([{ transform:'scale(1)' }, { transform:'scale(1.09)' }, { transform:'scale(1)' }], { duration:380 * 100 / cfg.speed, easing:'cubic-bezier(.34,1.56,.64,1)' });
+  const f = SAVE_FX[cfg.saveAnim];
+  if(!f || cfg.speed === 0 || !$('big').animate) return;
+  $('big').animate(f[0], { duration:f[1] * 100 / cfg.speed, easing:f[2] });
 }
 function commit(){               // guarda en el historial; el resultado se queda en pantalla
   const d = current();
@@ -1692,7 +1721,7 @@ const TAB_DEFS = {
     H('Qué muestra'), TG('showLabels', 'Mostrar «PALLETS» y «JABAS» bajo los números', 'stage'),
     TG('showPhrase', 'Mostrar la frase de abajo (paquetes)', 'stage'),
     R('phraseScale', 'Tamaño de la frase', 70, 150, 5, 'stage', v => v + '%'),
-    H('Animación de los números'), SG('numAnim', 'Cómo cambian al escribir', [['pop','Salto'],['count','Contar'],['roll','Deslizar'],['none','Ninguna']], 'stage')
+    H('Animación de los números'), SG('numAnim', 'Cómo cambian al escribir', [['pop','Salto'],['count','Contar'],['roll','Deslizar'],['fade','Desvanecer'],['rise','Subir suave'],['focus','Enfocar'],['zoom','Acercar'],['none','Ninguna']], 'stage')
   ],
   hist:[
     H('Botón «Historial»'), TG('showChip', 'Mostrar el botón «Historial»', 'chip'),
@@ -1722,7 +1751,8 @@ const TAB_DEFS = {
   mov:[
     H('Velocidad'), R('speed', 'Velocidad de las animaciones', 0, 300, 10, 'stage', v => v === 0 ? 'Apagadas' : v + '%'),
     H('Luces'), TG('breathe', 'El halo respira', 'halo'), TG('glowReact', 'El halo reacciona al escribir y al guardar', 'halo'),
-    H('Al tocar y al guardar'), SG('rowAnim', 'Entrada de una línea nueva', [['slide','Desliza'],['fade','Aparece'],['pop','Salta'],['none','Nada']], 'hist'),
+    H('Al tocar y al guardar'), SG('rowAnim', 'Entrada de una línea nueva', [['slide','Desliza'],['fade','Aparece'],['pop','Salta'],['rise','Sube suave'],['focus','Enfoca'],['unfold','Se despliega'],['none','Nada']], 'hist'),
+    SG('saveAnim', 'El resultado al guardar', [['pulse','Pulso'],['lift','Se eleva'],['glow','Destello suave'],['none','Nada']], 'stage'),
     TG('ripple', 'Ondas al tocar un botón', 'add'),
     H('Vibración'), TG('haptics', 'Vibrar al tocar y al guardar', 'add'), W(() => cfg.haptics, SG('hapticsLvl', 'Intensidad', [['low','Suave'],['mid','Media'],['high','Fuerte']], 'add')),
     W(() => cfg.haptics, { type:'btn', id:'vibTest', label:'Probar la vibración' })
@@ -1730,7 +1760,7 @@ const TAB_DEFS = {
   kb:[
     H('Teclado'), TG('kbOn', 'Usar el teclado propio (si lo apagas se usa el del teléfono)', 'kb'),
     SG('kbPress', 'Resalte al tocar una tecla', [['circle','Círculo'],['square','Cuadrado'],['none','Ninguno']], 'kb'),
-    TG('kbHide', 'Mostrar la flecha para ocultar el teclado', 'kb'), SG('kbAnim', 'Al aparecer y ocultarse', [['slide','Desliza'],['fade','Aparece'],['none','Nada']], 'kb'),
+    TG('kbHide', 'Mostrar la flecha para ocultar el teclado', 'kb'), SG('kbAnim', 'Al aparecer y ocultarse', [['slide','Desliza'],['soft','Suave (con desenfoque)'],['fade','Aparece'],['none','Nada']], 'kb'),
     H('Tamaños'), R('kbRow', 'Alto de las teclas', 44, 84, 2, 'kb', v => v + ' px'), R('kbFs', 'Tamaño de los números', 18, 44, 1, 'kb', v => v + ' px'),
     H('Colores y transparencia'), C('kbBg', 'Fondo del teclado', 'kb'), R('kbA', 'Opacidad del fondo', 0, 100, 5, 'kb', v => v === 0 ? 'Invisible' : v + '%'),
     R('kbBlur', 'Desenfoque detrás del teclado', 0, 30, 1, 'kb', v => v + ' px'), C('kbFg', 'Color de los números', 'kb'),
@@ -1925,7 +1955,11 @@ function setKey(k, v, t){
   if(k === 'histMax') S.hist = S.hist.slice(0, v);
   if(k === 'showRev' && !v && S.mode === 'rev'){ S.mode = 'fwd'; clearBuf(); syncInputs(); }
   afterChange(t, k === 'showOther' || k === 'otherC1' || k === 'otherC2');
-  if(DEP_KEYS.includes(k)) renderBody(true);        // aparecen u ocultan las opciones que dependen de este ajuste
+  if(DEP_KEYS.includes(k)){                          // aparecen u ocultan las opciones que dependen de este ajuste
+    const before = new Set([...$('custBody').querySelectorAll('[data-k],[data-seg],.btn[id]')].map(x => x.dataset.k || x.dataset.seg || x.id));
+    renderBody(true);
+    $('custBody').querySelectorAll('[data-k],[data-seg],.btn[id]').forEach(x => { if(!before.has(x.dataset.k || x.dataset.seg || x.id)){ const c = x.closest('.ctl') || x; c.classList.add('appear'); } });
+  }
   const out = $('o-' + k);
   if(out){ const d = ALL_DEFS.find(x => x.k === k); if(d && d.f) out.textContent = d.f(v); }
 }
