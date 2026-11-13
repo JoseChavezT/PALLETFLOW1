@@ -138,7 +138,7 @@ html[data-na="roll"] .num,html[data-na="roll"] .op{animation:rollIn calc(.38s*va
 .addleft .inrow{flex-direction:row-reverse}
 .inbox{flex:1;position:relative;display:flex;align-items:center;background:var(--s2);box-shadow:var(--inedge);border-radius:var(--r);overflow:hidden;
   transition:background calc(.2s*var(--tm)),box-shadow calc(.3s*var(--tm))}
-.inbox:focus-within{background:var(--s3);box-shadow:var(--inedge),0 0 24px -4px color-mix(in srgb,var(--glowc) 60%,transparent)}
+.inbox:focus-within{background:var(--s3);box-shadow:var(--inedge)}
 .inico{position:absolute;left:16px;top:50%;margin-top:-10px;width:20px;height:20px;color:var(--faint);pointer-events:none}
 .inico svg{width:20px;height:20px;display:block}
 .noinicon .inico{display:none}
@@ -1626,14 +1626,14 @@ const BG_SWATCHES = ['#07070D','#000000','#0B0C0F','#04070F','#0A0510','#050F08'
 const STYLES = [
   ['Mi tema DJ1', { accent:'#FFFFFF', accent2:'#FFFFFF', fg:'#FFFFFF', numColor:'#EFFFE6', looseColor:'#A3E635', minus:'#F6465D', followCapLoose:true, surf:0, bg:'#000000',
     auroraOn:false, glow:100, glowSize:100, followCapGlow:true, texture:'dots', texa:3, font:'Montserrat', numFont:'Figtree', numItalic:false, numWeight:900, numScale:65, inScale:110, uiScale:110,
-    track:2, radius:0, cardA:0, o_card_w:0, o_inp_w:0, o_caps_w:0, cardBlur:0, density:100, speed:200, numAnim:'pop', breathe:true, rowAnim:'fade', showChip:false, showKicker:false, showDate:false,
+    track:2, radius:0, cardA:0, o_card_w:0, o_inp_w:0, o_caps_w:0, cardBlur:0, density:100, speed:200, numAnim:'pop', breathe:true, rowAnim:'fade', showKicker:false, showDate:false,
     inH:64, titleUpper:true, sheetColor:'#161616', sheetA:70 }],
   ['Dorado', { accent:'#EAB308', accent2:'#F59E0B', numColor:'#FFF4C2', followCapLoose:false, looseColor:'#EAB308', followCapGlow:false, glowColor:'#EAB308', auroraA:'#8A6A12', auroraB:'#7A3B10', auroraC:'#3A2A08', chipColor:'#EAB308' }],
   ['Azul eléctrico', { accent:'#3B82F6', accent2:'#06B6D4', numColor:'#E6F1FF', followCapLoose:false, looseColor:'#38BDF8', followCapGlow:false, glowColor:'#3B82F6', bg:'#02050B', auroraA:'#0E4A8F', auroraB:'#1B2F9A', auroraC:'#0B2548', chipColor:'#38BDF8' }],
   ['Verde neón', { accent:'#22C55E', accent2:'#A3E635', numColor:'#EFFFE6', followCapLoose:false, looseColor:'#A3E635', followCapGlow:false, glowColor:'#22C55E', numFont:'Space Grotesk', texture:'grid', texa:5, auroraA:'#0F7A4A', auroraB:'#2E6A1E', auroraC:'#0A3A24', chipColor:'#A3E635' }],
   ['Fuego', { accent:'#EF4444', accent2:'#F97316', numColor:'#FFE9E0', followCapLoose:false, looseColor:'#F97316', minus:'#FFB4A8', followCapGlow:false, glowColor:'#EF4444', bg:'#060202', auroraA:'#8F2A12', auroraB:'#7A1030', auroraC:'#3A0E08', chipColor:'#F97316' }],
   ['Violeta', { accent:'#8B5CF6', accent2:'#D946EF', numColor:'#F4EBFF', followCapLoose:false, looseColor:'#D946EF', followCapGlow:false, glowColor:'#8B5CF6', bg:'#05020A', auroraA:'#5B21B6', auroraB:'#A21CAF', auroraC:'#2A0E55', chipColor:'#D946EF' }],
-  ['Clásico', { surf:5, glow:60, auroraOn:false, cardA:0, o_card_w:0, o_inp_w:0, o_caps_w:0, cardBlur:0, texture:'none', font:'Figtree', numFont:'Cabin', numItalic:true, numWeight:800, numScale:100, track:-3, speed:100, rowAnim:'slide', bg:'#000000', showChip:false }],
+  ['Clásico', { surf:5, glow:60, auroraOn:false, cardA:0, o_card_w:0, o_inp_w:0, o_caps_w:0, cardBlur:0, texture:'none', font:'Figtree', numFont:'Cabin', numItalic:true, numWeight:800, numScale:100, track:-3, speed:100, rowAnim:'slide', bg:'#000000' }],
   ['Seco', { glow:0, auroraOn:false, breathe:false, glowReact:false, numAnim:'none', speed:60, ripple:false, texture:'none', numFont:'Inconsolata', numWeight:700, cardBlur:0 }]
 ];
 
@@ -1678,7 +1678,7 @@ const TAB_DEFS = {
     H('Tarjeta de cristal'), C('cardColor', 'Color del cristal', 'card'), R('cardA', 'Transparencia del cristal', 0, 40, 1, 'card', v => v === 0 ? 'Sin cristal' : v + '%'),
     R('cardBlur', 'Desenfoque del fondo', 0, 30, 1, 'card', v => v + ' px'),
     { type:'help', text:'Los contornos de cada elemento (grosor, color, estilo y esquinas) se ajustan en la pestaña <b>Contornos</b>.' },
-    H('Encabezado'), TG('showDate', 'Mostrar la fecha', 'hdr'), TG('showChip', 'Mostrar la etiqueta del historial', 'chip'), W(() => cfg.showChip, C('chipColor', 'Color de la etiqueta', 'chip')),
+    H('Encabezado'), TG('showDate', 'Mostrar la fecha', 'hdr'),
     H('Dentro de la tarjeta'), TG('showKicker', 'Mostrar el texto de arriba («TOTAL»)', 'stage'), W(() => cfg.showKicker, TX('kickerText', 'Texto de arriba', 'stage'))
   ],
   texto:[
@@ -1695,6 +1695,9 @@ const TAB_DEFS = {
     H('Animación de los números'), SG('numAnim', 'Cómo cambian al escribir', [['pop','Salto'],['count','Contar'],['roll','Deslizar'],['none','Ninguna']], 'stage')
   ],
   hist:[
+    H('Botón «Historial»'), TG('showChip', 'Mostrar el botón «Historial»', 'chip'),
+    W(() => !cfg.showChip, { type:'help', text:'Con el botón oculto <b>no se puede abrir el historial</b>; lo que guardas se sigue guardando.' }),
+    W(() => cfg.showChip, C('chipColor', 'Color del botón', 'chip')),
     H('La hoja'), C('sheetColor', 'Color de la hoja', 'sheet'), R('sheetA', 'Opacidad de la hoja', 0, 100, 5, 'sheet', v => v === 0 ? 'Invisible' : v + '%'),
     H('Cómo se abre el historial'), { type:'help', text:'El historial se abre y se cierra <b>solo con el botón «Historial»</b> de arriba.' },
     SG('histStart', 'Al abrir la app', [['last','La última'],['closed','Oculto'],['open','Abierto']], 'hist'),
