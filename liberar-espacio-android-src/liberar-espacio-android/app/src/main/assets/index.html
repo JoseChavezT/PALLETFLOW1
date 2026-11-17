@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<title>Liberar espacio</title>
+<style>
+:root{
+  --bg:#000;--surface:#0b0b0b;--surface-2:#151515;--line:#1f1f1f;
+  --text:#f2f2f2;--muted:#8a8a8a;--accent:#7dd3c0;--danger:#ff6b6b;
+  --radius:16px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);
+  font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+.app{max-width:720px;margin:0 auto;min-height:100vh}
+header{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;
+  justify-content:space-between;gap:12px;padding:calc(var(--safe-t) + 16px) 16px 12px}
+h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em}
+main{padding:4px 16px calc(var(--safe-b) + 140px)}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.btn{min-height:48px;padding:0 18px;border-radius:12px;background:var(--text);color:#000;
+  font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+.btn.ghost{background:var(--surface-2);color:var(--text)}
+.btn.danger{background:var(--danger)}
+.btn.sm{min-height:36px;padding:0 12px;font-size:13px;border-radius:10px}
+.block{width:100%}
+.progress{height:4px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin-top:14px}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s ease}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.summary .total{grid-column:1/-1}
+.big{font-size:32px;font-weight:600;letter-spacing:-.02em;margin:4px 0}
+.tile{text-align:left;padding:14px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line)}
+.tile[aria-pressed="true"]{border-color:var(--text)}
+.tile .n{font-size:22px;font-weight:600;margin:2px 0}
+.list{padding:6px}
+.item{display:flex;align-items:center;gap:8px;padding:6px;border-radius:12px}
+.item:active{background:var(--surface-2)}
+.open{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:4px 0}
+.thumb{width:56px;height:56px;flex:none;border-radius:10px;object-fit:cover;background:var(--surface-2);
+  display:grid;place-items:center;color:var(--muted);font-size:12px}
+.info{min-width:0;flex:1}
+.info .name,.info .meta{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.info .meta{color:var(--muted);font-size:13px}
+.badge{display:inline-block;margin-top:4px;font-size:11px;font-weight:600;padding:2px 8px;
+  border-radius:999px;background:var(--accent);color:#000}
+.check{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid #3a3a3a;position:relative}
+.check[aria-checked="true"]{background:var(--accent);border-color:var(--accent)}
+.check[aria-checked="true"]::after{content:"";position:absolute;left:10px;top:5px;width:6px;height:11px;
+  border:solid #000;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.group{padding:12px;margin-bottom:12px}
+.ghead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 4px 8px}
+.empty{padding:40px 8px;text-align:center}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,.94);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  padding:12px 16px calc(12px + var(--safe-b))}
+.bar-in{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+dialog{background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:20px;
+  padding:20px;width:min(92vw,520px);max-height:85vh;overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin:0}
+dt{color:var(--muted);font-size:13px}
+dd{margin:0;word-break:break-word}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + var(--safe-b));
+  background:var(--surface-2);border:1px solid var(--line);padding:12px 16px;border-radius:12px;
+  max-width:90vw;font-size:14px;z-index:10}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Liberar espacio</h1>
+    <button class="btn ghost sm" id="btnNew" hidden>Nuevo análisis</button>
+  </header>
+  <main>
+    <section class="card" id="viewStart">
+      <p class="muted" id="startNote" style="margin:0 0 14px"></p>
+      <button class="btn block" id="btnStart">Empezar</button>
+      <p class="muted small" style="margin:14px 0 0">Todo se analiza en este dispositivo. Nada se sube a internet.</p>
+    </section>
+    <section class="card" id="viewAnalysis" hidden>
+      <p id="progressText" aria-live="polite" style="margin:0">Preparando…</p>
+      <div class="progress"><i id="progressBar"></i></div>
+    </section>
+    <section id="viewResults" hidden>
+      <div class="summary" id="summary"></div>
+      <div id="list"></div>
+    </section>
+  </main>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <div class="bar-in">
+    <div id="barInfo"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn ghost sm" id="btnClear">Limpiar</button>
+      <button class="btn danger sm" id="btnDelete">Quitar</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="picker" multiple hidden>
+
+<dialog id="detail">
+  <div id="detailBody"></div>
+  <div class="actions">
+    <button class="btn ghost" id="detailToggle">Seleccionar</button>
+    <button class="btn" id="detailClose">Cerrar</button>
+  </div>
+</dialog>
+
+<dialog id="confirm">
+  <p id="confirmText" style="margin:0"></p>
+  <div class="actions">
+    <button class="btn ghost" id="confirmNo">Cancelar</button>
+    <button class="btn danger" id="confirmYes">Confirmar</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* Puente nativo: solo existe dentro de la APK (MainActivity inyecta AndroidStorage).
+   Expone window.StorageBridge con promesas. En navegador no hace nada. */
+(() => {
+  const A = window.AndroidStorage;
+  if (!A) return;
+  const waiting = new Map();
+  let seq = 0;
+  window.__storageResolve = (id, ok, payload) => {
+    const w = waiting.get(id);
+    if (!w) return;
+    waiting.delete(id);
+    if (ok) w.resolve(payload);
+    else w.reject(new Error(payload));
+  };
+  const call = (method, ...args) => new Promise((resolve, reject) => {
+    const id = String(++seq);
+    waiting.set(id, { resolve, reject });
+    A[method](id, ...args);
+  });
+  window.StorageBridge = {
+    listMedia: () => call('listMedia').then(JSON.parse),
+    trash: ids => call('trash', JSON.stringify(ids)).then(JSON.parse)
+  };
+})();
+</script>
+(() => {
+'use strict';
+
+/* Puente nativo (APK), opcional.
+   Si window.StorageBridge existe, la app lee la galería del teléfono y mueve a la papelera.
+   Contrato que debe implementar el lado nativo:
+     listMedia() -> Promise<[{ id, name, size, mime, dateModified, width?, height?, duration?, url }]>
+       url: ruta que el WebView puede leer (por ejemplo, Capacitor.convertFileSrc).
+     trash(ids: string[]) -> Promise<{ trashed: string[] }>
+       Usa MediaStore.createTrashRequest (Android 11+) y devuelve los ids confirmados.
+   Sin puente funciona con el selector de archivos y no toca archivos reales. */
+const bridge = window.StorageBridge && typeof window.StorageBridge.listMedia === 'function'
+  ? window.StorageBridge : null;
+
+/* Umbrales de partida: calibrar con fotos reales. */
+const CFG = {
+  FULL_HASH_MAX: 64 * 1024 * 1024,   // SHA-256 completo hasta 64 MB
+  PARTIAL_CHUNK: 4 * 1024 * 1024,    // archivos mayores: huella con inicio y final
+  SIM_MAX_DIST: 8,                   // distancia de Hamming (de 64 bits) para "parecidas"
+  BLUR_MAX: 60,                      // varianza del Laplaciano en 64x64; por debajo = borrosa
+  LARGE_BYTES: 100 * 1024 * 1024,
+  THUMB_PX: 120,
+  SCREENSHOT_RE: /screen[\s_-]?shot|captura|pantalla/i
+};
+
+const LABEL = { dup: 'Duplicados', sim: 'Similares', blur: 'Borrosas', shot: 'Capturas', big: 'Grandes', all: 'Todos' };
+const EMPTY = {
+  dup: 'No se encontraron copias idénticas.',
+  sim: 'No se encontraron fotos parecidas.',
+  blur: 'No hay fotos borrosas.',
+  shot: 'No hay capturas de pantalla.',
+  big: 'No hay archivos grandes.',
+  all: 'No hay elementos.'
+};
+const FLAT = {
+  blur: { filter: it => it.blurry, sort: (a, b) => a.blur - b.blur },
+  shot: { filter: it => it.shot, sort: (a, b) => b.date - a.date },
+  big:  { filter: it => it.large, sort: (a, b) => b.size - a.size },
+  all:  { filter: () => true, sort: (a, b) => b.size - a.size }
+};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nf = (n, d = 1) => n.toLocaleString('es-PE', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtSize = b => b >= 1024 ** 3 ? nf(b / 1024 ** 3, 2) + ' GB'
+  : b >= 1024 ** 2 ? nf(b / 1024 ** 2) + ' MB'
+  : b >= 1024 ? Math.round(b / 1024) + ' KB' : b + ' B';
+const fmtDate = ms => ms ? new Date(ms).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+const fmtDateLong = ms => ms ? new Date(ms).toLocaleString('es-PE', { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+const fmtDur = s => { const t = Math.round(s); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); };
+const bytesOf = arr => arr.reduce((a, it) => a + it.size, 0);
+const tick = () => new Promise(r => setTimeout(r, 0));
+
+let items = [];
+let byId = new Map();
+let groups = { dup: [], sim: [], byId: new Map() };
+let selected = new Set();
+let tab = 'dup';
+let gid = 0;
+
+/* ---------- Entrada ---------- */
+function kindOf(mime, name) {
+  if (/^image\//.test(mime) || /\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(name)) return 'image';
+  if (/^video\//.test(mime) || /\.(mp4|mov|3gp|mkv|webm|avi)$/i.test(name)) return 'video';
+  return 'other';
+}
+
+function fromFiles(files) {
+  return files.map((f, i) => ({
+    id: 'f' + i, name: f.name, size: f.size, mime: f.type || '', date: f.lastModified,
+    kind: kindOf(f.type || '', f.name), src: f, url: URL.createObjectURL(f)
+  }));
+}
+
+function normalizeBridge(list) {
+  return list.map(m => ({
+    id: String(m.id), name: m.name || 'Sin nombre', size: Number(m.size) || 0, mime: m.mime || '',
+    date: Number(m.dateModified) || 0, kind: kindOf(m.mime || '', m.name || ''), src: null, url: m.url,
+    w: m.width || null, h: m.height || null, duration: m.duration || null
+  }));
+}
+
+/* ---------- Huellas ---------- */
+async function sha256(buf) {
+  return [...new Uint8Array(await crypto.subtle.digest('SHA-256', buf))]
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function concat(...bufs) {
+  const out = new Uint8Array(bufs.reduce((a, b) => a + b.byteLength, 0));
+  let o = 0;
+  for (const b of bufs) { out.set(new Uint8Array(b), o); o += b.byteLength; }
+  return out.buffer;
+}
+
+async function fingerprint(blob) {
+  if (blob.size <= CFG.FULL_HASH_MAX) {
+    return { type: 'completa', hash: await sha256(await blob.arrayBuffer()) };
+  }
+  const n = CFG.PARTIAL_CHUNK;
+  const head = await blob.slice(0, n).arrayBuffer();
+  const tail = await blob.slice(Math.max(0, blob.size - n)).arrayBuffer();
+  const meta = new TextEncoder().encode('size:' + blob.size).buffer;
+  return { type: 'parcial', hash: await sha256(concat(meta, head, tail)) };
+}
+
+/* ---------- Imágenes y videos ---------- */
+function canvas(w, h) {
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  return { c, ctx: c.getContext('2d', { willReadFrequently: true }) };
+}
+
+const luma = (d, i) => d[i * 4] * 0.299 + d[i * 4 + 1] * 0.587 + d[i * 4 + 2] * 0.114;
+
+async function analyzeImage(it, blob) {
+  const bmp = await createImageBitmap(blob);
+  it.w = bmp.width;
+  it.h = bmp.height;
+  const s = Math.min(1, CFG.THUMB_PX / Math.max(bmp.width, bmp.height));
+  const t = canvas(Math.max(1, Math.round(bmp.width * s)), Math.max(1, Math.round(bmp.height * s)));
+  t.ctx.drawImage(bmp, 0, 0, t.c.width, t.c.height);
+  bmp.close?.();
+  it.thumb = t.c.toDataURL('image/jpeg', 0.7);
+
+  // dHash: 9x8 en gris, compara vecinos horizontales => 64 bits
+  const d = canvas(9, 8);
+  d.ctx.drawImage(t.c, 0, 0, 9, 8);
+  const p = d.ctx.getImageData(0, 0, 9, 8).data;
+  let lo = 0, hi = 0, bit = 0;
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++, bit++) {
+      if (luma(p, y * 9 + x) > luma(p, y * 9 + x + 1)) {
+        if (bit < 32) lo |= 1 << bit; else hi |= 1 << (bit - 32);
+      }
+    }
+  }
+  it.dh = { lo: lo >>> 0, hi: hi >>> 0 };
+
+  // Nitidez: varianza del Laplaciano sobre 64x64 (valor bajo = poca nitidez)
+  const b = canvas(64, 64);
+  b.ctx.drawImage(t.c, 0, 0, 64, 64);
+  const q = b.ctx.getImageData(0, 0, 64, 64).data;
+  const L = new Float32Array(4096);
+  for (let i = 0; i < 4096; i++) L[i] = luma(q, i);
+  let sum = 0, sum2 = 0, n = 0;
+  for (let y = 1; y < 63; y++) {
+    for (let x = 1; x < 63; x++) {
+      const i = y * 64 + x;
+      const lap = 4 * L[i] - L[i - 1] - L[i + 1] - L[i - 64] - L[i + 64];
+      sum += lap; sum2 += lap * lap; n++;
+    }
+  }
+  const mean = sum / n;
+  it.blur = sum2 / n - mean * mean;
+}
+
+function analyzeVideo(it) {
+  return new Promise(resolve => {
+    const v = document.createElement('video');
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      v.removeAttribute('src');
+      v.load();
+      resolve();
+    };
+    const timer = setTimeout(finish, 8000);
+    v.preload = 'metadata';
+    v.onloadedmetadata = () => {
+      it.duration = Number.isFinite(v.duration) ? v.duration : it.duration;
+      it.w = v.videoWidth || it.w;
+      it.h = v.videoHeight || it.h;
+      clearTimeout(timer);
+      finish();
+    };
+    v.onerror = () => { clearTimeout(timer); finish(); };
+    v.src = it.url;
+  });
+}
+
+/* ---------- Análisis ---------- */
+function progress(i, n) {
+  $('#progressText').textContent = `Analizando ${i} de ${n}`;
+  $('#progressBar').style.width = (n ? (i / n) * 100 : 100) + '%';
+}
+
+async function getBlobFor(it) {
+  return it.src instanceof Blob ? it.src : (await fetch(it.url)).blob();
+}
+
+async function analyze(raw) {
+  show('analysis');
+  items = raw.map(r => ({
+    hash: null, hashType: null, dh: null, blur: null, thumb: null,
+    w: null, h: null, duration: null, dupGroup: null, simGroup: null,
+    blurry: false, shot: false, large: false, error: false, ...r
+  }));
+  byId = new Map(items.map(it => [it.id, it]));
+
+  // Solo se calcula huella a tamaños repetidos: un duplicado siempre tiene el mismo tamaño
+  const sizeCount = new Map();
+  for (const it of items) if (it.size > 0) sizeCount.set(it.size, (sizeCount.get(it.size) || 0) + 1);
+
+  for (let i = 0; i < items.length; i++) {
+    const it = items[i];
+    try {
+      const needHash = it.size > 0 && sizeCount.get(it.size) > 1;
+      if (it.kind === 'image' || needHash) {
+        const blob = await getBlobFor(it);
+        if (needHash) {
+          const fp = await fingerprint(blob);
+          it.hash = fp.hash;
+          it.hashType = fp.type;
+        }
+        if (it.kind === 'image') await analyzeImage(it, blob);
+      } else if (it.kind === 'video') {
+        await analyzeVideo(it);
+      }
+    } catch {
+      it.error = true;
+    }
+    if (i % 5 === 4 || i === items.length - 1) {
+      progress(i + 1, items.length);
+      await tick();
+    }
+  }
+  tab = 'dup';
+  buildGroups();
+  show('results');
+  render();
+}
+
+/* ---------- Grupos ---------- */
+function bestFirst(a, b) {
+  const pa = (a.w || 0) * (a.h || 0), pb = (b.w || 0) * (b.h || 0);
+  if (pa !== pb) return pb - pa;          // más píxeles primero
+  if (a.size !== b.size) return b.size - a.size;
+  return a.date - b.date;                 // a igualdad, la más antigua
+}
+
+function makeGroup(type, members) {
+  const sorted = members.slice().sort(bestFirst);
+  const g = { id: type + (++gid), type, members: sorted, best: sorted[0] };
+  for (const m of sorted) {
+    if (type === 'dup') m.dupGroup = g; else m.simGroup = g;
+  }
+  groups.byId.set(g.id, g);
+  return g;
+}
+
+function pop32(x) {
+  x = x >>> 0;
+  x = x - ((x >>> 1) & 0x55555555);
+  x = (x & 0x33333333) + ((x >>> 2) & 0x33333333);
+  return Math.imul((x + (x >>> 4)) & 0x0f0f0f0f, 0x01010101) >>> 24;
+}
+
+function hamming(a, b) {
+  return pop32((a.lo ^ b.lo) >>> 0) + pop32((a.hi ^ b.hi) >>> 0);
+}
+
+function clusterSimilar(reps) {
+  const parent = reps.map((_, i) => i);
+  const find = i => {
+    while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; }
+    return i;
+  };
+  for (let i = 0; i < reps.length; i++) {
+    for (let j = i + 1; j < reps.length; j++) {
+      if (hamming(reps[i].dh, reps[j].dh) <= CFG.SIM_MAX_DIST) {
+        const a = find(i), b = find(j);
+        if (a !== b) parent[a] = b;
+      }
+    }
+  }
+  const buckets = new Map();
+  reps.forEach((it, i) => {
+    const r = find(i);
+    if (!buckets.has(r)) buckets.set(r, []);
+    buckets.get(r).push(it);
+  });
+  return [...buckets.values()].filter(g => g.length > 1);
+}
+
+function buildGroups() {
+  groups = { dup: [], sim: [], byId: new Map() };
+  const byHash = new Map();
+  for (const it of items) {
+    it.dupGroup = null;
+    it.simGroup = null;
+    if (it.hash) {
+      if (!byHash.has(it.hash)) byHash.set(it.hash, []);
+      byHash.get(it.hash).push(it);
+    }
+  }
+  for (const arr of byHash.values()) {
+    if (arr.length > 1) groups.dup.push(makeGroup('dup', arr));
+  }
+  // En similares entra un representante por cada grupo de duplicados (la mejor copia)
+  const reps = items.filter(it => it.dh && (!it.dupGroup || it.dupGroup.best === it));
+  groups.sim = clusterSimilar(reps).map(arr => makeGroup('sim', arr));
+
+  for (const it of items) {
+    it.blurry = it.blur !== null && it.blur < CFG.BLUR_MAX;
+    it.shot = it.kind === 'image' && CFG.SCREENSHOT_RE.test(it.name);
+    it.large = it.size >= CFG.LARGE_BYTES;
+  }
+}
+
+function extraBytes(gs) {
+  return gs.reduce((a, g) => a + bytesOf(g.members.slice(1)), 0);
+}
+
+function suggestedSet() {
+  const s = new Set();
+  for (const g of [...groups.dup, ...groups.sim]) {
+    for (const m of g.members.slice(1)) s.add(m.id);
+  }
+  for (const it of items) if (it.blurry || it.shot || it.large) s.add(it.id);
+  return s;
+}
+
+/* ---------- Render ---------- */
+function render() {
+  renderSummary();
+  renderList();
+  renderBar();
+}
+
+function renderSummary() {
+  const sug = suggestedSet();
+  const sugBytes = bytesOf([...sug].map(id => byId.get(id)));
+  const defs = [
+    ['dup', groups.dup.length, 'grupos', extraBytes(groups.dup)],
+    ['sim', groups.sim.length, 'grupos', extraBytes(groups.sim)],
+    ...['blur', 'shot', 'big', 'all'].map(k => {
+      const arr = items.filter(FLAT[k].filter);
+      return [k, arr.length, 'elementos', bytesOf(arr)];
+    })
+  ];
+  $('#summary').innerHTML = `
+    <div class="card total">
+      <div class="muted small">Espacio para revisar</div>
+      <div class="big">${fmtSize(sugBytes)}</div>
+      <div class="muted small">${sug.size} elementos sugeridos. Tú decides qué se borra.</div>
+    </div>` +
+    defs.map(([k, n, unit, bytes]) => `
+      <button class="tile" data-tab="${k}" aria-pressed="${tab === k}">
+        <div class="muted small">${LABEL[k]}</div>
+        <div class="n">${n}</div>
+        <div class="muted small">${unit} · ${fmtSize(bytes)}</div>
+      </button>`).join('');
+}
+
+function renderList() {
+  const el = $('#list');
+  if (!items.length) {
+    el.innerHTML = '<p class="muted empty">No hay nada analizado todavía.</p>';
+    return;
+  }
+  if (tab === 'dup' || tab === 'sim') {
+    const gs = tab === 'dup' ? groups.dup : groups.sim;
+    el.innerHTML = gs.length ? gs.map(groupHTML).join('') : `<p class="muted empty">${EMPTY[tab]}</p>`;
+    return;
+  }
+  const f = FLAT[tab];
+  const arr = items.filter(f.filter).sort(f.sort);
+  el.innerHTML = arr.length
+    ? `<div class="list card">${arr.map(it => rowHTML(it, false)).join('')}</div>`
+    : `<p class="muted empty">${EMPTY[tab]}</p>`;
+}
+
+function groupHTML(g) {
+  const others = g.members.slice(1);
+  const allOn = others.every(m => selected.has(m.id));
+  const title = g.type === 'dup'
+    ? `${g.members.length} copias idénticas`
+    : `${g.members.length} fotos parecidas`;
+  return `<section class="card group" aria-label="${esc(title)}">
+    <div class="ghead">
+      <div>
+        <div>${title}</div>
+        <div class="muted small">Copias extra: ${fmtSize(bytesOf(others))}</div>
+      </div>
+      <button class="btn ghost sm" data-keep="${esc(g.id)}">${allOn ? 'Quitar selección' : 'Seleccionar las demás'}</button>
+    </div>
+    <div class="list" style="padding:0">${g.members.map((m, i) => rowHTML(m, i === 0)).join('')}</div>
+  </section>`;
+}
+
+function thumbHTML(it) {
+  if (it.thumb) return `<img class="thumb" src="${it.thumb}" alt="" loading="lazy" decoding="async">`;
+  const txt = it.kind === 'video' ? '▶' : it.kind === 'image' ? 'IMG' : 'ARC';
+  return `<div class="thumb" aria-hidden="true">${txt}</div>`;
+}
+
+function metaText(it) {
+  const parts = [fmtSize(it.size), fmtDate(it.date)];
+  if (it.w && it.h) parts.push(`${it.w}×${it.h}`);
+  if (it.duration) parts.push(fmtDur(it.duration));
+  return parts.join(' · ');
+}
+
+function rowHTML(it, isBest) {
+  const on = selected.has(it.id);
+  return `<div class="item">
+    <button class="open" data-open="${esc(it.id)}">
+      ${thumbHTML(it)}
+      <span class="info">
+        <span class="name">${esc(it.name)}</span>
+        <span class="meta">${esc(metaText(it))}</span>
+        ${isBest ? '<span class="badge">Mejor</span>' : ''}
+      </span>
+    </button>
+    <button class="check" data-check="${esc(it.id)}" role="checkbox" aria-checked="${on}"
+      aria-label="Seleccionar ${esc(it.name)}"></button>
+  </div>`;
+}
+
+function renderBar() {
+  const bar = $('#bar');
+  if (!selected.size) { bar.hidden = true; return; }
+  const bytes = bytesOf([...selected].map(id => byId.get(id)).filter(Boolean));
+  bar.hidden = false;
+  $('#barInfo').innerHTML = `<strong>${selected.size}</strong> seleccionados · ${fmtSize(bytes)}`;
+  $('#btnDelete').textContent = bridge ? 'Mover a papelera' : 'Quitar de la lista';
+}
+
+/* ---------- Acciones ---------- */
+function toggle(id) {
+  if (selected.has(id)) selected.delete(id);
+  else selected.add(id);
+  renderList();
+  renderBar();
+}
+
+function markOthers(gidValue) {
+  const g = groups.byId.get(gidValue);
+  if (!g) return;
+  const others = g.members.slice(1);
+  const allOn = others.every(m => selected.has(m.id));
+  for (const m of others) {
+    if (allOn) selected.delete(m.id);
+    else selected.add(m.id);
+  }
+  renderList();
+  renderBar();
+}
+
+function openDetail(id) {
+  const it = byId.get(id);
+  if (!it) return;
+  const rows = [
+    ['Nombre', it.name],
+    ['Tipo', it.mime || (it.kind === 'image' ? 'Imagen' : it.kind === 'video' ? 'Video' : 'Archivo')],
+    ['Tamaño', `${fmtSize(it.size)} (${it.size.toLocaleString('es-PE')} bytes)`],
+    ['Modificado', fmtDateLong(it.date)]
+  ];
+  if (it.w && it.h) rows.push(['Dimensiones', `${it.w} × ${it.h} px`]);
+  if (it.duration) rows.push(['Duración', fmtDur(it.duration)]);
+  if (it.blur !== null) rows.push(['Nitidez', `${nf(it.blur, 0)} ${it.blurry ? '(posiblemente borrosa)' : '(nítida)'}`]);
+  if (it.shot) rows.push(['Captura', 'Sí, por el nombre del archivo']);
+  if (it.hash) {
+    rows.push(['Huella', `${it.hash.slice(0, 16)}… (${it.hashType === 'completa' ? 'SHA-256 completa' : 'parcial, archivo grande'})`]);
+  }
+  if (it.dupGroup) {
+    rows.push(['Duplicados', `${it.dupGroup.members.length} copias idénticas${it.dupGroup.best === it ? ' · esta es la mejor' : ''}`]);
+  }
+  if (it.simGroup) {
+    const ref = it.simGroup.best;
+    rows.push(['Parecidas', `${it.simGroup.members.length} fotos en el grupo${ref === it ? ' · esta es la mejor' : ` · distancia ${hamming(it.dh, ref.dh)} de 64`}`]);
+  }
+  if (it.error) rows.push(['Aviso', 'No se pudo analizar el contenido']);
+
+  $('#detailBody').innerHTML = `
+    <h2 style="font-size:17px;margin:0 0 14px;word-break:break-word">${esc(it.name)}</h2>
+    <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+  const btn = $('#detailToggle');
+  btn.dataset.id = id;
+  btn.textContent = selected.has(id) ? 'Quitar selección' : 'Seleccionar';
+  $('#detail').showModal();
+}
+
+async function removeSelected() {
+  const ids = [...selected];
+  let done = ids;
+  if (bridge) {
+    try {
+      const res = await bridge.trash(ids);
+      done = Array.isArray(res?.trashed) ? res.trashed.map(String) : [];
+    } catch {
+      toast('No se pudo mover a la papelera. Revisa los permisos.');
+      return;
+    }
+  }
+  const gone = new Set(done);
+  items = items.filter(it => {
+    if (!gone.has(it.id)) return true;
+    if (it.src instanceof Blob) URL.revokeObjectURL(it.url);
+    return false;
+  });
+  byId = new Map(items.map(it => [it.id, it]));
+  selected = new Set([...selected].filter(id => !gone.has(id)));
+  buildGroups();
+  render();
+  toast(bridge ? `${done.length} movido(s) a la papelera.` : `${done.length} quitado(s) de la lista.`);
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, 3800);
+}
+
+function show(view) {
+  $('#viewStart').hidden = view !== 'start';
+  $('#viewAnalysis').hidden = view !== 'analysis';
+  $('#viewResults').hidden = view !== 'results';
+  $('#btnNew').hidden = view !== 'results';
+  if (view !== 'results') $('#bar').hidden = true;
+}
+
+/* ---------- Eventos ---------- */
+const picker = $('#picker');
+
+$('#btnStart').addEventListener('click', async () => {
+  if (!bridge) { picker.click(); return; }
+  show('analysis');
+  $('#progressText').textContent = 'Leyendo la galería…';
+  let list;
+  try {
+    list = await bridge.listMedia();
+  } catch {
+    show('start');
+    toast('No se pudo leer la galería. Revisa los permisos.');
+    return;
+  }
+  analyze(normalizeBridge(list));
+});
+
+picker.addEventListener('change', () => {
+  const files = [...picker.files];
+  picker.value = '';
+  if (files.length) analyze(fromFiles(files));
+});
+
+$('#summary').addEventListener('click', e => {
+  const t = e.target.closest('[data-tab]');
+  if (!t) return;
+  tab = t.dataset.tab;
+  render();
+});
+
+$('#list').addEventListener('click', e => {
+  const chk = e.target.closest('[data-check]');
+  if (chk) return toggle(chk.dataset.check);
+  const open = e.target.closest('[data-open]');
+  if (open) return openDetail(open.dataset.open);
+  const keep = e.target.closest('[data-keep]');
+  if (keep) return markOthers(keep.dataset.keep);
+});
+
+$('#detailToggle').addEventListener('click', () => {
+  const btn = $('#detailToggle');
+  const id = btn.dataset.id;
+  toggle(id);
+  btn.textContent = selected.has(id) ? 'Quitar selección' : 'Seleccionar';
+});
+$('#detailClose').addEventListener('click', () => $('#detail').close());
+
+$('#btnClear').addEventListener('click', () => {
+  selected.clear();
+  renderList();
+  renderBar();
+});
+
+$('#btnDelete').addEventListener('click', () => {
+  const bytes = bytesOf([...selected].map(id => byId.get(id)).filter(Boolean));
+  $('#confirmText').textContent = bridge
+    ? `Se moverán ${selected.size} elemento(s) (${fmtSize(bytes)}) a la papelera del teléfono.`
+    : `Se quitarán ${selected.size} elemento(s) (${fmtSize(bytes)}) de esta lista. En navegador no se tocan los archivos originales.`;
+  $('#confirm').showModal();
+});
+$('#confirmNo').addEventListener('click', () => $('#confirm').close());
+$('#confirmYes').addEventListener('click', async () => {
+  $('#confirm').close();
+  await removeSelected();
+});
+
+$('#btnNew').addEventListener('click', () => {
+  for (const it of items) if (it.src instanceof Blob) URL.revokeObjectURL(it.url);
+  items = [];
+  byId = new Map();
+  selected = new Set();
+  groups = { dup: [], sim: [], byId: new Map() };
+  show('start');
+});
+
+/* ---------- Inicio ---------- */
+function init() {
+  $('#btnStart').textContent = bridge ? 'Analizar galería' : 'Elegir archivos';
+  $('#startNote').textContent = bridge
+    ? 'Busca fotos y videos duplicados o parecidos en la galería de este teléfono.'
+    : 'Elige fotos, videos o archivos para buscar duplicados y fotos parecidas. En navegador no se borra nada del disco.';
+  if (!window.crypto || !crypto.subtle) {
+    toast('Este entorno no permite calcular huellas (se necesita contexto seguro).');
+  }
+  show('start');
+}
+
+init();
+})();
+</script>
+</body>
+</html>
