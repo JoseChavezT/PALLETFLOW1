@@ -152,25 +152,49 @@ html[data-na="zoom"] .num,html[data-na="zoom"] .op{animation:zoomIn calc(.4s*var
 .calcmode .calcb{color:var(--accfg);background:var(--grad)}
 .noinicon .calcb{display:none}
 .calcmode #inMain{font-size:calc(30px*var(--inscale))}
-.calcmode .kicker,.calcmode .phrase,.calcmode .meta{display:none}
+.calcmode .kicker,.calcmode .phrase,.calcmode .meta,.calcmode .revbtn,.calcmode #clr{display:none!important}
+.calcmode #inMain{padding-right:16px}
+.calcmode .sig{margin-top:2px}
 .calcmode .stage{touch-action:none}
 .calcres .num{font-size:calc(clamp(48px,17vw,88px)*var(--numscale)*var(--cnum,1))}
 .calcres .num.neg{color:var(--minus)}
 .kbcalc.copcolor .kk.op{color:var(--kbact)}
-.kbcalc .kk.act .pill b{font-size:calc(var(--kbfs)*1.25px);font-weight:400;line-height:1}
+.kk.kno{pointer-events:none}
+/* con la fila extra de la calculadora, en pantallas bajas las teclas se achican para que el resultado siempre se vea */
+html.calcmode.compact .kbgrid{grid-auto-rows:calc(var(--kbrow)*1px*.9)}
+html.calcmode.tiny .kbgrid{grid-auto-rows:calc(var(--kbrow)*1px*.7)}
+html.calcmode.tiny .kbgrid .kk{font-size:calc(var(--kbfs)*1px*.85)}
+.calcmode .stage{min-height:calc(64px*var(--cnum,1))}
+.kk.kno::before{display:none}
 /* las teclas cambian de función con animación */
 html[data-cka="spin"] .kbin.swapk .kk.chg>*{animation:keySpin calc(.42s*var(--tm)) var(--ease) both;animation-delay:calc(var(--d,0)*45ms)}
 html[data-cka="fade"] .kbin.swapk .kk.chg>*{animation:focusIn calc(.38s*var(--tm)) var(--ease) both;animation-delay:calc(var(--d,0)*40ms)}
 @keyframes keySpin{from{opacity:0;transform:scale(.4) rotate(-90deg)}to{opacity:1;transform:none}}
 /* historial de la calculadora: encima del resultado, pequeño y difuminado hacia arriba */
-.tape{display:none;width:100%;margin-bottom:calc(var(--cgap,26)*1px*var(--dens))}
-.calcmode .tape.has{display:block}
+.tape{display:none;width:100%;margin-bottom:calc(var(--cgap,26)*1px*var(--dens));flex:0 1 auto;min-height:0;overflow:hidden}
+.calcmode .stage{overflow:hidden}
+.calcmode .tape.has{display:flex;flex-direction:column;justify-content:flex-end}
+.calcmode .big{flex:none}
+
 .tlist{display:flex;flex-direction:column;align-items:center;gap:calc(10px*var(--dens))}
 .te{opacity:var(--o,1)}
 html[data-cua="rise"] .tlist.lift .te:not(.new){animation:teShift calc(.55s*var(--tm)) var(--ease)}
 @keyframes teShift{from{transform:translateY(calc(52px*var(--ctape,1)))}to{transform:none}}
-.tape.full .tlist{max-height:calc(var(--vh,100dvh)*.38);overflow-y:auto;justify-content:flex-start;scrollbar-width:none}
-.tape.full .tlist::-webkit-scrollbar{display:none}
+/* historial de la calculadora en pantalla completa: grande, y el resto de la app se oscurece */
+.app{transition:filter calc(.35s*var(--tm)) var(--ease)}
+html.covopen .app{filter:brightness(.3) saturate(.7);pointer-events:none}
+.cov{position:fixed;inset:0;z-index:45;display:flex;flex-direction:column;opacity:0;background:color-mix(in srgb,var(--bg) 62%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);visibility:hidden;transition:opacity calc(.3s*var(--tm)) var(--ease),visibility 0s linear calc(.3s*var(--tm))}
+.cov.open{opacity:1;visibility:visible;transition:opacity calc(.3s*var(--tm)) var(--ease),visibility 0s}
+.covl{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:calc(env(safe-area-inset-top,0px) + 40px) 24px 24px;display:flex;flex-direction:column;align-items:center;gap:calc(24px*var(--dens));scrollbar-width:none;touch-action:pan-y}
+.covl::-webkit-scrollbar{display:none}
+.covl>:first-child{margin-top:auto}
+.covl .te{opacity:.82;cursor:pointer;animation:softRise calc(.35s*var(--tm)) var(--ease) both}
+.covl .te span{font-size:calc(19px*var(--ctape,1))}
+.covl .te b{font-size:calc(40px*var(--ctape,1));color:var(--fg)}
+.covl .te.cur{opacity:1}
+.covl .te.cur b{font-size:calc(56px*var(--ctape,1))}
+.covl .tempty{margin:auto;color:var(--mut);font-size:15px}
+.covx{flex:none;align-self:center;margin:6px 0 calc(env(safe-area-inset-bottom,0px) + 20px);height:44px;padding:0 26px;background:var(--s2);color:var(--fg);font-weight:700;font-size:14px;border-radius:999px}
 .te{display:flex;flex-direction:column;align-items:center;line-height:1.12;font-family:var(--numfont);font-variant-numeric:tabular-nums;max-width:100%}
 .te span{font-size:calc(14px*var(--ctape,1));font-weight:600;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .te b{font-size:calc(24px*var(--ctape,1));font-weight:800;color:var(--mut);letter-spacing:-.01em}
@@ -565,6 +589,7 @@ html[data-kp="none"] .kk::before{display:none}
   <div class="kbwrap" id="kbwrap"><div class="kb" id="kb" aria-label="Teclado numérico"><div class="kbin" id="kbin"></div></div></div>
 </div>
 
+<div class="cov" id="cov" aria-hidden="true"><div class="covl" id="covList"></div><button class="covx keep" id="covClose" type="button">Volver</button></div>
 <div class="toast" id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
 
 <div class="cust" id="cust" aria-hidden="true">
@@ -762,7 +787,7 @@ function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }ca
    hs: estado de la hoja → 'closed' (oculto) | 'peek' (asoma) | 'open' (abierta)
    ============================================================ */
 const S = { cap:72, customCap:null, mode:'fwd', buf:{ main:'', p:'', s:'' }, hist:[], hs:'peek',
-  calc:false, expr:'', calcEq:false, pend:null, tape:[], tapeFull:false };   // calculadora: operación, ✓ pendiente de subir y operaciones anteriores
+  calc:false, expr:'', calcEq:false, pend:null, tape:[] };   // calculadora: operación, ✓ pendiente de subir y operaciones anteriores
 let undoSnap = null, toastTimer = null, lastAdded = false, lastCapApplied = null, booted = false, lastCount = 0;
 
 const presetOf = cap => cfg.presets.find(p => p.cap === cap) || null;
@@ -823,9 +848,14 @@ function calc(total, cap){
 }
 /* ---- Calculadora: la operación se guarda con + - * / y se muestra con + − × ÷ ---- */
 const OP_SYM = { '+':'+', '-':'−', '*':'×', '/':'÷' };
-const exprShow = e => e.replace(/[-*/]/g, c => OP_SYM[c]);
+const shortDec = n => { const p = n.split('.'); return p[1] ? p[0] + '.' + p[1][0] + (p[1].length > 1 ? '…' : '') : n; };
+const exprShow = e => e.replace(/\d+\.\d+/g, shortDec).replace(/[-*/]/g, c => OP_SYM[c]);
 const hasOp = e => /[+\-*/]/.test(e.slice(1));
-const fmtNum = v => v == null ? '—' : (v < 0 ? '−' : '') + fmt(String(Math.abs(v)));
+function fmtNum(v){
+  if(v == null) return '—';
+  const p = Math.abs(v).toFixed(10).split('.'), d = p[1].replace(/0+$/, '');
+  return (v < 0 ? '−' : '') + fmt(p[0]) + (d ? '.' + d[0] + (d.length > 1 ? '…' : '') : '');
+}
 function exprEval(e){              // × y ÷ antes que + y −, como cualquier calculadora
   let t = e.replace(/[+\-*/]+$/, ''); if(!t || t === '-') return null;
   if(t[0] === '-') t = '0' + t;
@@ -838,7 +868,7 @@ function exprEval(e){              // × y ÷ antes que + y −, como cualquier 
     else{ o.push(op); n.push(b); }
   }
   let r = n[0]; o.forEach((op, k) => { r = op === '+' ? r + n[k + 1] : r - n[k + 1]; });
-  return Math.round(r * 100) / 100;
+  return parseFloat(r.toPrecision(15));     // sin redondear de más: lo que sigue se calcula exacto
 }
 function current(){            // lo que hay escrito ahora
   const cap = S.cap;
@@ -1305,15 +1335,17 @@ const KI = {
   sp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4.5h16V10"/></svg>',
   hide:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg>'
 };
+const CALC_LABEL = { c_clear:'Borrar todo', c_bs:'Borrar el último', c_div:'Dividir', c_mul:'Multiplicar', c_sub:'Restar', c_add:'Sumar', c_eq:'Anotar' };
 function kbMarkup(real, calc){
-  const CHG = { dash:0, space:1, bs:2, ok:3, comma:4, dot:5 };      // las 6 teclas que cambian con la calculadora
-  const k = (code, inner, cls) => '<button class="kk keep' + (cls ? ' ' + cls : '') + (code in CHG ? ' chg' : '') + '" tabindex="-1" data-kk="' + code + '" aria-label="' + code + '"' + (code in CHG ? ' style="--d:' + CHG[code] + '"' : '') + '>' + (code in CHG && !/^</.test(inner) ? '<span>' + inner + '</span>' : inner) + '</button>';
+  const k = (code, inner, cls, d) => '<button class="kk keep' + (cls ? ' ' + cls : '') + (d != null ? ' chg' : '') + '" tabindex="-1" data-kk="' + code + '" aria-label="' + (CALC_LABEL[code] || code) + '"' + (d != null ? ' style="--d:' + d + '"' : '') + '>' + (d != null && !/^</.test(inner) ? '<span>' + inner + '</span>' : inner) + '</button>';
+  const no = '<span class="kk kno" aria-hidden="true"></span>';
   return '<div class="kbgrid"' + (real ? ' id="kbgrid"' : '') + '>' +
-    (calc
-      ? k('1','1') + k('2','2') + k('3','3') + k('dash','÷','op') +
-        k('4','4') + k('5','5') + k('6','6') + k('space','×','op') +
-        k('7','7') + k('8','8') + k('9','9') + k('bs','−','op') +
-        k('comma','C','op') + k('0','0') + k('dot', KI.ok, 'op') + k('ok', '<span class="pill"><b>+</b></span>', 'act')
+    (calc       // C ⌫ · ÷ / 1 2 3 × / 4 5 6 − / 7 8 9 + / · 0 · ✓
+      ? k('c_clear','C','op',0) + k('c_bs', KI.bs,'op',1) + no + k('c_div','÷','op',2) +
+        k('1','1') + k('2','2') + k('3','3') + k('c_mul','×','op',3) +
+        k('4','4') + k('5','5') + k('6','6') + k('c_sub','−','op',4) +
+        k('7','7') + k('8','8') + k('9','9') + k('c_add','+','op',5) +
+        no + k('0','0') + no + k('c_eq', '<span class="pill">' + KI.ok + '</span>', 'act', 6)
       : k('1','1') + k('2','2') + k('3','3') + k('dash','–') +
         k('4','4') + k('5','5') + k('6','6') + k('space', KI.sp) +
         k('7','7') + k('8','8') + k('9','9') + k('bs', KI.bs) +
@@ -1394,7 +1426,7 @@ $('kbin').addEventListener('pointerdown', e => {
   kbDown[e.pointerId] = k; k.classList.add('pr'); kbPress(k.dataset.kk);
 });
 ['pointerup','pointercancel','pointerleave'].forEach(ev => $('kbin').addEventListener(ev, e => {
-  const k = kbDown[e.pointerId]; if(k){ k.classList.remove('pr'); delete kbDown[e.pointerId]; if(k.dataset.kk === 'bs') kbStopRep(); }
+  const k = kbDown[e.pointerId]; if(k){ k.classList.remove('pr'); delete kbDown[e.pointerId]; if(k.dataset.kk === 'bs' || k.dataset.kk === 'c_bs') kbStopRep(); }
 }));
 
 /* ============================================================
@@ -1415,7 +1447,7 @@ function paintNums(){
   nums.forEach((el, i) => {
     const to = +el.dataset.v, from = shown[i];
     cancelAnimationFrame(raf[i]);
-    if(cfg.numAnim !== 'count' || cfg.speed === 0 || from === undefined || from === to || !booted){ shown[i] = to; return; }
+    if(cfg.numAnim !== 'count' || el.closest('.calcres') || cfg.speed === 0 || from === undefined || from === to || !booted){ shown[i] = to; return; }
     const dur = Math.min(700, 240 + Math.log10(Math.abs(to - from) + 1) * 170) * (100 / cfg.speed), t0 = performance.now();
     el.textContent = fmt(from);
     (function step(now){
@@ -1594,7 +1626,7 @@ function toggleMode(){
    CALCULADORA (botón dentro del campo)
    – ÷   ␣ ×   ⌫ −   ✓ +   , C   . ✓ (guarda)
    ============================================================ */
-const CALC_OP = { dash:'/', space:'*', bs:'-', ok:'+' };
+const CALC_OP = { c_div:'/', c_mul:'*', c_sub:'-', c_add:'+' };
 function calcUI(anim){
   const on = S.calc;
   document.documentElement.classList.toggle('calcmode', on);
@@ -1603,8 +1635,7 @@ function calcUI(anim){
   if(anim){ kin.classList.remove('swapk'); void kin.offsetWidth; kin.classList.add('swapk'); clearTimeout(kin._t); kin._t = setTimeout(() => kin.classList.remove('swapk'), 900); }
   $('calcBtn').setAttribute('aria-pressed', String(on));
   $('inMain').maxLength = on ? 40 : 8;
-  $('clr').innerHTML = on ? KI.bs : CLR_ICON; $('clr').setAttribute('aria-label', on ? 'Borrar el último' : 'Borrar');
-  if(!on) setTapeFull(false);
+  if(!on) closeCov(true);
   renderTape();
 }
 function setCalc(on, quiet){
@@ -1645,8 +1676,15 @@ function calcKey(code){
     S.expr = /[+\-*/]$/.test(S.expr) ? S.expr.slice(0, -1) + op : S.expr + op;
     return calcChanged();
   }
-  if(code === 'comma'){ liftPend(); S.expr = ''; snd('del'); return calcChanged(); }
-  if(code === 'dot') return calcSave();
+  if(code === 'c_clear'){ liftPend(); S.expr = ''; snd('del'); return calcChanged(); }
+  if(code === 'c_bs'){ snd('del'); calcBack(); clearTimeout(kbRepT); kbRepT = setTimeout(() => { kbRep = setInterval(calcBack, 80); }, 420); return; }
+  if(code === 'c_eq') return calcSave();
+}
+function calcBack(){              // borra el último número o signo (un resultado con decimales se borra entero)
+  liftPend();
+  const m = S.expr.match(/\d+\.\d+$/);
+  S.expr = m ? S.expr.slice(0, -m[0].length) : S.expr.slice(0, -1);
+  calcChanged();
 }
 function calcSave(){               // ✓: anota el resultado una sola vez; sube encima cuando empiezas otra operación
   if(S.pend){ toast('Ese resultado ya está anotado'); return; }
@@ -1657,27 +1695,49 @@ function calcSave(){               // ✓: anota el resultado una sola vez; sube
   vib(); snd('save'); kick(true); pulseBig();
   render();
 }
-function setTapeFull(on){ S.tapeFull = on; $('tape').classList.toggle('full', on); renderTape(); }
+const teHTML = (x, cls, st) => '<div class="te' + (cls || '') + '"' + (st || '') + '>' + (x.e ? '<span>' + esc(exprShow(x.e)) + ' =</span>' : '') + '<b>' + fmtNum(x.r) + '</b></div>';
+function openCov(){
+  if(!S.calc || $('cov').classList.contains('open')) return;
+  const all = S.tape.concat(S.pend ? [S.pend] : []), v = exprEval(S.expr);
+  let h = all.map((x, i) => teHTML(x, '', ' data-ti="' + i + '" style="animation-delay:' + Math.min(240, (all.length - 1 - i) * 30) + 'ms"')).join('');
+  const ce = S.expr.replace(/[+\-*/]+$/, '');
+  if(!S.pend && ce && v != null) h += teHTML({ e:hasOp(ce) ? ce : '', r:v }, ' cur');
+  $('covList').innerHTML = h || '<div class="tempty">Todavía no hay operaciones</div>';
+  document.documentElement.classList.add('covopen'); $('cov').classList.add('open'); $('cov').setAttribute('aria-hidden', 'false');
+  $('covList').scrollTop = $('covList').scrollHeight; vib(); snd('hist');
+}
+function closeCov(quiet){
+  if(!$('cov').classList.contains('open')) return;
+  document.documentElement.classList.remove('covopen'); $('cov').classList.remove('open'); $('cov').setAttribute('aria-hidden', 'true');
+  if(!quiet) snd('hist');
+}
+$('covClose').addEventListener('click', () => closeCov());
+$('cov').addEventListener('click', e => {
+  const t = e.target.closest('.te[data-ti]');
+  if(t){                           // tocar una operación la vuelve a poner en la calculadora
+    const x = S.tape.concat(S.pend ? [S.pend] : [])[+t.dataset.ti]; if(!x) return;
+    liftPend(); S.expr = x.e || String(x.r); closeCov(true); calcChanged(); vib(); snd('cap'); return;
+  }
+  if(!e.target.closest('.te')) closeCov();       // tocar fuera cierra
+});
 function renderTape(){
-  const l = $('tlist'), list = S.tapeFull ? S.tape : S.tape.slice(-cfg.calcRows);
+  const l = $('tlist'), list = S.tape.slice(-cfg.calcRows);
   const fade = cfg.calcFade / 100, rows = Math.max(1, cfg.calcRows);
   const op = i => Math.max(.18, 1 - fade * (list.length - 1 - i) / rows).toFixed(2);      // las más viejas, más tenues
   const html = list.map((x, i) => '<div class="te' + (tapeNew && i === list.length - 1 ? ' new' : '') + '" style="--o:' + op(i) + '">' + (x.e ? '<span>' + esc(exprShow(x.e)) + ' =</span>' : '') + '<b>' + fmtNum(x.r) + '</b></div>').join('');
   if(l._h !== html || tapeNew){ l.innerHTML = html; l._h = html; }
-  l.classList.remove('lift'); if(tapeNew && !S.tapeFull){ void l.offsetWidth; l.classList.add('lift'); }
+  l.classList.remove('lift'); if(tapeNew){ void l.offsetWidth; l.classList.add('lift'); }
   tapeNew = false;
   $('tape').classList.toggle('has', S.tape.length > 0);
-  if(S.tapeFull) l.scrollTop = l.scrollHeight;
 }
 $('calcBtn').addEventListener('click', e => { e.stopPropagation(); setCalc(!S.calc); });
-// deslizar hacia abajo sobre el resultado muestra todas las operaciones; hacia arriba vuelve a las últimas
+// deslizar hacia abajo sobre el resultado abre todas las operaciones en pantalla completa
 (function(){
   let y0 = null;
-  $('stage').addEventListener('pointerdown', e => { y0 = S.calc && S.tape.length ? e.clientY : null; });
+  $('stage').addEventListener('pointerdown', e => { y0 = S.calc ? e.clientY : null; });
   $('stage').addEventListener('pointermove', e => {
-    if(y0 == null) return; const dy = e.clientY - y0;
-    if(dy > 36 && !S.tapeFull){ y0 = null; setTapeFull(true); vib(); snd('hist'); }
-    else if(dy < -36 && S.tapeFull){ y0 = null; setTapeFull(false); vib(); snd('hist'); }
+    if(y0 == null) return;
+    if(e.clientY - y0 > 36){ y0 = null; openCov(); }
   });
   ['pointerup','pointercancel'].forEach(ev => $('stage').addEventListener(ev, () => { y0 = null; }));
 })();
@@ -1770,9 +1830,8 @@ $('inS').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefa
 }));
 // tocar cualquier parte de la caja de cantidad escribe ahí (sin tener que confirmar la capacidad)
 $('fwdBox').addEventListener('click', e => { if(e.target.closest('#clr') || e.target.closest('#calcBtn')) return; if(document.activeElement !== $('inMain')) $('inMain').focus(); });
-const CLR_ICON = $('clr').innerHTML;
 $('clr').addEventListener('click', () => {
-  if(S.calc && S.mode === 'fwd'){ liftPend(); S.expr = S.expr.slice(0, -1); snd('del'); calcChanged(); focusMain(); return; }   // en la calculadora borra el último
+  if(S.calc && S.mode === 'fwd'){ snd('del'); calcBack(); focusMain(); return; }   // en la calculadora borra el último
   S.buf.main = ''; syncInputs(); render(); snd('del'); focusMain(); });
 $('add').addEventListener('click', () => { S.calc && S.mode === 'fwd' ? calcSave() : commit(); });
 // los botones no le quitan el foco al campo (así el teclado no se cierra)
@@ -1962,7 +2021,7 @@ const TAB_DEFS = {
     TG('sndCopy', 'Al copiar', null), TG('sndHide', 'Al ocultar el teclado', null)
   ].map((d, i) => i < 2 ? d : W(() => cfg.snd, d)),
   calc:[
-    { type:'help', text:'Toca el botón de calculadora dentro del campo. Las teclas cambian: <b>–</b> divide, <b>␣</b> multiplica, <b>⌫</b> resta, <b>✓</b> suma, <b>,</b> es C (borra todo) y <b>.</b> es ✓ (anota el resultado). La ✕ del campo borra el último número. Estas operaciones son aparte: no van al Historial de siempre.' },
+    { type:'help', text:'Toca el botón de calculadora dentro del campo. Las teclas cambian: arriba aparecen <b>C</b> (borra todo), <b>⌫</b> (borra el último) y <b>÷</b>; a la derecha <b>× − +</b> y <b>✓</b> (anota el resultado). Estas operaciones son aparte: no van al Historial de siempre.' },
     H('Botón'), TG('showInIcon', 'Mostrar el botón de calculadora en el campo', 'input'),
     H('Resultado'), R('calcNum', 'Tamaño del resultado', 60, 140, 5, 'stage', v => v + '%'),
     H('Operaciones anteriores (encima del resultado)'),
@@ -1970,7 +2029,7 @@ const TAB_DEFS = {
     R('calcTape', 'Tamaño', 70, 150, 5, 'stage', v => v + '%'), R('calcGap', 'Espacio con el resultado', 0, 60, 2, 'stage', v => v + ' px'),
     R('calcFade', 'Difuminado hacia arriba', 0, 100, 5, 'stage', v => v === 0 ? 'Sin difuminar' : v + '%'),
     SG('calcUp', 'Al subir', [['rise','Sube'],['fade','Aparece'],['none','Nada']], 'stage'),
-    { type:'help', text:'Desliza hacia abajo sobre el resultado para ver todas las operaciones; hacia arriba para volver.' },
+    { type:'help', text:'Desliza hacia abajo sobre el resultado para ver todas las operaciones en pantalla completa. Toca una para volver a usarla; toca fuera o «Volver» para cerrar.' },
     { type:'btn', id:'calcClearTape', label:'Borrar las operaciones anteriores' },
     H('Teclado'), SG('calcKeys', 'Animación al cambiar las teclas', [['spin','Girar'],['fade','Enfocar'],['none','Nada']], 'kb'),
     TG('calcOpColor', 'Teclas de operación con el color de la tecla ✓', 'kb')
@@ -2331,7 +2390,7 @@ try{
   const CapApp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
   if(CapApp) CapApp.addListener('backButton', () => {
     if($('cust').classList.contains('open')) closeCust();
-    else if(S.tapeFull) setTapeFull(false);
+    else if($('cov').classList.contains('open')) closeCov();
     else if(kbOpen) hideKb();
     else if(S.hs !== 'closed') setHS('closed');
     else if(CapApp.minimizeApp) CapApp.minimizeApp(); else CapApp.exitApp();
