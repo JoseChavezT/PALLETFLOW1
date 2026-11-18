@@ -1323,7 +1323,7 @@ document.addEventListener('pointerdown', () => { if(cfg.snd) audio(); }, { once:
 
 /* ============================================================
    TECLADO PROPIO — copia del teclado numérico de Gboard (sin la franja gris de arriba)
-   Posiciones: 1 2 3 – / 4 5 6 ␣ / 7 8 9 ⌫ / , 0 . ✓   +   flecha para ocultar abajo a la derecha
+   Posiciones: 7 8 9 – / 4 5 6 ␣ / 1 2 3 ⌫ / , 0 . ✓   (números como en las calculadoras)   +   flecha para ocultar abajo a la derecha
    ============================================================ */
 const KB_ACT = [['none','Nada'],['capNext','Capacidad siguiente'],['capPrev','Capacidad anterior'],['rev','Reverso'],['copy','Copiar el resultado'],['clear','Limpiar la cantidad']];
 const KB_IDS = ['inMain','inP','inS','capOther'];
@@ -1340,15 +1340,15 @@ function kbMarkup(real, calc){
   const k = (code, inner, cls, d) => '<button class="kk keep' + (cls ? ' ' + cls : '') + (d != null ? ' chg' : '') + '" tabindex="-1" data-kk="' + code + '" aria-label="' + (CALC_LABEL[code] || code) + '"' + (d != null ? ' style="--d:' + d + '"' : '') + '>' + (d != null && !/^</.test(inner) ? '<span>' + inner + '</span>' : inner) + '</button>';
   const no = '<span class="kk kno" aria-hidden="true"></span>';
   return '<div class="kbgrid"' + (real ? ' id="kbgrid"' : '') + '>' +
-    (calc       // C ⌫ · ÷ / 1 2 3 × / 4 5 6 − / 7 8 9 + / · 0 · ✓
+    (calc       // C ⌫ · ÷ / 7 8 9 × / 4 5 6 − / 1 2 3 + / · 0 · ✓   (números como en cualquier calculadora)
       ? k('c_clear','C','op',0) + k('c_bs', KI.bs,'op',1) + no + k('c_div','÷','op',2) +
-        k('1','1') + k('2','2') + k('3','3') + k('c_mul','×','op',3) +
+        k('7','7') + k('8','8') + k('9','9') + k('c_mul','×','op',3) +
         k('4','4') + k('5','5') + k('6','6') + k('c_sub','−','op',4) +
-        k('7','7') + k('8','8') + k('9','9') + k('c_add','+','op',5) +
+        k('1','1') + k('2','2') + k('3','3') + k('c_add','+','op',5) +
         no + k('0','0') + no + k('c_eq', '<span class="pill">' + KI.ok + '</span>', 'act', 6)
-      : k('1','1') + k('2','2') + k('3','3') + k('dash','–') +
+      : k('7','7') + k('8','8') + k('9','9') + k('dash','–') +
         k('4','4') + k('5','5') + k('6','6') + k('space', KI.sp) +
-        k('7','7') + k('8','8') + k('9','9') + k('bs', KI.bs) +
+        k('1','1') + k('2','2') + k('3','3') + k('bs', KI.bs) +
         k('comma',',') + k('0','0') + k('dot','.') + k('ok', '<span class="pill">' + KI.ok + '</span>', 'act')) +
     '</div><div class="kbfoot"><button class="kk keep hide" tabindex="-1" data-kk="hide"' + (real ? ' id="kbHide"' : '') + ' aria-label="Ocultar teclado">' + KI.hide + '</button></div>';
 }
