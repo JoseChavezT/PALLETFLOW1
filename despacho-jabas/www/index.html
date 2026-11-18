@@ -1670,7 +1670,7 @@ function calcKey(code){
   const op = CALC_OP[code];
   if(op){
     snd('key', 5);
-    if(S.pend){ const r = S.pend.r; liftPend(); S.expr = r < 0 ? '' : String(r); }   // después de ✓, un signo sigue desde el resultado
+    if(S.pend){ const r = S.pend.r; liftPend(); S.expr = String(r); }   // después de ✓, un signo sigue desde el resultado (también si es negativo)
     if(!S.expr){ if(op === '-'){ S.expr = '-'; calcChanged(); } return; }
     if(S.expr === '-') return;
     S.expr = /[+\-*/]$/.test(S.expr) ? S.expr.slice(0, -1) + op : S.expr + op;
@@ -1692,8 +1692,9 @@ function calcSave(){               // ✓: anota el resultado una sola vez; sube
   if(v == null || !S.expr){ snd('err'); return shake(); }
   const e = hasOp(S.expr) ? S.expr.replace(/[+\-*/]+$/, '') : '';
   S.pend = { e, r:v, t:Date.now() }; S.calcEq = true;      // solo en las operaciones de la calculadora (el Historial de siempre es aparte)
+  S.expr = String(v);                                        // el resultado pasa al campo para seguir calculando con él
   vib(); snd('save'); kick(true); pulseBig();
-  render();
+  syncInputs(); render();
 }
 const teHTML = (x, cls, st) => '<div class="te' + (cls || '') + '"' + (st || '') + '>' + (x.e ? '<span>' + esc(exprShow(x.e)) + ' =</span>' : '') + '<b>' + fmtNum(x.r) + '</b></div>';
 function openCov(){
