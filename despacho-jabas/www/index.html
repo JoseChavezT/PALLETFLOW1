@@ -632,7 +632,7 @@ const DEF = {
   density:100, capH:46, inH:72, addW:64, addSide:'right', addIcon:'+', showRev:true, showCopyTop:true, showInIcon:true,
   showDate:true, showChip:true, chipColor:'#34D399', showKicker:true, showKeys:false,
   kbRow:58, kbFs:28, kbBg:'#000000', kbA:100, kbBlur:0, kbFg:'#FFFFFF', kbKeyBg:'#FFFFFF', kbKeyA:0, kbAct:'#7FD1C7', kbActIcon:'#FFFFFF', kbR:14, kbActR:28, kbPress:'circle', kbHide:true, kbAnim:'slide', saveAnim:'pulse',
-  calcRows:3, calcTape:100, calcNum:100, calcGap:26, calcFade:75, calcUp:'rise', calcKeys:'spin', calcOpColor:true, calcSaveHist:true,
+  calcRows:3, calcTape:100, calcNum:100, calcGap:26, calcFade:75, calcUp:'rise', calcKeys:'spin', calcOpColor:true,
   speed:100, numAnim:'pop', breathe:true, rowAnim:'slide', ripple:true,
   stagePos:'center', showLabels:true, showPhrase:true, showChips:true,
   sheetColor:'#10101A', sheetA:55, peekRows:1.6, histH:40, showHint:true,
@@ -733,7 +733,7 @@ function sanitizeCfg(){
    'auroraI','auroraS','auroraSp','calcRows','calcTape','calcNum','calcGap','calcFade','density','capH','inH','addW','speed','histH','peekRows','sheetA','cutoff','bgAngle','kbRow','kbFs','kbA','kbBlur','kbKeyA','kbR','kbActR','sndVol']
     .forEach(k => { if(typeof cfg[k] !== 'number' || isNaN(cfg[k])) cfg[k] = d[k]; });
   ['followCapLoose','bgGrad','glowReact','followCapGlow','numItalic','breathe','ripple','showLabels','showPhrase','showChips','histTime','showTitle','titleUpper',
-   'haptics','autofocus','calcOpColor','calcSaveHist','showOther','showRev','showCopyTop','showInIcon','showDate','showChip','showKicker','showKeys','showHint','kbHide','kbOn','kbHapt','dragSheet','snd','sndKey','sndDel','sndSave','sndCap','sndHist','sndErr','sndCopy','sndHide']
+   'haptics','autofocus','calcOpColor','showOther','showRev','showCopyTop','showInIcon','showDate','showChip','showKicker','showKeys','showHint','kbHide','kbOn','kbHapt','dragSheet','snd','sndKey','sndDel','sndSave','sndCap','sndHist','sndErr','sndCopy','sndHide']
     .forEach(k => { if(typeof cfg[k] !== 'boolean') cfg[k] = d[k]; });
   ['title','shareTitle','phText','kickerText'].forEach(k => { if(typeof cfg[k] !== 'string') cfg[k] = d[k]; });
   FILL_EL.forEach(e => { const k = 'f_' + e + '_'; if(typeof cfg[k + 'a'] !== 'number' || isNaN(cfg[k + 'a'])) cfg[k + 'a'] = -1; if(!isHex(cfg[k + 'c'])) cfg[k + 'c'] = '#FFFFFF'; });
@@ -1648,19 +1648,14 @@ function calcKey(code){
   if(code === 'comma'){ liftPend(); S.expr = ''; snd('del'); return calcChanged(); }
   if(code === 'dot') return calcSave();
 }
-function calcSave(){               // ✓: guarda el resultado una sola vez; sube encima cuando empiezas otra operación
-  if(S.pend){ toast('Ese resultado ya está guardado'); return; }
+function calcSave(){               // ✓: anota el resultado una sola vez; sube encima cuando empiezas otra operación
+  if(S.pend){ toast('Ese resultado ya está anotado'); return; }
   const v = exprEval(S.expr);
   if(v == null || !S.expr){ snd('err'); return shake(); }
   const e = hasOp(S.expr) ? S.expr.replace(/[+\-*/]+$/, '') : '';
-  S.pend = { e, r:v, t:Date.now() }; S.calcEq = true;
-  const n = Math.round(v);
-  if(cfg.calcSaveHist && n > 0){
-    S.hist.unshift({ mode:'f', n, cap:S.cap, t:Date.now(), e }); S.hist = S.hist.slice(0, cfg.histMax); lastAdded = true;
-  }
+  S.pend = { e, r:v, t:Date.now() }; S.calcEq = true;      // solo en las operaciones de la calculadora (el Historial de siempre es aparte)
   vib(); snd('save'); kick(true); pulseBig();
   render();
-  if(cfg.calcSaveHist && n <= 0) toast('Anotado. Al Historial solo pasan resultados mayores que 0');
 }
 function setTapeFull(on){ S.tapeFull = on; $('tape').classList.toggle('full', on); renderTape(); }
 function renderTape(){
@@ -1967,9 +1962,8 @@ const TAB_DEFS = {
     TG('sndCopy', 'Al copiar', null), TG('sndHide', 'Al ocultar el teclado', null)
   ].map((d, i) => i < 2 ? d : W(() => cfg.snd, d)),
   calc:[
-    { type:'help', text:'Toca el botón de calculadora dentro del campo. Las teclas cambian: <b>–</b> divide, <b>␣</b> multiplica, <b>⌫</b> resta, <b>✓</b> suma, <b>,</b> es C (borra todo) y <b>.</b> es ✓ (guarda). La ✕ del campo borra el último número.' },
+    { type:'help', text:'Toca el botón de calculadora dentro del campo. Las teclas cambian: <b>–</b> divide, <b>␣</b> multiplica, <b>⌫</b> resta, <b>✓</b> suma, <b>,</b> es C (borra todo) y <b>.</b> es ✓ (anota el resultado). La ✕ del campo borra el último número. Estas operaciones son aparte: no van al Historial de siempre.' },
     H('Botón'), TG('showInIcon', 'Mostrar el botón de calculadora en el campo', 'input'),
-    H('Al tocar ✓'), TG('calcSaveHist', 'Guardar el resultado también en el Historial', null),
     H('Resultado'), R('calcNum', 'Tamaño del resultado', 60, 140, 5, 'stage', v => v + '%'),
     H('Operaciones anteriores (encima del resultado)'),
     SG('calcRows', 'Cuántas se ven', [[1,'1'],[2,'2'],[3,'3'],[4,'4'],[6,'6']], 'stage'),
