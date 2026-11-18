@@ -146,8 +146,39 @@ html[data-na="zoom"] .num,html[data-na="zoom"] .op{animation:zoomIn calc(.4s*var
 .inico{position:absolute;left:16px;top:50%;margin-top:-10px;width:20px;height:20px;color:var(--faint);pointer-events:none}
 .inico svg{width:20px;height:20px;display:block}
 .noinicon .inico{display:none}
+/* ---- Calculadora ---- */
+.calcb{position:absolute;left:8px;top:50%;margin-top:-20px;width:40px;height:40px;display:grid;place-items:center;color:var(--faint);border-radius:var(--r);z-index:1;transition:color .25s var(--ease),background .25s var(--ease)}
+.calcb svg{width:21px;height:21px;display:block}
+.calcmode .calcb{color:var(--accfg);background:var(--grad)}
+.noinicon .calcb{display:none}
+.calcmode #inMain{font-size:calc(30px*var(--inscale))}
+.calcmode .kicker,.calcmode .phrase,.calcmode .meta{display:none}
+.calcmode .stage{touch-action:none}
+.calcres .num{font-size:calc(clamp(48px,17vw,88px)*var(--numscale)*var(--cnum,1))}
+.calcres .num.neg{color:var(--minus)}
+.kbcalc.copcolor .kk.op{color:var(--kbact)}
+.kbcalc .kk.act .pill b{font-size:calc(var(--kbfs)*1.25px);font-weight:400;line-height:1}
+/* las teclas cambian de función con animación */
+html[data-cka="spin"] .kbin.swapk .kk.chg>*{animation:keySpin calc(.42s*var(--tm)) var(--ease) both;animation-delay:calc(var(--d,0)*45ms)}
+html[data-cka="fade"] .kbin.swapk .kk.chg>*{animation:focusIn calc(.38s*var(--tm)) var(--ease) both;animation-delay:calc(var(--d,0)*40ms)}
+@keyframes keySpin{from{opacity:0;transform:scale(.4) rotate(-90deg)}to{opacity:1;transform:none}}
+/* historial de la calculadora: encima del resultado, pequeño y difuminado hacia arriba */
+.tape{display:none;width:100%;margin-bottom:calc(var(--cgap,26)*1px*var(--dens))}
+.calcmode .tape.has{display:block}
+.tlist{display:flex;flex-direction:column;align-items:center;gap:calc(10px*var(--dens))}
+.te{opacity:var(--o,1)}
+html[data-cua="rise"] .tlist.lift .te:not(.new){animation:teShift calc(.55s*var(--tm)) var(--ease)}
+@keyframes teShift{from{transform:translateY(calc(52px*var(--ctape,1)))}to{transform:none}}
+.tape.full .tlist{max-height:calc(var(--vh,100dvh)*.38);overflow-y:auto;justify-content:flex-start;scrollbar-width:none}
+.tape.full .tlist::-webkit-scrollbar{display:none}
+.te{display:flex;flex-direction:column;align-items:center;line-height:1.12;font-family:var(--numfont);font-variant-numeric:tabular-nums;max-width:100%}
+.te span{font-size:calc(14px*var(--ctape,1));font-weight:600;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.te b{font-size:calc(24px*var(--ctape,1));font-weight:800;color:var(--mut);letter-spacing:-.01em}
+html[data-cua="rise"] .te.new{animation:teUp calc(.55s*var(--tm)) var(--ease) both}
+html[data-cua="fade"] .te.new{animation:fadeIn calc(.4s*var(--tm)) ease-out both}
+@keyframes teUp{from{opacity:0;transform:translateY(calc(var(--cgap,26)*1px + 46px)) scale(1.9)}to{opacity:var(--o,1);transform:none}}
 #inMain{width:100%;height:calc(var(--inh)*1px*var(--dens));background:transparent;text-align:center;font-family:var(--numfont);font-weight:800;font-size:calc(38px*var(--inscale));
-  padding:0 52px 0 46px;color:var(--fg);caret-color:var(--fg);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  padding:0 52px 0 52px;color:var(--fg);caret-color:var(--fg);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 #inMain::placeholder,.fake{color:var(--faint);font-weight:600;font-size:calc(17px*var(--ui));letter-spacing:0}
 .fake{width:100%;height:calc(var(--inh)*1px*var(--dens));display:grid;place-items:center;text-align:center;padding:0 54px;font-family:var(--numfont);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .clr{position:absolute;right:8px;top:50%;margin-top:-20px;width:40px;height:40px;display:grid;place-items:center;background:var(--s3);color:var(--mut);border-radius:var(--r)}
@@ -489,6 +520,7 @@ html[data-kp="none"] .kk::before{display:none}
   <section class="card" id="card" aria-label="Calculadora">
     <div class="stage" id="stage">
       <div class="kicker" id="kicker">TOTAL</div>
+      <div class="tape" id="tape" aria-label="Operaciones anteriores"><div class="tlist" id="tlist"></div></div>
       <div class="big" id="big"></div>
       <div class="phrase" id="phrase"></div>
       <div class="meta" id="meta"></div>
@@ -496,7 +528,7 @@ html[data-kp="none"] .kk::before{display:none}
     <div class="ctrls">
       <div class="inrow">
         <div class="inbox" id="fwdBox">
-          <span class="inico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span>
+          <button class="calcb keep" id="calcBtn" type="button" aria-label="Calculadora" aria-pressed="false" title="Calculadora"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.5h7"/><path d="M8.6 11.6h.01M12 11.6h.01M15.4 11.6h.01M8.6 15.2h.01M12 15.2h.01M15.4 15.2h.01" stroke-width="2.6"/></svg></button>
           <input type="text" id="inMain" inputmode="numeric" enterkeyhint="done" placeholder="Cantidad de jabas" aria-label="Cantidad de jabas" autocomplete="off" maxlength="8">
           <button class="clr keep hidden" id="clr" aria-label="Borrar">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -574,6 +606,7 @@ const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto'
 const ICONS = {
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
   pkg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+  calc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.5h7"/><path d="M8.6 11.6h.01M12 11.6h.01M15.4 11.6h.01M8.6 15.2h.01M12 15.2h.01M15.4 15.2h.01" stroke-width="2.6"/></svg>',
   swap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M3 8l4-4 4 4M17 8v12M21 16l-4 4-4-4"/></svg>',
   up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>',
   star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
@@ -599,6 +632,7 @@ const DEF = {
   density:100, capH:46, inH:72, addW:64, addSide:'right', addIcon:'+', showRev:true, showCopyTop:true, showInIcon:true,
   showDate:true, showChip:true, chipColor:'#34D399', showKicker:true, showKeys:false,
   kbRow:58, kbFs:28, kbBg:'#000000', kbA:100, kbBlur:0, kbFg:'#FFFFFF', kbKeyBg:'#FFFFFF', kbKeyA:0, kbAct:'#7FD1C7', kbActIcon:'#FFFFFF', kbR:14, kbActR:28, kbPress:'circle', kbHide:true, kbAnim:'slide', saveAnim:'pulse',
+  calcRows:3, calcTape:100, calcNum:100, calcGap:26, calcFade:75, calcUp:'rise', calcKeys:'spin', calcOpColor:true, calcSaveHist:true,
   speed:100, numAnim:'pop', breathe:true, rowAnim:'slide', ripple:true,
   stagePos:'center', showLabels:true, showPhrase:true, showChips:true,
   sheetColor:'#10101A', sheetA:55, peekRows:1.6, histH:40, showHint:true,
@@ -624,7 +658,7 @@ const STYLE_KEYS = ['accent','accent2','fg','numColor','looseColor','minus','fol
   'density','capH','inH','addW','addSide','addIcon','showRev','showCopyTop','showInIcon','showDate','showChip','chipColor','showKicker','showKeys',
   'speed','numAnim','breathe','rowAnim','ripple','stagePos','showLabels','showPhrase','showChips',
   'sheetColor','sheetA','peekRows','histH','showHint','histStyle','histTime','showTitle','titleUpper',
-  'kbRow','kbFs','kbBg','kbA','kbBlur','kbFg','kbKeyBg','kbKeyA','kbAct','kbActIcon','kbR','kbActR','kbPress','kbHide','kbAnim','saveAnim'];
+  'kbRow','kbFs','kbBg','kbA','kbBlur','kbFg','kbKeyBg','kbKeyA','kbAct','kbActIcon','kbR','kbActR','kbPress','kbHide','kbAnim','saveAnim','calcRows','calcTape','calcNum','calcGap','calcFade','calcUp','calcKeys','calcOpColor'];
 
 /* ---- CONTORNOS: cada elemento tiene grosor, color, fuerza, estilo y esquinas propias ---- */
 const EL = [['card','Tarjeta'],['inp','Campo de cantidad'],['caps','Grupo de capacidades'],['sel','Capacidad elegida'],['add','Botón de guardar'],
@@ -687,7 +721,7 @@ function sanitizeCfg(){
   if(!cfg.presets.length) cfg.presets = clone(d.presets);
   ['accent','accent2','fg','numColor','looseColor','minus','blockColor','bg','bg2','cardColor','chipColor','auroraA','auroraB','auroraC','glowColor','sheetColor','otherC1','otherC2','kbBg','kbFg','kbKeyBg','kbAct','kbActIcon']
     .forEach(k => { if(!isHex(cfg[k])) cfg[k] = d[k]; });
-  oneOf('texture', Object.keys(TEX)); oneOf('rowAnim', ['slide','fade','pop','rise','focus','unfold','none']); oneOf('numAnim', ['pop','count','roll','fade','rise','focus','zoom','none']); oneOf('saveAnim', ['pulse','lift','glow','none']);
+  oneOf('texture', Object.keys(TEX)); oneOf('rowAnim', ['slide','fade','pop','rise','focus','unfold','none']); oneOf('numAnim', ['pop','count','roll','fade','rise','focus','zoom','none']); oneOf('saveAnim', ['pulse','lift','glow','none']); oneOf('calcUp', ['rise','fade','none']); oneOf('calcKeys', ['spin','fade','none']);
   oneOf('stagePos', ['top','center','bottom']); oneOf('histStyle', ['lista','compacta']); oneOf('hapticsLvl', ['low','mid','high']); oneOf('addSide', ['right','left']);
   oneOf('glowShape', ['circle','ellipse']); oneOf('glowAnchor', ['result','center','top','bottom']); oneOf('addIcon', ['+','✓','↵']);
   oneOf('fx', FX_LIST.map(x => x[0])); oneOf('fxQ', ['low','mid','high']); oneOf('kbPress', ['circle','square','none']); oneOf('kbAnim', ['slide','soft','fade','none']);
@@ -696,10 +730,10 @@ function sanitizeCfg(){
   oneOf('histStart', ['last','closed','open']); oneOf('histMax', [20,50,100,200]); oneOf('font', FONTS); oneOf('numFont', FONTS);
   if(cfg.startCap !== 'last' && !Number.isInteger(cfg.startCap)) cfg.startCap = d.startCap;
   ['surf','glow','glowSize','glowBlur','glowSpeed','texa','numWeight','numScale','inScale','uiScale','track','phraseScale','radius','cardA','cardBlur',
-   'auroraI','auroraS','auroraSp','density','capH','inH','addW','speed','histH','peekRows','sheetA','cutoff','bgAngle','kbRow','kbFs','kbA','kbBlur','kbKeyA','kbR','kbActR','sndVol']
+   'auroraI','auroraS','auroraSp','calcRows','calcTape','calcNum','calcGap','calcFade','density','capH','inH','addW','speed','histH','peekRows','sheetA','cutoff','bgAngle','kbRow','kbFs','kbA','kbBlur','kbKeyA','kbR','kbActR','sndVol']
     .forEach(k => { if(typeof cfg[k] !== 'number' || isNaN(cfg[k])) cfg[k] = d[k]; });
   ['followCapLoose','bgGrad','glowReact','followCapGlow','numItalic','breathe','ripple','showLabels','showPhrase','showChips','histTime','showTitle','titleUpper',
-   'haptics','autofocus','showOther','showRev','showCopyTop','showInIcon','showDate','showChip','showKicker','showKeys','showHint','kbHide','kbOn','kbHapt','dragSheet','snd','sndKey','sndDel','sndSave','sndCap','sndHist','sndErr','sndCopy','sndHide']
+   'haptics','autofocus','calcOpColor','calcSaveHist','showOther','showRev','showCopyTop','showInIcon','showDate','showChip','showKicker','showKeys','showHint','kbHide','kbOn','kbHapt','dragSheet','snd','sndKey','sndDel','sndSave','sndCap','sndHist','sndErr','sndCopy','sndHide']
     .forEach(k => { if(typeof cfg[k] !== 'boolean') cfg[k] = d[k]; });
   ['title','shareTitle','phText','kickerText'].forEach(k => { if(typeof cfg[k] !== 'string') cfg[k] = d[k]; });
   FILL_EL.forEach(e => { const k = 'f_' + e + '_'; if(typeof cfg[k + 'a'] !== 'number' || isNaN(cfg[k + 'a'])) cfg[k + 'a'] = -1; if(!isHex(cfg[k + 'c'])) cfg[k + 'c'] = '#FFFFFF'; });
@@ -727,7 +761,8 @@ function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }ca
    El historial NO suma nada: solo guarda lo que ya calculaste.
    hs: estado de la hoja → 'closed' (oculto) | 'peek' (asoma) | 'open' (abierta)
    ============================================================ */
-const S = { cap:72, customCap:null, mode:'fwd', buf:{ main:'', p:'', s:'' }, hist:[], hs:'peek' };
+const S = { cap:72, customCap:null, mode:'fwd', buf:{ main:'', p:'', s:'' }, hist:[], hs:'peek',
+  calc:false, expr:'', calcEq:false, pend:null, tape:[], tapeFull:false };   // calculadora: operación, ✓ pendiente de subir y operaciones anteriores
 let undoSnap = null, toastTimer = null, lastAdded = false, lastCapApplied = null, booted = false, lastCount = 0;
 
 const presetOf = cap => cfg.presets.find(p => p.cap === cap) || null;
@@ -757,11 +792,15 @@ function loadState(){
     if(saved.buf) for(const k of ['main','p','s']) if(/^\d*$/.test(saved.buf[k] || '')) S.buf[k] = saved.buf[k] || '';
     if(cfg.startCap === 'last' && Number.isInteger(saved.cap) && saved.cap > 0) S.cap = saved.cap;
     if(cfg.histStart === 'last' && ['closed','peek','open'].includes(saved.hs)) S.hs = saved.hs;
+    if(saved.calc === true) S.calc = true;
+    if(typeof saved.expr === 'string' && /^-?[\d+\-*/.]*$/.test(saved.expr)) S.expr = saved.expr;
+    if(Array.isArray(saved.tape)) S.tape = saved.tape.filter(x => x && typeof x.e === 'string' && typeof x.r === 'number').slice(-100);
+    if(saved.pend && typeof saved.pend.e === 'string' && typeof saved.pend.r === 'number'){ S.pend = saved.pend; S.calcEq = true; }
   }
   if(cfg.startCap !== 'last'){ S.cap = cfg.startCap; if(!presetOf(S.cap)) S.customCap = S.cap; }    // capacidad por default: se queda fija al abrir la app
 }
 function saveState(){
-  try{ localStorage.setItem(STATE_KEY, JSON.stringify({ cap:S.cap, customCap:S.customCap, mode:S.mode, hist:S.hist, hs:S.hs, buf:{ ...S.buf } })); }catch(e){}
+  try{ localStorage.setItem(STATE_KEY, JSON.stringify({ cap:S.cap, customCap:S.customCap, mode:S.mode, hist:S.hist, hs:S.hs, buf:{ ...S.buf }, calc:S.calc, expr:S.expr, tape:S.tape, pend:S.pend })); }catch(e){}
 }
 
 /* ============================================================
@@ -782,8 +821,31 @@ function calc(total, cap){
   if(th && rest > th) return { pallets:pallets + 1, jabas:c - rest, onlyJabas:false, operator:'-' };
   return { pallets, jabas:rest, onlyJabas:false, operator:'+' };
 }
+/* ---- Calculadora: la operación se guarda con + - * / y se muestra con + − × ÷ ---- */
+const OP_SYM = { '+':'+', '-':'−', '*':'×', '/':'÷' };
+const exprShow = e => e.replace(/[-*/]/g, c => OP_SYM[c]);
+const hasOp = e => /[+\-*/]/.test(e.slice(1));
+const fmtNum = v => v == null ? '—' : (v < 0 ? '−' : '') + fmt(String(Math.abs(v)));
+function exprEval(e){              // × y ÷ antes que + y −, como cualquier calculadora
+  let t = e.replace(/[+\-*/]+$/, ''); if(!t || t === '-') return null;
+  if(t[0] === '-') t = '0' + t;
+  const tk = t.match(/\d+(?:\.\d+)?|[+\-*/]/g); if(!tk || tk.length % 2 === 0) return null;
+  const n = [parseFloat(tk[0])], o = [];
+  for(let k = 1; k < tk.length; k += 2){
+    const op = tk[k], b = parseFloat(tk[k + 1]); if(isNaN(b)) return null;
+    if(op === '*') n[n.length - 1] *= b;
+    else if(op === '/'){ if(b === 0) return null; n[n.length - 1] /= b; }
+    else{ o.push(op); n.push(b); }
+  }
+  let r = n[0]; o.forEach((op, k) => { r = op === '+' ? r + n[k + 1] : r - n[k + 1]; });
+  return Math.round(r * 100) / 100;
+}
 function current(){            // lo que hay escrito ahora
   const cap = S.cap;
+  if(S.mode === 'fwd' && S.calc){
+    const v = exprEval(S.expr), n = v == null ? 0 : Math.round(v);
+    return n > 0 ? { mode:'f', n, cap } : null;
+  }
   if(S.mode === 'fwd'){
     const n = parseInt(S.buf.main, 10) || 0;
     return n > 0 ? { mode:'f', n, cap } : null;
@@ -898,6 +960,7 @@ function varsFor(){
     '--texa':cfg.texa / 100, '--tex':TEX[cfg.texture].img, '--texsize':TEX[cfg.texture].size,
     '--kbrow':cfg.kbRow, '--kbfs':cfg.kbFs, '--kbfg':cfg.kbFg, '--kbact':cfg.kbAct, '--kbacticon':cfg.kbActIcon, '--kbr':cfg.kbR + 'px', '--kbar':cfg.kbActR + 'px',
     '--kbbgc':cfg.kbA <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.kbBg + ' ' + cfg.kbA + '%, transparent)', '--kbblur':cfg.kbBlur + 'px',
+    '--cnum':cfg.calcNum / 100, '--ctape':cfg.calcTape / 100, '--cgap':cfg.calcGap,
     '--kbkey':cfg.kbKeyA <= 0 ? 'transparent' : 'color-mix(in srgb, ' + cfg.kbKeyBg + ' ' + cfg.kbKeyA + '%, transparent)'
   };
   EL.forEach(e => { const k = 'o_' + e[0] + '_', w = cfg[k + 'w'], st = cfg[k + 's'];
@@ -923,7 +986,9 @@ function applyCfg(){
   cl.toggle('notime', !cfg.histTime); cl.toggle('notitle', !cfg.showTitle); cl.toggle('tupper', cfg.titleUpper); cl.toggle('addleft', cfg.addSide === 'left');
   cl.toggle('nohint', !cfg.showHint); cl.toggle('nograb', !cfg.dragSheet); cl.toggle('nocopytop', !cfg.showCopyTop); cl.toggle('norev', !cfg.showRev);
   cl.toggle('nodate', !cfg.showDate); cl.toggle('nochip', !cfg.showChip); cl.toggle('nokicker', !cfg.showKicker); cl.toggle('showkeys', cfg.showKeys); cl.toggle('noinicon', !cfg.showInIcon);
-  root.dataset.na = cfg.numAnim; root.dataset.row = cfg.rowAnim; root.dataset.pos = cfg.stagePos; root.dataset.hs = cfg.histStyle; root.dataset.ka = cfg.kbAnim; root.dataset.kp = cfg.kbPress;
+  root.dataset.na = cfg.numAnim; root.dataset.row = cfg.rowAnim; root.dataset.pos = cfg.stagePos; root.dataset.hs = cfg.histStyle; root.dataset.ka = cfg.kbAnim; root.dataset.kp = cfg.kbPress; root.dataset.cua = cfg.calcUp; root.dataset.cka = cfg.calcKeys;
+  $('kb').classList.toggle('copcolor', cfg.calcOpColor);
+  if(!cfg.showInIcon && S.calc && booted) setCalc(false, true);   // sin botón no se puede salir: vuelve a lo normal if(typeof renderTape === 'function' && booted) renderTape();
   const m = document.querySelector('meta[name=theme-color]'); if(m) m.content = cfg.bg;
   loadFont(cfg.font); loadFont(cfg.numFont);
   lastCapApplied = S.cap;
@@ -1240,13 +1305,19 @@ const KI = {
   sp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4.5h16V10"/></svg>',
   hide:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg>'
 };
-function kbMarkup(real){
-  const k = (code, inner, cls) => '<button class="kk keep' + (cls ? ' ' + cls : '') + '" tabindex="-1" data-kk="' + code + '" aria-label="' + code + '">' + inner + '</button>';
+function kbMarkup(real, calc){
+  const CHG = { dash:0, space:1, bs:2, ok:3, comma:4, dot:5 };      // las 6 teclas que cambian con la calculadora
+  const k = (code, inner, cls) => '<button class="kk keep' + (cls ? ' ' + cls : '') + (code in CHG ? ' chg' : '') + '" tabindex="-1" data-kk="' + code + '" aria-label="' + code + '"' + (code in CHG ? ' style="--d:' + CHG[code] + '"' : '') + '>' + (code in CHG && !/^</.test(inner) ? '<span>' + inner + '</span>' : inner) + '</button>';
   return '<div class="kbgrid"' + (real ? ' id="kbgrid"' : '') + '>' +
-    k('1','1') + k('2','2') + k('3','3') + k('dash','–') +
-    k('4','4') + k('5','5') + k('6','6') + k('space', KI.sp) +
-    k('7','7') + k('8','8') + k('9','9') + k('bs', KI.bs) +
-    k('comma',',') + k('0','0') + k('dot','.') + k('ok', '<span class="pill">' + KI.ok + '</span>', 'act') +
+    (calc
+      ? k('1','1') + k('2','2') + k('3','3') + k('dash','÷','op') +
+        k('4','4') + k('5','5') + k('6','6') + k('space','×','op') +
+        k('7','7') + k('8','8') + k('9','9') + k('bs','−','op') +
+        k('comma','C','op') + k('0','0') + k('dot', KI.ok, 'op') + k('ok', '<span class="pill"><b>+</b></span>', 'act')
+      : k('1','1') + k('2','2') + k('3','3') + k('dash','–') +
+        k('4','4') + k('5','5') + k('6','6') + k('space', KI.sp) +
+        k('7','7') + k('8','8') + k('9','9') + k('bs', KI.bs) +
+        k('comma',',') + k('0','0') + k('dot','.') + k('ok', '<span class="pill">' + KI.ok + '</span>', 'act')) +
     '</div><div class="kbfoot"><button class="kk keep hide" tabindex="-1" data-kk="hide"' + (real ? ' id="kbHide"' : '') + ' aria-label="Ocultar teclado">' + KI.hide + '</button></div>';
 }
 function updateCompact(){
@@ -1307,6 +1378,8 @@ function runAction(a){
 let kbRep = 0, kbRepT = 0;
 function kbPress(code){
   if(cfg.kbHapt && cfg.haptics){ try{ navigator.vibrate && navigator.vibrate(Math.max(3, Math.round((VIB[cfg.hapticsLvl] || 9) * .6))); }catch(e){} }
+  const ai = activeInput();
+  if(S.calc && S.mode === 'fwd' && code !== 'hide' && ai && ai.id === 'inMain') return calcKey(code);
   if(/^[0-9]$/.test(code)){ snd('key', +code); return kbType(code); }
   if(code === 'bs'){ snd('del'); kbBack(); clearTimeout(kbRepT); kbRepT = setTimeout(() => { kbRep = setInterval(() => { kbBack(); }, 70); }, 420); return; }
   if(code === 'ok') return kbEnter();
@@ -1353,9 +1426,13 @@ function paintNums(){
   });
   shown.length = nums.length;
 }
+function calcBigHTML(){
+  const v = exprEval(S.expr), none = v == null, txt = none ? (S.expr && hasOp(S.expr) ? '—' : '0') : fmtNum(v);
+  return '<div class="blk calcres' + (none ? ' dim' : '') + '"><b class="num' + (v < 0 ? ' neg' : '') + '" data-v="' + (none ? 0 : v) + '">' + txt + '</b></div>';
+}
 function renderStage(){
   const d = current();
-  const changed = setHTML($('big'), bigHTML(d));
+  const changed = setHTML($('big'), S.calc && S.mode === 'fwd' ? calcBigHTML() : bigHTML(d));
   setHTML($('phrase'), phraseHTML(d)); setHTML($('meta'), metaHTML(d));
   if(changed){ paintNums(); if(booted) kick(false); }
   schedHalo();
@@ -1439,16 +1516,19 @@ function syncCaps(){
   $('modeBtn').classList.toggle('on', S.mode === 'rev');
 }
 function syncInputs(){
-  $('inMain').value = S.buf.main; $('inP').value = S.buf.p; $('inS').value = S.buf.s;
+  const calc = S.calc && S.mode === 'fwd';
+  $('inMain').value = calc ? exprShow(S.expr) : S.buf.main; $('inP').value = S.buf.p; $('inS').value = S.buf.s;
   $('fwdBox').classList.toggle('hidden', S.mode === 'rev');
   $('revBox').classList.toggle('hidden', S.mode !== 'rev');
-  $('clr').classList.toggle('hidden', !S.buf.main || S.mode === 'rev');
+  $('clr').classList.toggle('hidden', calc ? !S.expr : (!S.buf.main || S.mode === 'rev'));
 }
 function render(){
   if(lastCapApplied !== S.cap) applyCfg();
   renderStage(); renderHist(); syncCaps();
-  $('clr').classList.toggle('hidden', !S.buf.main || S.mode === 'rev');
-  $('appTitle').textContent = cfg.title; $('dateLine').textContent = dateLine(); $('kicker').textContent = cfg.kickerText;
+  const calc = S.calc && S.mode === 'fwd';
+  $('clr').classList.toggle('hidden', calc ? !S.expr : (!S.buf.main || S.mode === 'rev'));
+  $('appTitle').textContent = cfg.title; $('dateLine').textContent = dateLine();
+  $('kicker').textContent = cfg.kickerText;
   $('inMain').placeholder = cfg.phText; $('add').textContent = cfg.addIcon;
   saveState();
 }
@@ -1486,8 +1566,9 @@ function commit(){               // guarda en el historial; el resultado se qued
 }
 function reuse(i){               // tocar una línea del historial la vuelve a poner en la calculadora
   const it = S.hist[i]; if(!it) return;
+  if(S.calc && it.mode === 'r') setCalc(false, true);
   S.cap = it.cap; S.mode = it.mode === 'r' ? 'rev' : 'fwd'; clearBuf();
-  if(it.mode === 'r'){ S.buf.p = String(it.p); S.buf.s = String(it.s); } else S.buf.main = String(it.n);
+  if(it.mode === 'r'){ S.buf.p = String(it.p); S.buf.s = String(it.s); } else{ S.buf.main = String(it.n); if(S.calc){ liftPend(); S.expr = String(it.n); } }
   syncInputs(); render(); kick(true); snd('cap');
 }
 function removeHist(i){
@@ -1505,8 +1586,106 @@ function undo(){
   S.hist = undoSnap.hist; undoSnap = null; hideToast(); render();
 }
 function toggleMode(){
+  if(S.calc) setCalc(false, true);
   S.mode = S.mode === 'fwd' ? 'rev' : 'fwd'; clearBuf(); syncInputs(); render(); focusMain();
 }
+
+/* ============================================================
+   CALCULADORA (botón dentro del campo)
+   – ÷   ␣ ×   ⌫ −   ✓ +   , C   . ✓ (guarda)
+   ============================================================ */
+const CALC_OP = { dash:'/', space:'*', bs:'-', ok:'+' };
+function calcUI(anim){
+  const on = S.calc;
+  document.documentElement.classList.toggle('calcmode', on);
+  $('kb').classList.toggle('kbcalc', on);
+  const kin = $('kbin'); kin.innerHTML = kbMarkup(true, on);
+  if(anim){ kin.classList.remove('swapk'); void kin.offsetWidth; kin.classList.add('swapk'); clearTimeout(kin._t); kin._t = setTimeout(() => kin.classList.remove('swapk'), 900); }
+  $('calcBtn').setAttribute('aria-pressed', String(on));
+  $('inMain').maxLength = on ? 40 : 8;
+  $('clr').innerHTML = on ? KI.bs : CLR_ICON; $('clr').setAttribute('aria-label', on ? 'Borrar el último' : 'Borrar');
+  if(!on) setTapeFull(false);
+  renderTape();
+}
+function setCalc(on, quiet){
+  if(on === S.calc) return;
+  if(on){
+    if(S.mode === 'rev'){ S.mode = 'fwd'; clearBuf(); }
+    S.expr = S.buf.main || ''; S.calcEq = false; S.pend = null;     // arranca con la cantidad que había
+  }else{
+    const v = exprEval(S.expr); liftPend();                          // lo guardado queda en las operaciones para la próxima vez
+    S.buf.main = v != null && v > 0 ? String(Math.round(v)) : '';    // vuelve a la normalidad con el resultado
+  }
+  S.calc = on; calcUI(!quiet); syncInputs(); render();
+  if(!quiet){ vib(); snd('cap'); if(cfg.kbOn) showKb(); focusMain(false); }
+}
+// la operación guardada con ✓ sube encima del resultado recién cuando empiezas otra
+function liftPend(){
+  if(!S.pend) return false;
+  S.tape.push(S.pend); S.tape = S.tape.slice(-100); S.pend = null; S.calcEq = false; tapeNew = true;
+  return true;
+}
+let tapeNew = false;
+function calcChanged(){ S.buf.main = ''; syncInputs(); render(); renderTape(); if(cfg.kbOn && !kbOpen) showKb(); }
+function calcKey(code){
+  if(/^[0-9]$/.test(code)){
+    snd('key', +code);
+    if(S.pend){ liftPend(); S.expr = ''; }                           // después de ✓, un número empieza otra operación
+    const m = S.expr.match(/(\d+(?:\.\d+)?)$/);
+    if(m && m[1].replace('.', '').length >= 7) return shake();
+    if(m && m[1] === '0') S.expr = S.expr.slice(0, -1);         // sin ceros a la izquierda
+    S.expr += code; return calcChanged();
+  }
+  const op = CALC_OP[code];
+  if(op){
+    snd('key', 5);
+    if(S.pend){ const r = S.pend.r; liftPend(); S.expr = r < 0 ? '' : String(r); }   // después de ✓, un signo sigue desde el resultado
+    if(!S.expr){ if(op === '-'){ S.expr = '-'; calcChanged(); } return; }
+    if(S.expr === '-') return;
+    S.expr = /[+\-*/]$/.test(S.expr) ? S.expr.slice(0, -1) + op : S.expr + op;
+    return calcChanged();
+  }
+  if(code === 'comma'){ liftPend(); S.expr = ''; snd('del'); return calcChanged(); }
+  if(code === 'dot') return calcSave();
+}
+function calcSave(){               // ✓: guarda el resultado una sola vez; sube encima cuando empiezas otra operación
+  if(S.pend){ toast('Ese resultado ya está guardado'); return; }
+  const v = exprEval(S.expr);
+  if(v == null || !S.expr){ snd('err'); return shake(); }
+  const e = hasOp(S.expr) ? S.expr.replace(/[+\-*/]+$/, '') : '';
+  S.pend = { e, r:v, t:Date.now() }; S.calcEq = true;
+  const n = Math.round(v);
+  if(cfg.calcSaveHist && n > 0){
+    S.hist.unshift({ mode:'f', n, cap:S.cap, t:Date.now(), e }); S.hist = S.hist.slice(0, cfg.histMax); lastAdded = true;
+  }
+  vib(); snd('save'); kick(true); pulseBig();
+  render();
+  if(cfg.calcSaveHist && n <= 0) toast('Anotado. Al Historial solo pasan resultados mayores que 0');
+}
+function setTapeFull(on){ S.tapeFull = on; $('tape').classList.toggle('full', on); renderTape(); }
+function renderTape(){
+  const l = $('tlist'), list = S.tapeFull ? S.tape : S.tape.slice(-cfg.calcRows);
+  const fade = cfg.calcFade / 100, rows = Math.max(1, cfg.calcRows);
+  const op = i => Math.max(.18, 1 - fade * (list.length - 1 - i) / rows).toFixed(2);      // las más viejas, más tenues
+  const html = list.map((x, i) => '<div class="te' + (tapeNew && i === list.length - 1 ? ' new' : '') + '" style="--o:' + op(i) + '">' + (x.e ? '<span>' + esc(exprShow(x.e)) + ' =</span>' : '') + '<b>' + fmtNum(x.r) + '</b></div>').join('');
+  if(l._h !== html || tapeNew){ l.innerHTML = html; l._h = html; }
+  l.classList.remove('lift'); if(tapeNew && !S.tapeFull){ void l.offsetWidth; l.classList.add('lift'); }
+  tapeNew = false;
+  $('tape').classList.toggle('has', S.tape.length > 0);
+  if(S.tapeFull) l.scrollTop = l.scrollHeight;
+}
+$('calcBtn').addEventListener('click', e => { e.stopPropagation(); setCalc(!S.calc); });
+// deslizar hacia abajo sobre el resultado muestra todas las operaciones; hacia arriba vuelve a las últimas
+(function(){
+  let y0 = null;
+  $('stage').addEventListener('pointerdown', e => { y0 = S.calc && S.tape.length ? e.clientY : null; });
+  $('stage').addEventListener('pointermove', e => {
+    if(y0 == null) return; const dy = e.clientY - y0;
+    if(dy > 36 && !S.tapeFull){ y0 = null; setTapeFull(true); vib(); snd('hist'); }
+    else if(dy < -36 && S.tapeFull){ y0 = null; setTapeFull(false); vib(); snd('hist'); }
+  });
+  ['pointerup','pointercancel'].forEach(ev => $('stage').addEventListener(ev, () => { y0 = null; }));
+})();
 
 /* ---- Copiar ---- */
 function shiftDate(t){
@@ -1565,12 +1744,17 @@ function hideToast(){ $('toast').classList.remove('show'); }
    ============================================================ */
 const digits = (v, max) => v.replace(/\D/g, '').replace(/^0+/, '').slice(0, max);
 $('inMain').addEventListener('input', e => {
+  if(S.calc && S.mode === 'fwd'){                 // teclado del teléfono: se aceptan + - x * / ÷
+    const v = e.target.value.replace(/[xX×*]/g, '*').replace(/[÷/]/g, '/').replace(/[−–]/g, '-').replace(/[^\d+\-*/]/g, '')
+      .replace(/([+\-*/])[+\-*/]+/g, '$1').replace(/^[+*/]+/, '');
+    if(S.pend) liftPend(); S.expr = v; e.target.value = exprShow(v); render(); renderTape(); return;
+  }
   const plus = e.target.value.includes('+');
   const v = digits(e.target.value, 6); e.target.value = v; S.buf.main = v;
   if(plus && v) return commit();
   render();
 });
-$('inMain').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); commit(); } });
+$('inMain').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); S.calc && S.mode === 'fwd' ? calcSave() : commit(); } });
 $('inP').addEventListener('input', e => {
   const plus = e.target.value.includes('+');
   const v = digits(e.target.value, 4); e.target.value = v; S.buf.p = v; render();
@@ -1590,9 +1774,12 @@ $('inS').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefa
   showKb(); const t = e.target; setTimeout(() => { try{ t.select(); }catch(err){} }, 0);
 }));
 // tocar cualquier parte de la caja de cantidad escribe ahí (sin tener que confirmar la capacidad)
-$('fwdBox').addEventListener('click', e => { if(e.target.closest('#clr')) return; if(document.activeElement !== $('inMain')) $('inMain').focus(); });
-$('clr').addEventListener('click', () => { S.buf.main = ''; syncInputs(); render(); snd('del'); focusMain(); });
-$('add').addEventListener('click', commit);
+$('fwdBox').addEventListener('click', e => { if(e.target.closest('#clr') || e.target.closest('#calcBtn')) return; if(document.activeElement !== $('inMain')) $('inMain').focus(); });
+const CLR_ICON = $('clr').innerHTML;
+$('clr').addEventListener('click', () => {
+  if(S.calc && S.mode === 'fwd'){ liftPend(); S.expr = S.expr.slice(0, -1); snd('del'); calcChanged(); focusMain(); return; }   // en la calculadora borra el último
+  S.buf.main = ''; syncInputs(); render(); snd('del'); focusMain(); });
+$('add').addEventListener('click', () => { S.calc && S.mode === 'fwd' ? calcSave() : commit(); });
 // los botones no le quitan el foco al campo (así el teclado no se cierra)
 document.addEventListener('mousedown', e => { if(e.target.closest('.keep')) e.preventDefault(); });
 
@@ -1629,7 +1816,7 @@ $('histClear').addEventListener('click', clearHist);
 $('copy').addEventListener('click', copyCurrent);
 $('gear').innerHTML = ICONS.gear;
 // teclado físico (solo si lo conectas): Esc borra
-document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('cust').classList.contains('open')){ clearBuf(); syncInputs(); render(); } });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('cust').classList.contains('open')){ clearBuf(); liftPend(); S.expr = ''; syncInputs(); render(); renderTape(); } });
 
 // ondas al tocar
 document.addEventListener('pointerdown', e => {
@@ -1644,7 +1831,7 @@ document.addEventListener('pointerdown', e => {
    PERSONALIZAR
    ============================================================ */
 let curTab = 'temas', flashTimer = null;
-const TABS = [['temas','Temas'],['colores','Colores'],['fondo','Fondo y luz'],['tarjeta','Tarjeta'],['cont','Contornos y relleno'],['kb','Teclado'],['snd','Sonido'],['texto','Texto'],['res','Resultado'],['hist','Hoja e historial'],['ui','Interfaz'],['forma','Forma'],['mov','Movimiento'],['caps','Capacidades'],['gen','General']];
+const TABS = [['temas','Temas'],['calc','Calculadora'],['colores','Colores'],['fondo','Fondo y luz'],['tarjeta','Tarjeta'],['cont','Contornos y relleno'],['kb','Teclado'],['snd','Sonido'],['texto','Texto'],['res','Resultado'],['hist','Hoja e historial'],['ui','Interfaz'],['forma','Forma'],['mov','Movimiento'],['caps','Capacidades'],['gen','General']];
 
 const ACC_THEMES = [
   ['Blanco','#FFFFFF','#D5D9E0'],['Violeta','#8B5CF6','#D946EF'],['Azul','#3B82F6','#06B6D4'],['Rosa','#EC4899','#A855F7'],
@@ -1677,7 +1864,7 @@ const H = label => ({ type:'head', label });
 const W = (when, d) => Object.assign(d, { w:when });          // el control solo aparece cuando sirve
 const CANVAS_FX = () => cfg.fx !== 'none' && cfg.fx !== 'aurora';
 const DEP_KEYS = ['fx','bgGrad','followCapLoose','followCapGlow','dragSheet','showKicker','showChip','snd','haptics','kbOn','showOther','glowAnchor'];
-const NUM_SEG = ['numWeight', 'histMax'];
+const NUM_SEG = ['numWeight', 'histMax', 'calcRows'];
 const px = v => v === 0 ? 'Sin borde' : v + ' px';
 const TAB_DEFS = {
   colores:[
@@ -1738,7 +1925,7 @@ const TAB_DEFS = {
   ui:[
     H('Encabezado'), TG('showCopyTop', 'Botón «Copiar» arriba', 'hdr'),
     H('Campo de cantidad'), TX('phText', 'Texto del campo vacío', 'input'), R('inH', 'Alto del campo', 48, 96, 2, 'input', v => v + ' px'),
-    R('inScale', 'Tamaño de lo que escribes', 70, 140, 5, 'input', v => v + '%'), TG('showInIcon', 'Icono de caja dentro del campo', 'input'),
+    R('inScale', 'Tamaño de lo que escribes', 70, 140, 5, 'input', v => v + '%'), TG('showInIcon', 'Botón de calculadora dentro del campo (más opciones en «Calculadora»)', 'input'),
     H('Botón de guardar'), SG('addIcon', 'Símbolo', [['+','+'],['✓','✓'],['↵','↵']], 'add'), R('addW', 'Ancho', 48, 110, 2, 'add', v => v + ' px'),
     SG('addSide', 'Lado', [['right','Derecha'],['left','Izquierda']], 'add'),
     H('Capacidades'), R('capH', 'Alto de los botones', 36, 64, 2, 'caps', v => v + ' px'), TG('showRev', 'Mostrar el botón «Reverso»', 'caps')
@@ -1779,6 +1966,21 @@ const TAB_DEFS = {
     TG('sndCap', 'Al cambiar de capacidad o de modo', null), TG('sndHist', 'Al abrir o cerrar el historial', null), TG('sndErr', 'Cuando falta la cantidad', null),
     TG('sndCopy', 'Al copiar', null), TG('sndHide', 'Al ocultar el teclado', null)
   ].map((d, i) => i < 2 ? d : W(() => cfg.snd, d)),
+  calc:[
+    { type:'help', text:'Toca el botón de calculadora dentro del campo. Las teclas cambian: <b>–</b> divide, <b>␣</b> multiplica, <b>⌫</b> resta, <b>✓</b> suma, <b>,</b> es C (borra todo) y <b>.</b> es ✓ (guarda). La ✕ del campo borra el último número.' },
+    H('Botón'), TG('showInIcon', 'Mostrar el botón de calculadora en el campo', 'input'),
+    H('Al tocar ✓'), TG('calcSaveHist', 'Guardar el resultado también en el Historial', null),
+    H('Resultado'), R('calcNum', 'Tamaño del resultado', 60, 140, 5, 'stage', v => v + '%'),
+    H('Operaciones anteriores (encima del resultado)'),
+    SG('calcRows', 'Cuántas se ven', [[1,'1'],[2,'2'],[3,'3'],[4,'4'],[6,'6']], 'stage'),
+    R('calcTape', 'Tamaño', 70, 150, 5, 'stage', v => v + '%'), R('calcGap', 'Espacio con el resultado', 0, 60, 2, 'stage', v => v + ' px'),
+    R('calcFade', 'Difuminado hacia arriba', 0, 100, 5, 'stage', v => v === 0 ? 'Sin difuminar' : v + '%'),
+    SG('calcUp', 'Al subir', [['rise','Sube'],['fade','Aparece'],['none','Nada']], 'stage'),
+    { type:'help', text:'Desliza hacia abajo sobre el resultado para ver todas las operaciones; hacia arriba para volver.' },
+    { type:'btn', id:'calcClearTape', label:'Borrar las operaciones anteriores' },
+    H('Teclado'), SG('calcKeys', 'Animación al cambiar las teclas', [['spin','Girar'],['fade','Enfocar'],['none','Nada']], 'kb'),
+    TG('calcOpColor', 'Teclas de operación con el color de la tecla ✓', 'kb')
+  ],
   gen:[
     H('La app'), TX('title', 'Nombre que se ve arriba', 'hdr'), TG('showTitle', 'Mostrar el nombre', 'hdr'), TG('titleUpper', 'Nombre en MAYÚSCULAS', 'hdr'),
     TG('autofocus', 'Abrir con el teclado visible', null),
@@ -1922,7 +2124,7 @@ function demoHTML(){
     '<div class="hdr" data-demo="hdr"><div class="hl"><div class="date">' + dateLine() + '</div><div class="title">' + esc(cfg.title) + '</div></div><div class="acts"><span class="hb">Copiar</span><span class="hb ico">' + ICONS.gear + '</span></div></div>' +
     '<div class="chiprow" data-demo="chip"><span class="statchip"><i class="sdot"></i>' + statText(2) + '</span></div>' +
     '<section class="card" data-demo="card"><div class="stage" data-demo="stage"><div class="kicker">' + esc(cfg.kickerText) + '</div><div class="big">' + bigHTML(d) + '</div><div class="phrase">' + phraseHTML(d) + '</div><div class="meta">' + metaHTML(d) + '</div></div>' +
-    '<div class="ctrls"><div class="inrow"><div class="inbox" data-demo="input"><span class="inico">' + ICONS.pkg + '</span><span class="fake">' + esc(cfg.phText) + '</span></div><div class="add" data-demo="add">' + esc(cfg.addIcon) + '</div></div>' +
+    '<div class="ctrls"><div class="inrow"><div class="inbox" data-demo="input"><span class="inico">' + ICONS.calc + '</span><span class="fake">' + esc(cfg.phText) + '</span></div><div class="add" data-demo="add">' + esc(cfg.addIcon) + '</div></div>' +
     '<div class="capsbox" data-demo="caps"><div class="caps">' + capsMarkup(false) + '</div></div>' +
     '<span class="revbtn">' + ICONS.swap + '<span>Reverso</span></span><div class="sig">By: J. Chávez</div><div class="keys"><span><kbd>Enter</kbd>guardar</span><span><kbd>Esc</kbd>borrar</span></div></div></section>' +
     lower;
@@ -2083,6 +2285,7 @@ body.addEventListener('click', e => {
     return;
   }
   if(t.closest('#capPin')){ cfg.startCap = S.cap; saveCfg(); toast('Capacidad por default: ' + S.cap); return renderBody(true); }
+  if(t.closest('#calcClearTape')){ if(!S.tape.length){ toast('No hay operaciones'); return; } S.tape = []; saveState(); renderTape(); toast('Operaciones borradas'); return; }
   if(t.closest('#vibTest')){ try{ navigator.vibrate && navigator.vibrate([VIB[cfg.hapticsLvl] || 9, 90, VIB[cfg.hapticsLvl] || 9]); }catch(err){} return; }
   if(t.closest('#sndTest')){ snd('key', 3, true); setTimeout(() => snd('save', 0, true), 170); return; }
   if(t.closest('#presetAdd')){
@@ -2127,13 +2330,14 @@ document.addEventListener('visibilitychange', () => { if(!document.hidden) $('da
    ============================================================ */
 loadCfg(); loadState();
 applyCfg();
-buildCaps(); syncInputs(); fit(); render();
+buildCaps(); calcUI(false); syncInputs(); fit(); render();
 setTimeout(() => { booted = true; }, 600);
 /* Botón «atrás» de Android: primero cierra lo que esté abierto; si no hay nada, minimiza la app */
 try{
   const CapApp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
   if(CapApp) CapApp.addListener('backButton', () => {
     if($('cust').classList.contains('open')) closeCust();
+    else if(S.tapeFull) setTapeFull(false);
     else if(kbOpen) hideKb();
     else if(S.hs !== 'closed') setHS('closed');
     else if(CapApp.minimizeApp) CapApp.minimizeApp(); else CapApp.exitApp();
