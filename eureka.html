@@ -2519,7 +2519,15 @@ function ekReglas(){ return (window.EK && EK.state && EK.state.reglas) || {}; }
 
 /* ---------- Proveedor de la guía ---------- */
 function ekDetectarProveedor(texto){
-  const T = ekNorm(texto), C = T.replace(/[^A-Z0-9]/g, '');
+  // El remitente va en el encabezado: se busca primero en los primeros renglones; si no, en todo el texto.
+  const lin = ekNorm(texto).split('\n');
+  // en el encabezado se ignoran renglones de productor, destinatario, transportista, etc. (no son el remitente)
+  const otros = /PRODUCTOR|DESTINATARIO|TRANSPORTISTA|CLIENTE|COMPRADOR|LLEGADA|CONDUCTOR/;
+  const cab = ekDetectarEn(lin.slice(0, 12).filter(L => !otros.test(L)).join('\n'));
+  return cab || ekDetectarEn(lin.join('\n'));
+}
+function ekDetectarEn(T0){
+  const T = T0, C = T.replace(/[^A-Z0-9]/g, '');
   // 1) RUC (lo más seguro). Si aparecen varios, gana el que va más arriba (remitente).
   let mejor = null;
   EK_PROVEEDORES.forEach(p => {
@@ -2773,10 +2781,10 @@ function parseJarrasEk(line){
 }
 
 /* ---------- Lectura completa de una guía a partir de su texto ---------- */
-function ekLeerTextoGuia(texto, nombreArchivo, codigoPestana){
+function ekLeerTextoGuia(texto, nombreArchivo, codigoPestana, codigoForzado){
   const T = ekNorm(texto);
   const avisos = [];
-  let codigo = ekDetectarProveedor(T);
+  let codigo = codigoForzado || ekDetectarProveedor(T);
   if (!codigo) { codigo = codigoPestana || ''; if (codigo) avisos.push({ tipo:'info', txt:`No encontré el proveedor en la guía; uso la pestaña ${codigo}.` }); }
   const prov = ekProvPorCodigo(codigo);
   let crudos = [];
@@ -2892,6 +2900,7 @@ async function ekLoad(){
     EK.state.reglas = Object.assign({}, { variedadAlias:{}, proveedorAlias:{}, capacidades:{ FF:248, DB:224, SRX:240, POB:240, VA:0, AF:0 }, pesoMin:100, pesoMax:1500, kgJabaMin:1.8, kgJabaMax:3.4 }, s.reglas || {});
   }
   if (!Array.isArray(EK.state.master)) EK.state.master = clone(MASTER_DEFAULT);
+  (EK.state.receptions || []).forEach(r => { const p = ekProvPorCodigo(r.codigo); if (p) r.guias.forEach(g => { if (ekCodigoProveedor(g.proveedor) !== r.codigo) g.proveedor = p.nombre; }); });
   correlativoAutoState = EK.state.correlativoAutoState || (EK.state.correlativoAutoState = {});
   try { const t = localStorage.getItem('ek:tab'); if (t && tabCfg(t).codigo === t) EK.ui.tab = t; } catch (e) {}
 }
@@ -3066,6 +3075,7 @@ function ekValidar(g, codigo, recId){
 function ekTxtError(e){
   const L = { lote:'no existe en el maestro', clp:'CLP distinto al del maestro', clp_proveedor:'CLP de otro proveedor', variedad:'variedad distinta a la del maestro', duplicado:'repetido' };
   if (e.campo === 'lote') return `Lote ${e.lote}: no existe en el maestro.`;
+  if (e.campo === 'clp_proveedor') return `Lote ${e.lote}: el CLP ${e.guia || '—'} es de ${e.master || 'otro proveedor'}, no de esta guía.`;
   return `Lote ${e.lote}: ${L[e.campo] || e.campo}. Guía: ${e.guia || '—'} · Maestro: ${e.master || '—'}`;
 }
 function ekResumenRec(r){
@@ -3315,9 +3325,28 @@ function ekDbSheet(files, source){
    REVISIÓN DE GUÍA (al importar y al editar)
    ============================================================ */
 let _rv = null;
+// Todas las guías de una recepción llevan el mismo proveedor (el de la recepción). Si una guía se leyó como de
+// otro proveedor, se avisa y se re-normalizan sus lotes con las reglas del proveedor correcto.
+function ekUnificarProveedor(guias, codigo, avisar){
+  const p = ekProvPorCodigo(codigo); if (!p) return;
+  guias.forEach(g => {
+    const leido = g._codigoLeido || ekCodigoProveedor(g.proveedor);
+    if (leido && leido !== codigo) {
+      if (avisar) (g._avisos || (g._avisos = [])).push({ tipo:'aviso', txt:`Esta guía parecía de ${tabCfg(leido).label}; se toma como ${tabCfg(codigo).label}, igual que la recepción. Si no es así, cambia el proveedor arriba.` });
+      if (g._texto) { const r2 = ekLeerTextoGuia(g._texto, g._nombre || '', codigo, codigo); if (r2.lotes.length) { const box = g.lotes.map(l => l._box); g.lotes = r2.lotes; g.lotes.forEach((l, i) => { if (box[i]) l._box = box[i]; }); g._avisos = (g._avisos || []).filter(a => !/No encontré lotes/.test(a.txt)); } }
+      g._codigoLeido = codigo; g.capacity = ekCapDe(codigo);
+    }
+    g.proveedor = p.nombre;
+    if (!g.capacity) g.capacity = ekCapDe(codigo);
+  });
+}
 function ekOpenReview(guias, opts){
-  _rv = { guias, i:0, opts, codigo: opts.rec ? opts.rec.codigo : (guias[0] && guias[0]._codigoLeido) || EK.ui.tab };
-  if (opts.nuevo && guias.length && guias.every(g => g._codigoLeido) && guias[0]._codigoLeido !== EK.ui.tab) _rv.cambioTab = true;
+  // Proveedor de la recepción: al editar, el que ya tiene; varias guías juntas (Diamond), el de la pestaña;
+  // una sola guía, el que se leyó en el PDF (si no se leyó, el de la pestaña).
+  let codigo = opts.rec ? opts.rec.codigo : (guias.length > 1 ? EK.ui.tab : ((guias[0] && guias[0]._codigoLeido) || EK.ui.tab));
+  _rv = { guias, i:0, opts, codigo };
+  if (opts.nuevo && guias.length === 1 && guias[0]._codigoLeido && guias[0]._codigoLeido !== EK.ui.tab) _rv.cambioTab = true;
+  ekUnificarProveedor(guias, codigo, opts.nuevo);
   ekOpen('review', '', { up:true });
   ekRenderReview();
 }
@@ -3398,7 +3427,8 @@ function ekRenderReview(){
   el.querySelectorAll('[data-prov]').forEach(b => b.onclick = () => {
     leer(); const c = b.dataset.prov; const p = ekProvPorCodigo(c);
     _rv.codigo = c; _rv.cambioTab = c !== EK.ui.tab && _rv.opts.nuevo;
-    _rv.guias.forEach(x => { x.proveedor = p.nombre; x.capacity = ekCapDe(c); x.lotes.forEach(l => { l.variedad = ekCanonVariedad(l.variedad, c); if (c === 'POB' || c === 'SRX') l.lote = ekLoteMS(l.lote); }); });
+    _rv.guias.forEach(x => { x.capacity = ekCapDe(c); if (!x._texto) x.lotes.forEach(l => { l.variedad = ekCanonVariedad(l.variedad, c); if (c === 'POB' || c === 'SRX') l.lote = ekLoteMS(l.lote); }); });
+    ekUnificarProveedor(_rv.guias, c, false);
     ekRenderReview();
   });
   el.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { leer(); g.lotes.splice(+b.dataset.del, 1); if (!g.lotes.length) g.lotes.push({ lote:'', variedad:'', cantidad:0, clp:'', peso:0, jarras:false, jarras_cantidad:0 }); ekRenderReview(); });
@@ -3673,11 +3703,12 @@ function ekOpenErrors(id){
   const el = ekOpen('errors', `<div class="hdr"><button class="back" id="erBack" aria-label="Volver">${ico('left')}</button><div class="ttl"><b>Revisión (${items.length})</b><small>${esc(ekTitulo(r))}</small></div><div class="right"></div></div>
     <div class="body">${items.map((e, i) => {
       const m = master.find(x => providerMatch(e.g.proveedor, x.proveedor) && normalizeLoteId(x.lote) === normalizeLoteId(e.lote));
-      const msg = `SE ENCONTRÓ ERROR EN GR ${e.g.numero_guia}: *${e.lote}* - ${String(CAMPO_LABEL[e.campo] || e.campo).toUpperCase()}: ${e.guia || '—'}\nLA INFORMACIÓN CORRECTA DEBERÍA SER *${e.lote}* - ${String(CAMPO_LABEL[e.campo] || e.campo).toUpperCase()}: ${e.master || '—'}`;
+      const otroProv = e.campo === 'clp_proveedor';
+      const msg = otroProv ? `SE ENCONTRÓ ERROR EN GR ${e.g.numero_guia}: *${e.lote}* - EL CLP ${e.guia || '—'} PERTENECE A ${String(e.master || '').toUpperCase()}, NO A ${String(e.g.proveedor || '').toUpperCase()}.\nFAVOR CORREGIR EL CLP DEL LOTE *${e.lote}*.` : `SE ENCONTRÓ ERROR EN GR ${e.g.numero_guia}: *${e.lote}* - ${String(CAMPO_LABEL[e.campo] || e.campo).toUpperCase()}: ${e.guia || '—'}\nLA INFORMACIÓN CORRECTA DEBERÍA SER *${e.lote}* - ${String(CAMPO_LABEL[e.campo] || e.campo).toUpperCase()}: ${e.master || '—'}`;
       const conMsg = e.nivel === 'error' && e.master && e.campo !== 'lote';
       return `<div class="ecard" data-i="${i}"><button><div style="flex:1;min-width:0"><div style="display:flex;gap:8px;align-items:center;margin-bottom:4px"><span class="tag ${e.nivel === 'aviso' ? 'aviso' : ''}">${esc(String(CAMPO_LABEL[e.campo] || e.campo).toUpperCase())}</span><b>${esc(e.lote)}</b></div><div style="font-size:12px;color:var(--mut)">${esc(e.txt)}</div></div>${ico('right', 'ico-sm')}</button>
         <div class="eb">
-          ${e.guia || e.master ? `<div class="cmp"><div class="g"><small>Según guía</small>${esc(e.guia || '—')}</div><div class="m"><small>Maestro (correcto)</small>${esc(e.master || '—')}</div></div>` : ''}
+          ${e.guia || e.master ? `<div class="cmp"><div class="g"><small>Según guía</small>${esc(e.guia || '—')}</div><div class="m"><small>${otroProv ? 'Ese CLP es de' : 'Maestro (correcto)'}</small>${esc(e.master || '—')}</div></div>` : ''}
           ${m ? `<div class="mbox">Maestro · Lote ${esc(m.lote)} · ${esc(m.variedad)}\nSENASA ${esc(m.senasa)} · Código ${esc(m.codigo)}${m.cod_variedad ? ' · ' + esc(m.cod_variedad) : ''}</div>` : ''}
           <button class="btn" data-ver="${i}">${ico('eye', 'ico-sm')}Ver en la guía</button>
           ${conMsg ? `<div class="mbox" id="msg${i}">${esc(msg)}</div><div style="display:flex;gap:8px"><button class="btn" style="flex:1" data-copy="${i}">${ico('copy', 'ico-sm')}Copiar</button><a class="btn" style="flex:1;background:#059669;border-color:#059669;color:#fff;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(msg)}">${ico('chat', 'ico-sm')}WhatsApp</a></div>` : ''}
